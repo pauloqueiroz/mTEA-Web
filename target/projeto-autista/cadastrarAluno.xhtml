@@ -1,0 +1,52 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core" template="index.xhtml">
+
+	<ui:define name="centro">
+		<style>
+.companyHeaderGrid tr, .companyHeaderGrid td {
+	border: none !important;
+}
+
+.ui-growl {
+	left: 850px;
+	top: 93px;
+}
+</style>
+		<style>
+.semBorda tr, .semBorda td {
+	border: none !important;
+}
+</style>
+
+
+		<h:body>
+
+			<p:messages id="mensagem" showDetail="true" closable="true" />
+			<center>
+				<h:form id="formPrincipal">
+					<p:fieldset legend="Cadastrar Aluno">
+
+						<h:panelGrid columns="2" id="panelDadosUsuario">
+
+							<p:outputLabel for="nome" value="Nome do aluno" />
+							<p:inputText id="nome"
+								value="#{cadastrarAlunoBean.estudante.nome}" required="true" requiredMessage="É necessário informar o nome do Aluno."/>
+								
+							<p:outputLabel for="dataNascimento" value="Data de Nascimento" />
+							<p:calendar id="dataNascimento" value="#{cadastrarAlunoBean.estudante.dataNascimento}" required="true" requiredMessage="É necessário informar a data de nascimento do Aluno."/>
+
+						</h:panelGrid>
+						<p:commandButton update="panelDadosUsuario :mensagem"
+							value="Cadastrar" action="#{cadastrarAlunoBean.salvar()}" />
+						<p:commandButton value="Cancelar" title="Cancelar"
+							actionListener="#{cadastrarAlunoBean.limpar()}" ajax="false"
+							icon="ui-icon-cancel" immediate="true" />
+					</p:fieldset>
+				</h:form>
+			</center>
+		</h:body>
+	</ui:define>
+</ui:composition>
