@@ -36,7 +36,7 @@ public class CadastrarAlunoBean implements Serializable{
 	
 	public void salvar(){
 		FacesContext facesContext = FacesContext.getCurrentInstance();
-		estudanteDao.adiciona(estudante);
+		estudanteDao.adicionar(estudante);
 		facesContext.addMessage(null, new FacesMessage("Sucesso ao realizar operação.", "Aluno cadastrado com sucesso."));
 	}
 	
