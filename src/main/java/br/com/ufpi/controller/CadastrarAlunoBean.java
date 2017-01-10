@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.primefaces.component.inputtext.InputText;
+import org.primefaces.event.FileUploadEvent;
 
 import br.com.ufpi.dao.EstudanteDao;
 import br.com.ufpi.model.Estudante;
@@ -55,6 +56,11 @@ public class CadastrarAlunoBean implements Serializable{
 		inputText.setSubmittedValue("");
 
 	}
+	
+	public void upload(FileUploadEvent event) {
+        FacesMessage message = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
 
 
 	public EstudanteDao getEstudanteDao() {

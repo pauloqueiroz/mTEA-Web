@@ -2,11 +2,13 @@ package br.com.ufpi.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -26,6 +28,9 @@ public class Estudante implements Serializable{
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataNascimento;
+	
+	@OneToMany(mappedBy="estudante")
+	private Set<Atividade> atividades;
 
 	public Estudante() {
 		super();
@@ -54,6 +59,14 @@ public class Estudante implements Serializable{
 
 	public void setDataNascimento(Date dataNascimento) {
 		this.dataNascimento = dataNascimento;
+	}
+
+	public Set<Atividade> getAtividades() {
+		return atividades;
+	}
+
+	public void setAtividades(Set<Atividade> atividades) {
+		this.atividades = atividades;
 	}
 
 }

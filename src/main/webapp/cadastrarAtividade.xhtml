@@ -1,0 +1,85 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core" template="index.xhtml">
+
+	<ui:define name="centro">
+		<style>
+.companyHeaderGrid tr, .companyHeaderGrid td {
+	border: none !important;
+}
+
+.ui-growl {
+	left: 850px;
+	top: 93px;
+}
+</style>
+		<style>
+.semBorda tr, .semBorda td {
+	border: none !important;
+}
+</style>
+
+
+		<h:body>
+
+			<p:messages id="mensagem" showDetail="true" closable="true" />
+
+			<center>
+				<h:form id="formPrincipal" enctype="multipart/form-data">
+
+					<p:outputLabel for="comboTemplate" value="Selecione o template: " />
+					<p:selectOneMenu id="comboTemplate"
+						value="#{cadastroAtividadeBean.templateSelecionado}">
+						<f:selectItem itemLabel="Selecione o template" itemValue="" />
+						<f:selectItems value="#{cadastroAtividadeBean.templates}" />
+						<p:ajax listener="#{cadastroAtividadeBean.atualizarFlags}"
+							update="formPrincipal:divCadastro" />
+					</p:selectOneMenu>
+					<br />
+					<br />
+					<p:outputLabel value="Pesquisar aluno pelo nome: "
+						style="font-size:14px; font-weight:bold"></p:outputLabel>
+					<p:autoComplete id="autoCompleteAluno"
+						value="#{cadastroAtividadeBean.estudanteSelecionado}"
+						completeMethod="#{cadastroAtividadeBean.buscarEstudante}"
+						converter="estudanteConverter" var="estudante" event="itemselect"
+						itemLabel="#{estudante.nome}" itemValue="#{estudante}"
+						minQueryLength="3" forceSelection="true" size="50"
+						style="font-size:14px">
+					</p:autoComplete>
+					<br />
+					<br />
+
+					<p:panel id="divCadastro" styleClass="semBorda">
+						<p:outputLabel value="Palavra: " for="inputPalavra"
+							style="font-size:14px; font-weight:bold"
+							rendered="#{cadastroAtividadeBean.templatePalavra}"></p:outputLabel>
+						<p:inputText value="#{cadastroAtividadeBean.palavra}" id="inputPalavra"
+							required="#{cadastroAtividadeBean.templatePalavra}"
+							requiredMessage="É necessário informar a palavra do template"
+							rendered="#{cadastroAtividadeBean.templatePalavra}">
+						</p:inputText>
+						<br />
+						<br />
+						<p:outputLabel value="Upload do documento" id="labelUpload"
+							style="font-size:14px; font-weight:bold"
+							rendered="#{cadastroAtividadeBean.templateUpload}" />
+						<p:fileUpload fileUploadListener="#{cadastroAtividadeBean.salvarUploads}"
+							mode="advanced" dragDropSupport="false" multiple="true"
+							fileLimit="8" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+							rendered="#{cadastroAtividadeBean.templateUpload}" />
+					</p:panel>
+					<p:commandButton value="Cadastrar" id="cadastrarButton"
+						action="#{cadastroAtividadeBean.salvar()}" ajax="false"
+						styleClass="ui-priority-primary" />
+
+					<p:commandButton value="Limpar"
+						action="#{cadastroAtividadeBean.limpar()}" id="limparButton"
+						immediate="true" ajax="false" styleClass="ui-priority-primary" />
+				</h:form>
+			</center>
+		</h:body>
+	</ui:define>
+</ui:composition>

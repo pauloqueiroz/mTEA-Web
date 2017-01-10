@@ -31,7 +31,6 @@ public class Filtro implements Filter{
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-		System.out.println("RSRSRRSRRSRSRRSRSRRSRRSRSRSRRSRSRSRSRRSRSR");
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		Usuario usuarioDaSessao = (Usuario) httpRequest.getSession().getAttribute(
 				"usuarioDaSessao");
