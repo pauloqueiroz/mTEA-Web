@@ -5,9 +5,7 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -54,7 +52,7 @@ public class CadastroAtividadeBean implements Serializable {
 	
 	private String palavra;
 	
-	private Set<Arquivo> listaArquivos;
+	private List<Arquivo> listaArquivos;
 	
 	private List<InputStream> conteudoArquivos;
 	
@@ -64,7 +62,7 @@ public class CadastroAtividadeBean implements Serializable {
 
 	@PostConstruct
 	public void init(){
-		listaArquivos = new HashSet<>();
+		listaArquivos = new ArrayList<>();
 		conteudoArquivos = new ArrayList<>();
 	}
 
@@ -105,6 +103,8 @@ public class CadastroAtividadeBean implements Serializable {
 				this.listaArquivos.add(arquivo);
 				atividade.setImagens(this.listaArquivos);
 				arquivo.setAtividade(atividade);
+				int numeroArquivo = arquivoDao.contarArquivos();
+				arquivo.setNomeArquivo(String.valueOf(numeroArquivo)+".jpg");
 				arquivoDao.adicionar(arquivo);
 			} catch (IOException e) {
 				System.out.println("Erro ao salvar imagens.");
@@ -191,14 +191,6 @@ public class CadastroAtividadeBean implements Serializable {
 	public void setPalavra(String palavra) {
 		this.palavra = palavra;
 	}
-	
-	public Set<Arquivo> getListaArquivos() {
-		return listaArquivos;
-	}
-
-	public void setListaArquivos(Set<Arquivo> listaArquivos) {
-		this.listaArquivos = listaArquivos;
-	}
 
 	public List<InputStream> getConteudoArquivos() {
 		return conteudoArquivos;
@@ -214,6 +206,14 @@ public class CadastroAtividadeBean implements Serializable {
 
 	public void setTemplatePalavra(boolean templatePalavra) {
 		this.templatePalavra = templatePalavra;
+	}
+
+	public List<Arquivo> getListaArquivos() {
+		return listaArquivos;
+	}
+
+	public void setListaArquivos(List<Arquivo> listaArquivos) {
+		this.listaArquivos = listaArquivos;
 	}
 
 }

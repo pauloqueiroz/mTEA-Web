@@ -24,13 +24,14 @@
 
 		<h:body>
 
-			<p:messages id="mensagem" showDetail="true" closable="true" />
+			<p:messages id="mensagem" showDetail="false" closable="true" />
 
 			<center>
 				<h:form id="formPrincipal" enctype="multipart/form-data">
 
 					<p:outputLabel for="comboTemplate" value="Selecione o template: " />
-					<p:selectOneMenu id="comboTemplate"
+					<p:selectOneMenu id="comboTemplate" required="true"
+						requiredMessage="É necessário selecionar o template"
 						value="#{cadastroAtividadeBean.templateSelecionado}">
 						<f:selectItem itemLabel="Selecione o template" itemValue="" />
 						<f:selectItems value="#{cadastroAtividadeBean.templates}" />
@@ -39,10 +40,11 @@
 					</p:selectOneMenu>
 					<br />
 					<br />
-					<p:outputLabel value="Pesquisar aluno pelo nome: "
+					<p:outputLabel value="Pesquisar aluno pelo nome: " for="autoCompleteAluno"
 						style="font-size:14px; font-weight:bold"></p:outputLabel>
 					<p:autoComplete id="autoCompleteAluno"
 						value="#{cadastroAtividadeBean.estudanteSelecionado}"
+						required="true" requiredMessage="É necessário selecionar o aluno"
 						completeMethod="#{cadastroAtividadeBean.buscarEstudante}"
 						converter="estudanteConverter" var="estudante" event="itemselect"
 						itemLabel="#{estudante.nome}" itemValue="#{estudante}"
@@ -56,20 +58,21 @@
 						<p:outputLabel value="Palavra: " for="inputPalavra"
 							style="font-size:14px; font-weight:bold"
 							rendered="#{cadastroAtividadeBean.templatePalavra}"></p:outputLabel>
-						<p:inputText value="#{cadastroAtividadeBean.palavra}" id="inputPalavra"
+						<p:inputText value="#{cadastroAtividadeBean.palavra}"
+							id="inputPalavra"
 							required="#{cadastroAtividadeBean.templatePalavra}"
 							requiredMessage="É necessário informar a palavra do template"
 							rendered="#{cadastroAtividadeBean.templatePalavra}">
 						</p:inputText>
 						<br />
 						<br />
-						<p:outputLabel value="Upload do documento" id="labelUpload"
-							style="font-size:14px; font-weight:bold"
-							rendered="#{cadastroAtividadeBean.templateUpload}" />
-						<p:fileUpload fileUploadListener="#{cadastroAtividadeBean.salvarUploads}"
+						<p:fileUpload id="uploadImagens"
+							fileUploadListener="#{cadastroAtividadeBean.salvarUploads}"
 							mode="advanced" dragDropSupport="false" multiple="true"
-							fileLimit="8" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
-							rendered="#{cadastroAtividadeBean.templateUpload}" />
+							disabled="#{cadastroAtividadeBean.templateSelecionado == null}"
+							auto="true" fileLimitMessage="A quantidade máxima de imagens permitida é de #{cadastroAtividadeBean.templateSelecionado.quantidadeArquivos}"
+							fileLimit="#{cadastroAtividadeBean.templateSelecionado.quantidadeArquivos}"
+							allowTypes="/(\.|\/)(gif|jpe?g|png)$/" label="Upload de imagem" />
 					</p:panel>
 					<p:commandButton value="Cadastrar" id="cadastrarButton"
 						action="#{cadastroAtividadeBean.salvar()}" ajax="false"

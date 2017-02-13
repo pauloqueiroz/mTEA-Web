@@ -24,22 +24,27 @@
 
 		<h:body>
 
-			<p:messages id="mensagem" showDetail="true" closable="true" />
+			<p:messages id="mensagem" showDetail="false" closable="true" />
 			<center>
-				<h:form id="formPrincipal">
+				<h:form id="formPrincipal" enctype="multipart/form-data">
 					<p:fieldset legend="Cadastrar Aluno">
 
-						<h:panelGrid columns="2" id="panelDadosUsuario">
+						<p:panelGrid columns="2" id="panelDadosUsuario" >
 
 							<p:outputLabel for="nome" value="Nome do aluno" />
 							<p:inputText id="nome"
 								value="#{cadastrarAlunoBean.estudante.nome}" required="true" requiredMessage="É necessário informar o nome do Aluno."/>
 								
 							<p:outputLabel for="dataNascimento" value="Data de Nascimento" />
-							<p:calendar id="dataNascimento" value="#{cadastrarAlunoBean.estudante.dataNascimento}" required="true" requiredMessage="É necessário informar a data de nascimento do Aluno."/>
-
-						</h:panelGrid>
-						<p:commandButton update="panelDadosUsuario :mensagem"
+							<p:calendar id="dataNascimento" value="#{cadastrarAlunoBean.estudante.dataNascimento}" required="true" requiredMessage="É necessário informar a data de nascimento do Aluno." locale="pt"/>
+						</p:panelGrid>
+						<br />
+						<br />
+						<p:outputLabel for="reforco" value="Reforço: "/>
+						<p:fileUpload id="reforco" value="#{cadastrarAlunoBean.arquivo}" mode="simple" label="Upload de reforço" skinSimple="true"/>
+						<br />
+						<br />
+						<p:commandButton ajax="false"
 							value="Cadastrar" action="#{cadastrarAlunoBean.salvar()}" />
 						<p:commandButton value="Cancelar" title="Cancelar"
 							actionListener="#{cadastrarAlunoBean.limpar()}" ajax="false"

@@ -1,0 +1,89 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core" template="index.xhtml">
+
+	<ui:define name="centro">
+		<style>
+.companyHeaderGrid tr, .companyHeaderGrid td {
+	border: none !important;
+}
+
+.ui-growl {
+	left: 850px;
+	top: 93px;
+}
+</style>
+		<style>
+.semBorda tr, .semBorda td {
+	border: none !important;
+}
+</style>
+		<h:body>
+
+			<p:messages id="mensagem" showDetail="false" closable="true" />
+			<center>
+				<h:form id="formPrincipal">
+					<f:metadata>
+						<f:viewParam name="idAtividade"
+							value="#{edicaoAtividadeBean.idAtividade}" />
+						<f:event type="preRenderView"
+							listener="#{edicaoAtividadeBean.buscarAtividade}" />
+					</f:metadata>
+					<p:panelGrid id="panelDadosAtividade" header="Dados da atividade"
+						columns="2">
+						<p:outputLabel value="Estudante" />
+						<p:outputLabel
+							value="#{edicaoAtividadeBean.atividade.estudante.nome}" />
+						<p:outputLabel value="Template" />
+						<p:outputLabel
+							value="#{edicaoAtividadeBean.atividade.template.toString()}" />
+						<p:outputLabel value="Palavra"
+							rendered="#{edicaoAtividadeBean.atividade.palavra != null}" />
+						<p:inputText value="#{edicaoAtividadeBean.atividade.palavra}"
+							rendered="#{edicaoAtividadeBean.atividade.palavra != null}"
+							required="#{edicaoAtividadeBean.atividade.palavra != null}" />
+					</p:panelGrid>
+					<br />
+					<br />
+					<p:dataTable var="arquivo" paginator="true" rows="10" reflow="true"
+						paginatorPosition="bottom" id="tabelaArquivos"
+						style="max-width:800px;"
+						value="#{edicaoAtividadeBean.atividade.imagens}"
+						rowIndexVar="rowIndex"
+						emptyMessage="Não foram encontrados registros">
+						<f:facet name="header">
+            						Arquivos da atividade
+        						</f:facet>
+						<p:column headerText="Arquivo">
+							<p:commandLink value="#{arquivo.nomeArquivo}" ajax="false"
+								style="font-size:14px;color:blue;" target="_blank">
+								<p:fileDownload
+									value="#{edicaoAtividadeBean.downloadArquivo(arquivo)}" />
+							</p:commandLink>
+						</p:column>
+						<p:column headerText="selecione para remover" width="100">
+							<p:selectBooleanCheckbox value="#{arquivo.deletar}" />
+						</p:column>
+					</p:dataTable>
+					<br/>
+					<br/>
+					<p:fileUpload id="uploadImagens" style="max-width:800px;"
+						fileUploadListener="#{edicaoAtividadeBean.salvarUploads}"
+						mode="advanced" dragDropSupport="false" multiple="true"
+						auto="true"
+						fileLimitMessage="A quantidade máxima de imagens permitida é de #{edicaoAtividadeBean.atividade.template.quantidadeArquivos}"
+						fileLimit="#{edicaoAtividadeBean.atividade.template.quantidadeArquivos}"
+						allowTypes="/(\.|\/)(gif|jpe?g|png)$/" label="Upload de imagem" />
+					<br/>
+					<br/>
+					<p:panelGrid id="panelButtons" columns="2">
+						<p:commandButton value="Editar" action="#{edicaoAtividadeBean.editar()}" ajax="false"/>
+						<p:commandButton value="Cancelar" ajax="false" action="listarAtividade.xhtml?faces-redirect=true"/>
+					</p:panelGrid>
+				</h:form>
+			</center>
+		</h:body>
+	</ui:define>
+</ui:composition>

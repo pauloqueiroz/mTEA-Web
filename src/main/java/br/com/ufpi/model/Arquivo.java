@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -34,9 +35,17 @@ public class Arquivo implements Serializable{
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataUpload;
 	
+	private String nomeArquivo;
+	
 	@ManyToOne
 	@JoinColumn(name="idAtividade")
 	private Atividade atividade;
+	
+	@OneToOne
+	@JoinColumn(name="idEstudante")
+	private Estudante estudante;
+	
+	private transient boolean deletar;
 
 	public Arquivo() {
 		super();
@@ -73,6 +82,30 @@ public class Arquivo implements Serializable{
 
 	public void setAtividade(Atividade atividade) {
 		this.atividade = atividade;
+	}
+
+	public String getNomeArquivo() {
+		return nomeArquivo;
+	}
+
+	public void setNomeArquivo(String nomeArquivo) {
+		this.nomeArquivo = nomeArquivo;
+	}
+
+	public Estudante getEstudante() {
+		return estudante;
+	}
+
+	public void setEstudante(Estudante estudante) {
+		this.estudante = estudante;
+	}
+
+	public boolean isDeletar() {
+		return deletar;
+	}
+
+	public void setDeletar(boolean deletar) {
+		this.deletar = deletar;
 	}
 	
 }

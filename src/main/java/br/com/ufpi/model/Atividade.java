@@ -1,8 +1,9 @@
 package br.com.ufpi.model;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -34,8 +35,11 @@ public class Atividade implements Serializable{
 	
 	private String palavra;
 	
-	@OneToMany(mappedBy="atividade")
-	private Set<Arquivo> imagens;
+	@OneToMany(mappedBy="atividade", cascade={CascadeType.MERGE, CascadeType.REMOVE})
+	private List<Arquivo> imagens;
+	
+	@OneToMany(mappedBy="atividade", cascade=CascadeType.REMOVE)
+	private List<Tarefa> tarefas;
 	
 	@ManyToOne
 	@JoinColumn(name="idEstudante")
@@ -71,14 +75,6 @@ public class Atividade implements Serializable{
 		this.palavra = palavra;
 	}
 
-	public Set<Arquivo> getImagens() {
-		return imagens;
-	}
-
-	public void setImagens(Set<Arquivo> imagens) {
-		this.imagens = imagens;
-	}
-
 	public Estudante getEstudante() {
 		return estudante;
 	}
@@ -87,5 +83,23 @@ public class Atividade implements Serializable{
 		this.estudante = estudante;
 	}
 
-	
+	public List<Arquivo> getImagens() {
+		return imagens;
+	}
+
+	public void setImagens(List<Arquivo> imagens) {
+		this.imagens = imagens;
+	}
+
+	public String getTemplateToString(){
+		return template.toString();
+	}
+
+	public List<Tarefa> getTarefas() {
+		return tarefas;
+	}
+
+	public void setTarefas(List<Tarefa> tarefas) {
+		this.tarefas = tarefas;
+	}
 }

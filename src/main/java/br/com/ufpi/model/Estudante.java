@@ -2,13 +2,14 @@ package br.com.ufpi.model;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -30,7 +31,10 @@ public class Estudante implements Serializable{
 	private Date dataNascimento;
 	
 	@OneToMany(mappedBy="estudante")
-	private Set<Atividade> atividades;
+	private List<Atividade> atividades;
+	
+	@OneToOne(mappedBy="estudante")
+	private Arquivo arquivo;
 
 	public Estudante() {
 		super();
@@ -61,12 +65,20 @@ public class Estudante implements Serializable{
 		this.dataNascimento = dataNascimento;
 	}
 
-	public Set<Atividade> getAtividades() {
+	public List<Atividade> getAtividades() {
 		return atividades;
 	}
 
-	public void setAtividades(Set<Atividade> atividades) {
+	public void setAtividades(List<Atividade> atividades) {
 		this.atividades = atividades;
+	}
+
+	public Arquivo getArquivo() {
+		return arquivo;
+	}
+
+	public void setArquivo(Arquivo arquivo) {
+		this.arquivo = arquivo;
 	}
 
 }

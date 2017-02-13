@@ -42,6 +42,16 @@ public class EstudanteDao implements Serializable {
 	public void atualizar(Estudante aluno) {
 		em.merge(aluno);
 	}
+	
+	public Estudante buscarPorId(Long id){
+		TypedQuery<Estudante> query = em.createQuery("Select e from Estudante e where e.id = :idEstudante", Estudante.class);
+		query.setParameter("idEstudante", id);
+		return query.getSingleResult();
+	}
+	
+	public List<Estudante> listarTodos(){
+		return (List<Estudante>)em.createQuery("Select e from Estudante e", Estudante.class).getResultList();
+	}
 
 	public List<Estudante> listarEstudantes(String nomeEstudante, int first, int pageSize,
 			List<SortMeta> multiSortMeta) {
