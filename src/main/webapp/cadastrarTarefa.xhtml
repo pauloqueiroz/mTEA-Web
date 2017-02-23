@@ -1,0 +1,73 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core" template="index.xhtml">
+
+	<ui:define name="centro">
+		<style>
+.companyHeaderGrid tr, .companyHeaderGrid td {
+	border: none !important;
+}
+
+.ui-growl {
+	left: 850px;
+	top: 93px;
+}
+</style>
+		<style>
+.semBorda tr, .semBorda td {
+	border: none !important;
+}
+</style>
+
+
+		<h:body>
+
+			<p:messages id="mensagem" showDetail="false" closable="true" />
+
+			<center>
+				<h:form id="formPrincipal">
+					<p:fieldset legend="Cadastrar Execução de Tarefa">
+
+						<h:panelGrid columns="2" id="panelDadosTarefa">
+
+							<p:outputLabel for="acertos" value="Acertos: " />
+							<p:inputText id="acertos" value="#{cadastrarTarefa.tarefa.acertos}" />
+
+							<p:outputLabel for="erros" value="Erros: " />
+							<p:inputText id="erros" value="#{cadastrarTarefa.tarefa.erros}" />
+
+							<p:outputLabel for="dataInicio" value="Data de início: " />
+							<p:calendar id="dataInicio" value="#{cadastrarTarefa.tarefa.inicio}" locale="pt"/>
+							
+							<p:outputLabel for="dataFim" value="Data de término: " />
+							<p:calendar id="dataFim" value="#{cadastrarTarefa.tarefa.fim}" locale="pt"/>
+
+							<p:outputLabel for="toques" value="Toques: " />
+							<p:inputText id="toques" value="#{cadastrarTarefa.tarefa.toques}" />
+							
+							<p:outputLabel for="encerrada" value="Encerrada: " />
+							<p:inputText id="encerrada" value="#{cadastrarTarefa.tarefa.encerrada}" />
+							
+							<p:outputLabel for="atividade" value="Atividade: " />
+							<p:autoComplete id="atividade"
+								value="#{cadastrarTarefa.tarefa.atividade}"
+								required="true"
+								requiredMessage="É necessário selecionar a atividade"
+								completeMethod="#{cadastrarTarefa.buscarAtividade}"
+								converter="atividadeConverter" var="atividade"
+								event="itemselect" itemLabel="#{atividade.estudanteTemplate}"
+								itemValue="#{atividade}" minQueryLength="3"
+								forceSelection="true" size="20" style="font-size:14px"/>
+						</h:panelGrid>
+						<p:commandButton update="panelDadosTarefa :mensagem"
+							value="Cadastrar" action="#{cadastrarTarefa.salvar()}" />
+						<p:commandButton value="Cancelar" title="Cancelar"
+							ajax="false" action="index.xhtml?faces-redirect=true" />
+					</p:fieldset>
+				</h:form>
+			</center>
+		</h:body>
+	</ui:define>
+</ui:composition>

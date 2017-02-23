@@ -1,0 +1,157 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core" template="index.xhtml">
+
+	<ui:define name="centro">
+
+		<style>
+.textArea {
+	resize: none;
+	width: 500px;
+	height: 300px;
+	overflow-y: auto;
+	margin-left: 400px;
+	margin-top: 10px;
+}
+
+.old {
+	background-color: #CCCCDD;
+	color: red;
+}
+
+.companyHeaderGrid tr, .companyHeaderGrid td {
+	border: none !important;
+}
+
+.centralizado tr, .centralizado td {
+	text-align: center;
+}
+</style>
+
+		<style>
+.semBorda tr, .semBorda td {
+	border: none !important;
+}
+</style>
+
+		<script>			
+		function descricaoCancelamento(){
+			var flag = document.getElementById('descricao');
+			flag.style.display = "block";
+			limparTextArea();
+		}		 		
+
+</script>
+
+		<script>		
+		function ocultar(){
+			var flag = document.getElementById('descricao');
+			flag.style.display = "none";
+		}		
+						  		
+</script>
+
+		<script>
+		function limparTextArea(){
+			document.getElementById('desc').value = "";
+		}
+</script>
+
+		<script>
+		function detalhes(){
+			var informacao = document.getElementById('detalhes');
+			informacao.style.display = "block";
+		}
+</script>
+
+		<h:form id="formPesquisar">
+			<p:fieldset legend="Pesquisar estudante" toggleable="true"
+				toggleSpeed="500">
+				<!-- AUTO COMPLETE -->
+				<p:panelGrid columns="4" styleClass="semBorda">
+					<p:outputLabel value="Pesquisar aluno pelo nome: " for="autoCompleteAluno"
+						style="font-size:14px; font-weight:bold"></p:outputLabel>
+					<p:autoComplete id="autoCompleteAluno"
+						value="#{relatorioTarefasAluno.estudanteSelecionado}"
+						required="true" requiredMessage="É necessário selecionar o aluno"
+						completeMethod="#{cadastroAtividadeBean.buscarEstudante}"
+						converter="estudanteConverter" var="estudante" event="itemselect"
+						itemLabel="#{estudante.nome}" itemValue="#{estudante}"
+						minQueryLength="3" forceSelection="true" size="50"
+						style="font-size:14px" />
+				</p:panelGrid>
+				<h:panelGrid columns="3" cellpadding="10">
+					<h:commandButton value="Pesquisar " id="ajax" update="@form"
+						actionListener="#{relatorioTarefasAluno.pesquisar}"
+						styleClass="ui-priority-primary" />
+
+					<h:commandButton value="Limpar " id="ajax2" update="@form"
+						actionListener="#{relatorioTarefasAluno.limpar}"
+						styleClass="ui-priority-primary" />
+						
+				</h:panelGrid>
+			</p:fieldset>
+
+		</h:form>
+
+		<p></p>
+		<p:messages id="growl" showDetail="false" closable="true" />
+		<h:form id="formTabelaTarefas" enctype="multipart/form-data">
+			<p:fieldset legend="Tarefas" toggleable="true" toggleSpeed="500">
+
+				<p:dataTable var="tarefa" paginator="true" rows="5"
+					style="text-align: center" paginatorPosition="bottom" lazy="true"
+					id="tabelaTarefa"
+					value="#{relatorioTarefasAluno.tarefasDoEstudante}"
+					rowKey="tarefa" rendered="#{not empty relatorioTarefasAluno.tarefasDoEstudante}">
+
+					<f:facet name="header">
+						Tarefas Encontradas
+					</f:facet>
+
+					<p:column headerText="Template">
+						<h:outputText value="#{tarefa.atividade.template.descricao}" />
+					</p:column>
+
+					<p:column headerText="Acertos">
+						<p:outputLabel value="#{tarefa.acertos}" />
+					</p:column>
+
+					<p:column headerText="Erros">
+						<p:outputLabel value="#{tarefa.erros}"/>
+					</p:column>
+					
+					<p:column headerText="Toques">
+						<p:outputLabel value="#{tarefa.toques}"/>
+					</p:column>
+					
+					<p:column headerText="Encerrada">
+						<p:outputLabel value="#{tarefa.tarefaEncerrada}"/>
+					</p:column>
+					
+					<p:column headerText="Data de início">
+						<h:outputText value="#{tarefa.inicio}" >
+							<f:convertDateTime pattern="dd/MM/yyyy HH:mm"
+									timeZone="GMT-03:00" />
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="Data fim">
+						<h:outputText value="#{tarefa.fim}" >
+							<f:convertDateTime pattern="dd/MM/yyyy HH:mm"
+									timeZone="GMT-03:00" />
+						</h:outputText>
+					</p:column>
+					
+				</p:dataTable>
+
+			</p:fieldset>
+			
+			<p:fieldset legend="Gráfico de acertos">
+				<p:chart type="line" model="#{relatorioTarefasAluno.graficoLinha}" style="height:300px;"/>
+			</p:fieldset>
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -35,6 +35,9 @@ public class Estudante implements Serializable{
 	
 	@OneToOne(mappedBy="estudante")
 	private Arquivo arquivo;
+	
+	@OneToMany(mappedBy="estudante")
+	private List<Tarefa> tarefas;
 
 	public Estudante() {
 		super();
@@ -79,6 +82,14 @@ public class Estudante implements Serializable{
 
 	public void setArquivo(Arquivo arquivo) {
 		this.arquivo = arquivo;
+	}
+
+	public List<Tarefa> getTarefas() {
+		return tarefas;
+	}
+
+	public void setTarefas(List<Tarefa> tarefas) {
+		this.tarefas = tarefas;
 	}
 
 }

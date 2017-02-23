@@ -38,6 +38,12 @@ public class Tarefa implements Serializable{
 	@JoinColumn(name="idAtividade")
 	private Atividade atividade;
 	
+	@ManyToOne
+	@JoinColumn(name="idEstudante")
+	private Estudante estudante;
+	
+	private transient String tarefaEncerrada;
+	
 	public Tarefa() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -118,6 +124,27 @@ public class Tarefa implements Serializable{
 
 	public void setAtividade(Atividade atividade) {
 		this.atividade = atividade;
+	}
+
+	public Estudante getEstudante() {
+		return estudante;
+	}
+
+	public void setEstudante(Estudante estudante) {
+		this.estudante = estudante;
+	}
+
+	public String getTarefaEncerrada() {
+		if(this.encerrada == null){
+			return "SIM";
+		}else if(this.encerrada)
+			return "SIM";
+		else
+			return "NÃO";
+	}
+
+	public void setTarefaEncerrada(String tarefaEncerrada) {
+		this.tarefaEncerrada = tarefaEncerrada;
 	}
 
 }

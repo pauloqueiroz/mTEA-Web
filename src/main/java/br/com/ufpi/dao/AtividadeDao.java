@@ -41,6 +41,13 @@ public class AtividadeDao implements Serializable{
 		super();
 	}
 	
+	public List<Atividade> buscarAtividade(String estudanteAtividade){
+		TypedQuery<Atividade> query = em.createQuery("Select a from Atividade a where a.estudanteTemplate like:estudanteTemplate", Atividade.class);
+		query.setParameter("estudanteTemplate", "%"+estudanteAtividade+"%");
+		List<Atividade> estudantes = query.getResultList();
+		return estudantes;
+	}
+	
 	public void adicionar(Atividade atividade) {
 		em.persist(atividade);
 	}

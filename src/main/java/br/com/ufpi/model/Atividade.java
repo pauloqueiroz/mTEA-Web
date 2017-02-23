@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -41,10 +42,11 @@ public class Atividade implements Serializable{
 	@OneToMany(mappedBy="atividade", cascade=CascadeType.REMOVE)
 	private List<Tarefa> tarefas;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="idEstudante")
 	private Estudante estudante;
  
+	private String estudanteTemplate;
 	
 	public Atividade() {
 		super();
@@ -102,4 +104,13 @@ public class Atividade implements Serializable{
 	public void setTarefas(List<Tarefa> tarefas) {
 		this.tarefas = tarefas;
 	}
+
+	public String getEstudanteTemplate() {
+		return estudanteTemplate;
+	}
+
+	public void setEstudanteTemplate(String estudanteTemplate) {
+		this.estudanteTemplate = estudanteTemplate;
+	}
+	
 }

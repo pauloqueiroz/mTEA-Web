@@ -49,6 +49,11 @@
 						<p:menuitem value="Listar Atividades" icon="ui-icon-plus" url="listarAtividade.xhtml"/>
 					</p:submenu>
 					
+					<p:submenu label="Execucoes de atividades" icon="ui-icon-pencil">
+						<p:menuitem value="Cadastro de execucao" icon="ui-icon-plus" url="cadastrarTarefa.xhtml"/>
+						<p:menuitem value="Relatorio de tarefas" icon="ui-icon-plus" url="relatorioTarefas.xhtml"/>
+					</p:submenu>
+					
 					<p:menuitem value="Cadastrar usuarios" icon="ui-icon-plus"
 						url="cadastrarUsuario.xhtml"
 						rendered="#{loginBean.usuarioLogado.admin}" />

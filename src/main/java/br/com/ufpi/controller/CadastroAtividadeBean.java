@@ -138,6 +138,7 @@ public class CadastroAtividadeBean implements Serializable {
 		atividade.setEstudante(estudanteSelecionado);
 		atividade.setPalavra(palavra);
 		atividade.setTemplate(templateSelecionado);
+		atividade.setEstudanteTemplate(estudanteSelecionado.getNome() + " - " +templateSelecionado.getDescricao());
 		atividadeDao.adicionar(atividade);
 		salvarArquivos();
 		facesContext.addMessage(null, new FacesMessage(

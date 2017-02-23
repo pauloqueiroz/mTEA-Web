@@ -1,4 +1,7 @@
 C:\Users\Paulo Sergio\workspace\ProjetoAutista\src\main\java\br\com\ufpi\api\Student.java
+C:\Users\Paulo Sergio\workspace\ProjetoAutista\src\main\java\br\com\ufpi\dao\TarefaDao.java
+C:\Users\Paulo Sergio\workspace\ProjetoAutista\src\main\java\br\com\ufpi\util\AtividadeConverter.java
+C:\Users\Paulo Sergio\workspace\ProjetoAutista\src\main\java\br\com\ufpi\controller\CadastrarTarefa.java
 C:\Users\Paulo Sergio\workspace\ProjetoAutista\src\main\java\br\com\ufpi\util\EstudanteUtils.java
 C:\Users\Paulo Sergio\workspace\ProjetoAutista\src\main\java\br\com\ufpi\api\Services.java
 C:\Users\Paulo Sergio\workspace\ProjetoAutista\src\main\java\br\com\ufpi\api\Answer.java
@@ -14,7 +17,6 @@ C:\Users\Paulo Sergio\workspace\ProjetoAutista\src\main\java\br\com\ufpi\model\E
 C:\Users\Paulo Sergio\workspace\ProjetoAutista\src\main\java\br\com\ufpi\model\Usuario.java
 C:\Users\Paulo Sergio\workspace\ProjetoAutista\src\main\java\br\com\ufpi\controller\CadastrarAlunoBean.java
 C:\Users\Paulo Sergio\workspace\ProjetoAutista\src\main\java\br\com\ufpi\util\Md5Utils.java
-C:\Users\Paulo Sergio\workspace\ProjetoAutista\src\main\java\br\com\ufpi\dao\TaskDao.java
 C:\Users\Paulo Sergio\workspace\ProjetoAutista\src\main\java\br\com\ufpi\controller\EdicaoAtividadeBean.java
 C:\Users\Paulo Sergio\workspace\ProjetoAutista\src\main\java\br\com\ufpi\controller\CadastrarUsuarioBean.java
 C:\Users\Paulo Sergio\workspace\ProjetoAutista\src\main\java\br\com\ufpi\dao\EstudanteDao.java
@@ -29,6 +31,7 @@ C:\Users\Paulo Sergio\workspace\ProjetoAutista\src\main\java\br\com\ufpi\model\A
 C:\Users\Paulo Sergio\workspace\ProjetoAutista\src\main\java\br\com\ufpi\model\Tarefa.java
 C:\Users\Paulo Sergio\workspace\ProjetoAutista\src\main\java\br\com\ufpi\controller\ListarAlunoBean.java
 C:\Users\Paulo Sergio\workspace\ProjetoAutista\src\main\java\br\com\ufpi\controller\ListarUsuarioBean.java
+C:\Users\Paulo Sergio\workspace\ProjetoAutista\src\main\java\br\com\ufpi\controller\RelatorioTarefasAluno.java
 C:\Users\Paulo Sergio\workspace\ProjetoAutista\src\main\java\br\com\ufpi\api\MultipartMap.java
 C:\Users\Paulo Sergio\workspace\ProjetoAutista\src\main\java\br\com\ufpi\controller\CadastroTaskBean.java
 C:\Users\Paulo Sergio\workspace\ProjetoAutista\src\main\java\br\com\ufpi\api\Lesson.java
