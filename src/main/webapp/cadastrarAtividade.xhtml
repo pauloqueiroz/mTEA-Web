@@ -40,8 +40,8 @@
 					</p:selectOneMenu>
 					<br />
 					<br />
-					<p:outputLabel value="Pesquisar aluno pelo nome: " for="autoCompleteAluno"
-						style="font-size:14px; font-weight:bold"></p:outputLabel>
+					<p:outputLabel value="Pesquisar aluno pelo nome: "
+						for="autoCompleteAluno" style="font-size:14px; font-weight:bold"></p:outputLabel>
 					<p:autoComplete id="autoCompleteAluno"
 						value="#{cadastroAtividadeBean.estudanteSelecionado}"
 						required="true" requiredMessage="É necessário selecionar o aluno"
@@ -51,6 +51,13 @@
 						minQueryLength="3" forceSelection="true" size="50"
 						style="font-size:14px">
 					</p:autoComplete>
+					<br />
+					<br />
+					<p:outputLabel value="Link do reforço no youtube: "
+						for="inputReforco" style="font-size:14px; font-weight:bold" />
+					<p:inputText value="#{cadastroAtividadeBean.atividade.reforco}"
+						id="inputReforco">
+					</p:inputText>
 					<br />
 					<br />
 
@@ -70,7 +77,8 @@
 							fileUploadListener="#{cadastroAtividadeBean.salvarUploads}"
 							mode="advanced" dragDropSupport="false" multiple="true"
 							disabled="#{cadastroAtividadeBean.templateSelecionado == null}"
-							auto="true" fileLimitMessage="A quantidade máxima de imagens permitida é de #{cadastroAtividadeBean.templateSelecionado.quantidadeArquivos}"
+							auto="true"
+							fileLimitMessage="A quantidade máxima de imagens permitida é de #{cadastroAtividadeBean.templateSelecionado.quantidadeArquivos}"
 							fileLimit="#{cadastroAtividadeBean.templateSelecionado.quantidadeArquivos}"
 							allowTypes="/(\.|\/)(gif|jpe?g|png)$/" label="Upload de imagem" />
 					</p:panel>

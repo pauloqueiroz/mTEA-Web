@@ -39,16 +39,16 @@
 							<p:inputText id="erros" value="#{cadastrarTarefa.tarefa.erros}" />
 
 							<p:outputLabel for="dataInicio" value="Data de início: " />
-							<p:calendar id="dataInicio" value="#{cadastrarTarefa.tarefa.inicio}" locale="pt"/>
+							<p:calendar id="dataInicio" value="#{cadastrarTarefa.tarefa.inicio}" locale="pt" pattern="dd/MM/yyyy HH:mm:ss"/>
 							
 							<p:outputLabel for="dataFim" value="Data de término: " />
-							<p:calendar id="dataFim" value="#{cadastrarTarefa.tarefa.fim}" locale="pt"/>
+							<p:calendar id="dataFim" value="#{cadastrarTarefa.tarefa.fim}" locale="pt" pattern="dd/MM/yyyy HH:mm:ss"/>
 
 							<p:outputLabel for="toques" value="Toques: " />
 							<p:inputText id="toques" value="#{cadastrarTarefa.tarefa.toques}" />
 							
-							<p:outputLabel for="encerrada" value="Encerrada: " />
-							<p:inputText id="encerrada" value="#{cadastrarTarefa.tarefa.encerrada}" />
+							<p:outputLabel value="Encerrada: " />
+							<p:selectBooleanCheckbox value="#{cadastrarTarefa.tarefa.encerrada}" />
 							
 							<p:outputLabel for="atividade" value="Atividade: " />
 							<p:autoComplete id="atividade"
@@ -59,7 +59,7 @@
 								converter="atividadeConverter" var="atividade"
 								event="itemselect" itemLabel="#{atividade.estudanteTemplate}"
 								itemValue="#{atividade}" minQueryLength="3"
-								forceSelection="true" size="20" style="font-size:14px"/>
+								forceSelection="true" size="40" style="font-size:14px"/>
 						</h:panelGrid>
 						<p:commandButton update="panelDadosTarefa :mensagem"
 							value="Cadastrar" action="#{cadastrarTarefa.salvar()}" />

@@ -117,7 +117,9 @@
 					</p:column>
 
 					<p:column headerText="Ações">
-						<p:commandButton id="editarAluno"/>
+						<p:link	value="Ver relatório de tarefas"
+								outcome="relatorioTarefas.xhtml?idEstudante=#{estudante.id}"
+								includeViewParams="false" target="_blank"/>
 					</p:column>
 				</p:dataTable>
 

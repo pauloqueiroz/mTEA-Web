@@ -48,6 +48,8 @@ public class Atividade implements Serializable{
  
 	private String estudanteTemplate;
 	
+	private String reforco;
+	
 	public Atividade() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -111,6 +113,14 @@ public class Atividade implements Serializable{
 
 	public void setEstudanteTemplate(String estudanteTemplate) {
 		this.estudanteTemplate = estudanteTemplate;
+	}
+
+	public String getReforco() {
+		return reforco;
+	}
+
+	public void setReforco(String reforco) {
+		this.reforco = reforco;
 	}
 	
 }

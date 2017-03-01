@@ -5,6 +5,7 @@ br\com\ufpi\util\EstudanteUtils.class
 br\com\ufpi\controller\CadastrarAlunoBean.class
 br\com\ufpi\dao\TarefaDao.class
 br\com\ufpi\controller\CadastroTaskBean.class
+br\com\ufpi\util\TarefaGrafico.class
 br\com\ufpi\controller\ListarAlunoBean.class
 br\com\ufpi\model\Teste.class
 br\com\ufpi\controller\RelatorioTarefasAluno.class

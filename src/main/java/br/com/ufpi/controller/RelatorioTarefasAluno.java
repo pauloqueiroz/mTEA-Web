@@ -1,6 +1,8 @@
 package br.com.ufpi.controller;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -9,10 +11,11 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
-import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
+import org.primefaces.model.chart.DateAxis;
 import org.primefaces.model.chart.LineChartModel;
 import org.primefaces.model.chart.LineChartSeries;
 
@@ -20,67 +23,92 @@ import br.com.ufpi.dao.EstudanteDao;
 import br.com.ufpi.dao.TarefaDao;
 import br.com.ufpi.model.Estudante;
 import br.com.ufpi.model.Tarefa;
+import br.com.ufpi.util.EstudanteUtils;
+import br.com.ufpi.util.TarefaGrafico;
 
 @Named
 @ViewScoped
-public class RelatorioTarefasAluno implements Serializable{
+public class RelatorioTarefasAluno implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	@Inject
 	private TarefaDao tarefaDao;
-	
+
 	@Inject
 	private EstudanteDao estudanteDao;
-	
-	private Estudante estudanteSelecionado;
-	
+
+	private String idEstudante;
+
 	private LazyDataModel<Tarefa> tarefasDoEstudante;
-	
-	private LineChartModel graficoLinha;
-	
+
+	private LineChartModel graficoAcertos;
+
+	private LineChartModel graficoErros;
+
+	private List<TarefaGrafico> tarefaGraficos;
+
 	public RelatorioTarefasAluno() {
 		super();
 	}
-	
+
 	@PostConstruct
 	public void init() {
-		
-		pesquisar();
-		
-		createLineModels();
+		tarefaGraficos = new ArrayList<>();
+		// pesquisar();
+
+		// createDateModel();
 	}
-	
-	private void createLineModels() {
-		graficoLinha = initLinearModel();
-		graficoLinha.setTitle("Linear Chart");
-		graficoLinha.setLegendPosition("e");
-        Axis yAxis = graficoLinha.getAxis(AxisType.Y);
-        yAxis.setMin(0);
-        yAxis.setMax(30);
-    }
-	
-	 private LineChartModel initLinearModel() {
-	        LineChartModel model = new LineChartModel();
-	 
-	        LineChartSeries series1 = new LineChartSeries();
-	        series1.setLabel("Acertos");
-	 
-	        series1.set("22-09-2017", 2);
-	        series1.set("23-09-2017", 1);
-	        series1.set("25-09-2017", 3);
-	        series1.set("27-09-2017", 6);
-	        series1.set("29-09-2017", 8);
-	 
-	        model.addSeries(series1);
-	         
-	        return model;
-	    }
-	
-	public void pesquisar(){
+
+	private void createDateModel() {
+		if (idEstudante != null) {
+			tarefaGraficos = tarefaDao.buscarTarefasPorEstudante(Long.parseLong(idEstudante));
+			graficoAcertos = new LineChartModel();
+			graficoErros = new LineChartModel();
+			LineChartSeries serieAcertos = new LineChartSeries();
+			serieAcertos.setLabel("Acertos");
+
+			LineChartSeries serieErros = new LineChartSeries();
+			serieErros.setLabel("Erros");
+			for (TarefaGrafico tarefaGrafico : tarefaGraficos) {
+				serieAcertos.set(EstudanteUtils.getDataPadraoInternacional(tarefaGrafico.getInicio()),
+						tarefaGrafico.getAcertos());
+				serieErros.set(EstudanteUtils.getDataPadraoInternacional(tarefaGrafico.getInicio()),
+						tarefaGrafico.getErros());
+			}
+			Date ultimaData = null;
+			if (!CollectionUtils.isEmpty(tarefaGraficos))
+				ultimaData = tarefaGraficos.get(tarefaGraficos.size() - 1).getInicio();
+
+			ultimaData = ultimaData != null ? ultimaData : new Date();
+			ultimaData = EstudanteUtils.getDiaPosterior(ultimaData);
+
+			povoarGrafico(graficoAcertos, serieAcertos, ultimaData);
+
+			povoarGrafico(graficoErros, serieErros, ultimaData);
+		}
+	}
+
+	private void povoarGrafico(LineChartModel graficoAcertos, LineChartSeries dadosGrafico, Date ultimaDataGrafico) {
+
+		graficoAcertos.addSeries(dadosGrafico);
+		graficoAcertos.setTitle("Relatório de acertos");
+		graficoAcertos.setZoom(true);
+		graficoAcertos.getAxis(AxisType.Y).setLabel("Acertos");
+		DateAxis axis = new DateAxis("Data de inicio");
+		axis.setTickAngle(-50);
+		axis.setMax(EstudanteUtils.getDataPadraoInternacional(ultimaDataGrafico));
+		axis.setTickFormat("%d/%m/%y %H:%M:%S");
+
+		graficoAcertos.getAxes().put(AxisType.X, axis);
+	}
+
+	public void pesquisar() {
+		createDateModel();
+
 		setTarefasDoEstudante(new LazyDataModel<Tarefa>() {
 
 			private static final long serialVersionUID = 1L;
@@ -89,32 +117,23 @@ public class RelatorioTarefasAluno implements Serializable{
 			public List<Tarefa> load(int first, int pageSize, String sortField, SortOrder sortOrder,
 					Map<String, Object> filters) {
 
-				List<Tarefa> listaDocumento = tarefaDao.buscarTarefasPorEstudante(estudanteSelecionado, first, pageSize);
+				List<Tarefa> listaDocumento = tarefaDao.buscarTarefasPorEstudante(Long.parseLong(idEstudante), first,
+						pageSize);
 
-				this.setRowCount(tarefaDao.contarDocumentosPorStatusSetorProcessual(estudanteSelecionado));
+				this.setRowCount(tarefaDao.contarDocumentosPorStatusSetorProcessual(Long.parseLong(idEstudante)));
 				return listaDocumento;
 			}
 
 		});
 	}
 
-	public void limpar(){
-		this.estudanteSelecionado = null;
+	public void limpar() {
+		this.idEstudante = "";
 		pesquisar();
 	}
-	
+
 	public List<Estudante> buscarEstudante(String nome) {
 		return estudanteDao.buscarEstudante(nome);
-	}
-
-	public Estudante getEstudanteSelecionado() {
-		return estudanteSelecionado;
-	}
-
-
-
-	public void setEstudanteSelecionado(Estudante estudanteSelecionado) {
-		this.estudanteSelecionado = estudanteSelecionado;
 	}
 
 	public LazyDataModel<Tarefa> getTarefasDoEstudante() {
@@ -125,13 +144,32 @@ public class RelatorioTarefasAluno implements Serializable{
 		this.tarefasDoEstudante = tarefasDoEstudante;
 	}
 
-	public LineChartModel getGraficoLinha() {
-		return graficoLinha;
+	public void setTarefaGraficos(List<TarefaGrafico> tarefaGraficos) {
+		this.tarefaGraficos = tarefaGraficos;
 	}
 
-	public void setGraficoLinha(LineChartModel graficoLinha) {
-		this.graficoLinha = graficoLinha;
+	public LineChartModel getGraficoAcertos() {
+		return graficoAcertos;
 	}
-		
+
+	public void setGraficoAcertos(LineChartModel graficoAcertos) {
+		this.graficoAcertos = graficoAcertos;
+	}
+
+	public LineChartModel getGraficoErros() {
+		return graficoErros;
+	}
+
+	public void setGraficoErros(LineChartModel graficoErros) {
+		this.graficoErros = graficoErros;
+	}
+
+	public String getIdEstudante() {
+		return idEstudante;
+	}
+
+	public void setIdEstudante(String idEstudante) {
+		this.idEstudante = idEstudante;
+	}
 
 }

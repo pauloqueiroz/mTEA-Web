@@ -66,46 +66,21 @@
 		}
 </script>
 
-		<h:form id="formPesquisar">
-			<p:fieldset legend="Pesquisar estudante" toggleable="true"
-				toggleSpeed="500">
-				<!-- AUTO COMPLETE -->
-				<p:panelGrid columns="4" styleClass="semBorda">
-					<p:outputLabel value="Pesquisar aluno pelo nome: " for="autoCompleteAluno"
-						style="font-size:14px; font-weight:bold"></p:outputLabel>
-					<p:autoComplete id="autoCompleteAluno"
-						value="#{relatorioTarefasAluno.estudanteSelecionado}"
-						required="true" requiredMessage="É necessário selecionar o aluno"
-						completeMethod="#{cadastroAtividadeBean.buscarEstudante}"
-						converter="estudanteConverter" var="estudante" event="itemselect"
-						itemLabel="#{estudante.nome}" itemValue="#{estudante}"
-						minQueryLength="3" forceSelection="true" size="50"
-						style="font-size:14px" />
-				</p:panelGrid>
-				<h:panelGrid columns="3" cellpadding="10">
-					<h:commandButton value="Pesquisar " id="ajax" update="@form"
-						actionListener="#{relatorioTarefasAluno.pesquisar}"
-						styleClass="ui-priority-primary" />
-
-					<h:commandButton value="Limpar " id="ajax2" update="@form"
-						actionListener="#{relatorioTarefasAluno.limpar}"
-						styleClass="ui-priority-primary" />
-						
-				</h:panelGrid>
-			</p:fieldset>
-
-		</h:form>
-
-		<p></p>
-		<p:messages id="growl" showDetail="false" closable="true" />
 		<h:form id="formTabelaTarefas" enctype="multipart/form-data">
+			<f:metadata>
+				<f:viewParam name="idEstudante"
+					value="#{relatorioTarefasAluno.idEstudante}" />
+				<f:event type="preRenderView"
+					listener="#{relatorioTarefasAluno.pesquisar()}" />
+			</f:metadata>
+			<p:messages id="growl" showDetail="false" closable="true" />
 			<p:fieldset legend="Tarefas" toggleable="true" toggleSpeed="500">
 
 				<p:dataTable var="tarefa" paginator="true" rows="5"
 					style="text-align: center" paginatorPosition="bottom" lazy="true"
-					id="tabelaTarefa"
-					value="#{relatorioTarefasAluno.tarefasDoEstudante}"
-					rowKey="tarefa" rendered="#{not empty relatorioTarefasAluno.tarefasDoEstudante}">
+					id="tabelaTarefa" emptyMessage="O estudante não executou nenhuma tarefa."
+					value="#{relatorioTarefasAluno.tarefasDoEstudante}" rowKey="tarefa"
+					rendered="#{not empty relatorioTarefasAluno.tarefasDoEstudante}">
 
 					<f:facet name="header">
 						Tarefas Encontradas
@@ -120,38 +95,48 @@
 					</p:column>
 
 					<p:column headerText="Erros">
-						<p:outputLabel value="#{tarefa.erros}"/>
+						<p:outputLabel value="#{tarefa.erros}" />
 					</p:column>
-					
+
 					<p:column headerText="Toques">
-						<p:outputLabel value="#{tarefa.toques}"/>
+						<p:outputLabel value="#{tarefa.toques}" />
 					</p:column>
-					
+
 					<p:column headerText="Encerrada">
-						<p:outputLabel value="#{tarefa.tarefaEncerrada}"/>
+						<p:outputLabel value="#{tarefa.tarefaEncerrada}" />
 					</p:column>
-					
+
 					<p:column headerText="Data de início">
-						<h:outputText value="#{tarefa.inicio}" >
+						<h:outputText value="#{tarefa.inicio}">
 							<f:convertDateTime pattern="dd/MM/yyyy HH:mm"
-									timeZone="GMT-03:00" />
+								timeZone="GMT-03:00" />
 						</h:outputText>
 					</p:column>
-					
+
 					<p:column headerText="Data fim">
-						<h:outputText value="#{tarefa.fim}" >
+						<h:outputText value="#{tarefa.fim}">
 							<f:convertDateTime pattern="dd/MM/yyyy HH:mm"
-									timeZone="GMT-03:00" />
+								timeZone="GMT-03:00" />
 						</h:outputText>
 					</p:column>
-					
+
 				</p:dataTable>
 
 			</p:fieldset>
-			
-			<p:fieldset legend="Gráfico de acertos">
-				<p:chart type="line" model="#{relatorioTarefasAluno.graficoLinha}" style="height:300px;"/>
+			<br />
+			<br />
+			<p:fieldset legend="Gráfico de acertos" toggleable="false" rendered="#{relatorioTarefasAluno.graficoAcertos != null}">
+				<p:chart type="line" model="#{relatorioTarefasAluno.graficoAcertos}" rendered="#{relatorioTarefasAluno.graficoAcertos != null}"
+					widgetVar="chart" style="height:400px;" />
 			</p:fieldset>
+
+			<br />
+			<br />
+			<p:fieldset legend="Gráfico de erros" toggleable="false" rendered="#{relatorioTarefasAluno.graficoErros != null}">
+				<p:chart type="line" model="#{relatorioTarefasAluno.graficoErros}" rendered="#{relatorioTarefasAluno.graficoErros != null}"
+					style="height:400px;" />
+			</p:fieldset>
+
 		</h:form>
 	</ui:define>
 </ui:composition>

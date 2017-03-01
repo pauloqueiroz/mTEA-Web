@@ -2,6 +2,7 @@ package br.com.ufpi.util;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -41,6 +42,23 @@ public class EstudanteUtils {
 		return sdf.format(data);
 	}
 
+	public static String getDataFormatadaEmSegundos(Date data) {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+		return sdf.format(data);
+	}
+	
+	public static String getDataPadraoInternacional(Date data){
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+		return sdf.format(data);
+	}
+	
+	public static Date getDiaPosterior(Date data){
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(data);
+		calendar.add(Calendar.DAY_OF_MONTH, 1);
+		return calendar.getTime();
+	}
+	
 	public static List<Lesson> converterAtividades(List<Atividade> atividades) {
 		List<Lesson> tarefas = new ArrayList<>();
 		for (Atividade atividade : atividades) {

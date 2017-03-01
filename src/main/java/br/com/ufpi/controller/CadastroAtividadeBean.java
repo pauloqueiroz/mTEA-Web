@@ -101,8 +101,8 @@ public class CadastroAtividadeBean implements Serializable {
 				byte[] bytes = IOUtils.toByteArray(stream);
 				arquivo.setBytesArquivo(bytes);;
 				this.listaArquivos.add(arquivo);
-				atividade.setImagens(this.listaArquivos);
-				arquivo.setAtividade(atividade);
+				getAtividade().setImagens(this.listaArquivos);
+				arquivo.setAtividade(getAtividade());
 				int numeroArquivo = arquivoDao.contarArquivos();
 				arquivo.setNomeArquivo(String.valueOf(numeroArquivo)+".jpg");
 				arquivoDao.adicionar(arquivo);
@@ -135,11 +135,11 @@ public class CadastroAtividadeBean implements Serializable {
 		System.out.println("palavra: "+palavra);
 		System.out.println(templateSelecionado.toString());
 		System.out.println(estudanteSelecionado.getNome());
-		atividade.setEstudante(estudanteSelecionado);
-		atividade.setPalavra(palavra);
-		atividade.setTemplate(templateSelecionado);
-		atividade.setEstudanteTemplate(estudanteSelecionado.getNome() + " - " +templateSelecionado.getDescricao());
-		atividadeDao.adicionar(atividade);
+		getAtividade().setEstudante(estudanteSelecionado);
+		getAtividade().setPalavra(palavra);
+		getAtividade().setTemplate(templateSelecionado);
+		getAtividade().setEstudanteTemplate(estudanteSelecionado.getNome() + " - " +templateSelecionado.getDescricao());
+		atividadeDao.adicionar(getAtividade());
 		salvarArquivos();
 		facesContext.addMessage(null, new FacesMessage(
 				FacesMessage.SEVERITY_INFO, "Sucesso na operação!",
@@ -215,6 +215,14 @@ public class CadastroAtividadeBean implements Serializable {
 
 	public void setListaArquivos(List<Arquivo> listaArquivos) {
 		this.listaArquivos = listaArquivos;
+	}
+
+	public Atividade getAtividade() {
+		return atividade;
+	}
+
+	public void setAtividade(Atividade atividade) {
+		this.atividade = atividade;
 	}
 
 }

@@ -39,6 +39,8 @@
 						<p:outputLabel value="Template" />
 						<p:outputLabel
 							value="#{edicaoAtividadeBean.atividade.template.toString()}" />
+						<p:outputLabel value="Link do reforço no youtube: " />
+						<p:inputText value="#{edicaoAtividadeBean.atividade.reforco}" id="inputReforco" />
 						<p:outputLabel value="Palavra"
 							rendered="#{edicaoAtividadeBean.atividade.palavra != null}" />
 						<p:inputText value="#{edicaoAtividadeBean.atividade.palavra}"

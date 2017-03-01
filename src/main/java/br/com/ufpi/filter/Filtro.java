@@ -64,8 +64,7 @@ public class Filtro implements Filter {
 	private boolean isUrlWebService(String paginaAcessada) {
 		for (String url : urlsWebServices) {
 			if (paginaAcessada.contains(url))
-				;
-			return true;
+				return true;
 		}
 		return false;
 	}
