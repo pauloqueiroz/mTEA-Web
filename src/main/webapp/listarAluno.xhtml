@@ -95,7 +95,7 @@
 
 				<p:dataTable var="estudante" paginator="true" rows="5"
 					style="text-align: center" paginatorPosition="bottom" lazy="true"
-					id="tabelaEstudantes"
+					id="tabelaEstudantes" emptyMessage="Não há alunos cadastrados."
 					value="#{listarAlunoBean.estudantes}"
 					rowKey="estudante" sortMode="multiple">
 
