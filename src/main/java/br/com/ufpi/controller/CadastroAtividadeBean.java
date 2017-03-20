@@ -56,6 +56,8 @@ public class CadastroAtividadeBean implements Serializable {
 	
 	private List<InputStream> conteudoArquivos;
 	
+	private List<String> nomesArquivos;
+	
 	private boolean templateUpload = false;
 	
 	private boolean templatePalavra = false;
@@ -64,6 +66,7 @@ public class CadastroAtividadeBean implements Serializable {
 	public void init(){
 		listaArquivos = new ArrayList<>();
 		conteudoArquivos = new ArrayList<>();
+		nomesArquivos = new ArrayList<>();
 	}
 
 	public List<Estudante> buscarEstudante(String nome) {
@@ -78,6 +81,7 @@ public class CadastroAtividadeBean implements Serializable {
 		if (event.getFile() != null) {
 			try {
 				conteudoArquivos.add(event.getFile().getInputstream());
+				nomesArquivos.add(event.getFile().getFileName());
 			} catch (IOException e) {
 				System.out.println("Erro ao salvar arquivo");
 				e.printStackTrace();
@@ -92,19 +96,20 @@ public class CadastroAtividadeBean implements Serializable {
 	public void salvarArquivos() {
 		
 		listaArquivos.clear();
-		
+		int indiceNomeArquivo = 0;
 		for (InputStream stream : conteudoArquivos) {
 		
 			Arquivo arquivo = new Arquivo();
 			arquivo.setDataUpload(new Date());
 			try {
 				byte[] bytes = IOUtils.toByteArray(stream);
-				arquivo.setBytesArquivo(bytes);;
+				arquivo.setBytesArquivo(bytes);
+				arquivo.setNomeArquivo(nomesArquivos.get(indiceNomeArquivo++));
 				this.listaArquivos.add(arquivo);
 				getAtividade().setImagens(this.listaArquivos);
 				arquivo.setAtividade(getAtividade());
-				int numeroArquivo = arquivoDao.contarArquivos();
-				arquivo.setNomeArquivo(String.valueOf(numeroArquivo)+".jpg");
+//				int numeroArquivo = arquivoDao.contarArquivos();
+//				arquivo.setNomeArquivo(String.valueOf(numeroArquivo)+".jpg");
 				arquivoDao.adicionar(arquivo);
 			} catch (IOException e) {
 				System.out.println("Erro ao salvar imagens.");
@@ -144,10 +149,12 @@ public class CadastroAtividadeBean implements Serializable {
 		facesContext.addMessage(null, new FacesMessage(
 				FacesMessage.SEVERITY_INFO, "Sucesso na operação!",
 				"Atividade cadastrada com sucesso."));
+		limpar();
 	}
 	
 	public void limpar(){
 		listaArquivos.clear();
+		nomesArquivos.clear();
 		templateSelecionado = null;
 		estudanteSelecionado = new Estudante();
 		palavra = "";

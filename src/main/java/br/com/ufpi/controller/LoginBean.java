@@ -50,8 +50,8 @@ public class LoginBean implements Serializable{
 				}
 			} else {
 				facesContext.addMessage(null, new FacesMessage(
-						FacesMessage.SEVERITY_ERROR, "Erro de Login",
-						"Usuario e/ou Senha incorretas"));
+						FacesMessage.SEVERITY_ERROR, "Usuario e/ou senha incorretos.",
+						null));
 			}
 		}
 	}
