@@ -1,3 +1,7 @@
 target/
 
 *.class
+
+src/main/java/br/com/ufpi/util/FileSystemResolver.java
+
+src/main/webapp/WEB-INF/web.xml
