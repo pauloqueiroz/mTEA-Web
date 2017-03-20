@@ -53,7 +53,7 @@ public class ArquivoUtil {
 		}
 		return -1D;
 	}
-
+	
 	public static double bytesTo(double quantidadeDeBytes, char unidadeDeMedida) {
 		double bytes = quantidadeDeBytes;
 		double kilobytes = (bytes / 1024);
@@ -86,6 +86,18 @@ public class ArquivoUtil {
 		default:
 			return 0.0;
 		}
+	}
+	
+	public static String getExtensaoArquivo(String nomeArquivo){
+		String[] nomeSplit = nomeArquivo.split(".");
+		return nomeSplit[nomeSplit.length - 1];
+	}
+
+	public static String getNomeArquivo(String nomeArquivo){
+		String[] nomeSplit = nomeArquivo.split("/");
+		String nomeArquivoSemCaminho = nomeSplit[nomeSplit.length - 1];
+		String nomeArquivoSemExtensao = nomeArquivoSemCaminho.split(".")[0]; 
+		return nomeArquivoSemExtensao;
 	}
 
 }
