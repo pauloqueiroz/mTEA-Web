@@ -57,11 +57,9 @@ public class EdicaoAtividadeBean implements Serializable {
 	}
 
 	public void buscarAtividade() {
+		System.out.println("atividade id" +idAtividade);
 		if (idAtividade != null)
 			atividade = atividadeDao.carregarAtividadeComArquivos(Long.parseLong(idAtividade));
-		if (atividade.getId() != null)
-			System.out.println("lol");
-
 	}
 
 	public StreamedContent downloadArquivo(Arquivo imagem) throws IOException {
@@ -102,11 +100,18 @@ public class EdicaoAtividadeBean implements Serializable {
 		}
 		int quantidadeArquivos = (atividade.getImagens().size() - arquivosSelecionados.size()
 				+ conteudoArquivos.size());
+		System.out.println("quant arquivos"+quantidadeArquivos);
+		System.out.println("quant permitida"+atividade.getTemplate().getQuantidadeArquivos());
 		if (quantidadeArquivos > atividade.getTemplate().getQuantidadeArquivos()){
 			facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
 					"O número máximo de arquivos permitidos para o template " + atividade.getTemplate().getDescricao()
 							+ " é de " + atividade.getTemplate().getQuantidadeArquivos() + ". Existem "
 							+ quantidadeArquivos + " arquivos associados a atividade.",
+					null));
+			return;
+		}else if(atividade.getTemplate().getQuantidadeArquivos() > 0 && quantidadeArquivos == 0){
+			facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					"A quantidade de imagens para o template desta tarefa não pode ser 0.",
 					null));
 			return;
 		}

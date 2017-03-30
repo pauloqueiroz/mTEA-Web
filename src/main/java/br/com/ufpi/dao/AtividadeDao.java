@@ -42,8 +42,8 @@ public class AtividadeDao implements Serializable{
 	}
 	
 	public List<Atividade> buscarAtividade(String estudanteAtividade){
-		TypedQuery<Atividade> query = em.createQuery("Select a from Atividade a where a.estudanteTemplate like:estudanteTemplate", Atividade.class);
-		query.setParameter("estudanteTemplate", "%"+estudanteAtividade+"%");
+		TypedQuery<Atividade> query = em.createQuery("Select a from Atividade a where upper(a.estudanteTemplate) like:estudanteTemplate", Atividade.class);
+		query.setParameter("estudanteTemplate", "%"+estudanteAtividade.toUpperCase()+"%");
 		List<Atividade> estudantes = query.getResultList();
 		return estudantes;
 	}

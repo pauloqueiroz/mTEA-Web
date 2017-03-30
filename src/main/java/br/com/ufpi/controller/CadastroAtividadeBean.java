@@ -147,8 +147,7 @@ public class CadastroAtividadeBean implements Serializable {
 		atividadeDao.adicionar(getAtividade());
 		salvarArquivos();
 		facesContext.addMessage(null, new FacesMessage(
-				FacesMessage.SEVERITY_INFO, "Sucesso na operação!",
-				"Atividade cadastrada com sucesso."));
+				FacesMessage.SEVERITY_INFO, "Atividade cadastrada com sucesso.", null));
 		limpar();
 	}
 	

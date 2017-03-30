@@ -70,7 +70,6 @@ public class RelatorioTarefasAluno implements Serializable {
 			graficoErros = new LineChartModel();
 			LineChartSeries serieAcertos = new LineChartSeries();
 			serieAcertos.setLabel("Acertos");
-
 			LineChartSeries serieErros = new LineChartSeries();
 			serieErros.setLabel("Erros");
 			for (TarefaGrafico tarefaGrafico : tarefaGraficos) {

@@ -50,7 +50,7 @@ public class EstudanteDao implements Serializable {
 	}
 	
 	public List<Estudante> listarTodos(){
-		return (List<Estudante>)em.createQuery("Select e from Estudante e", Estudante.class).getResultList();
+		return (List<Estudante>)em.createQuery("Select e from Estudante e JOIN FETCH e.atividades a WHERE a.estudante = e", Estudante.class).getResultList();
 	}
 
 	public List<Estudante> listarEstudantes(String nomeEstudante, int first, int pageSize,
@@ -107,8 +107,8 @@ public class EstudanteDao implements Serializable {
 	}
 
 	public List<Estudante> buscarEstudante(String nome) {
-		TypedQuery<Estudante> query = em.createQuery("Select e from Estudante e where e.nome like:nome", Estudante.class);
-		query.setParameter("nome", "%"+nome+"%");
+		TypedQuery<Estudante> query = em.createQuery("Select e from Estudante e where upper(e.nome) like:nome", Estudante.class);
+		query.setParameter("nome", "%"+nome.toUpperCase()+"%");
 		List<Estudante> estudantes = query.getResultList();
 		return estudantes;
 	}

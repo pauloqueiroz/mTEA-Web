@@ -33,6 +33,7 @@ public class EstudanteUtils {
 	}
 	
 	public static Student converterEstudante(Estudante estudante){
+		System.out.println(estudante.getAtividades().size());
 		return new Student(estudante.getId(), estudante.getNome(),
 				getDataFormatada(estudante.getDataNascimento()), "null", "null", estudante.getAtividades()); 
 	}
