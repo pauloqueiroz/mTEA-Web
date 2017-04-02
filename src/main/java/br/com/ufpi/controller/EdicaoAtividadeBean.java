@@ -117,7 +117,6 @@ public class EdicaoAtividadeBean implements Serializable {
 		}
 		
 		atividadeDao.atualizar(atividade);
-		System.out.println("Atualizou");
 		for (Arquivo arquivo : arquivosSelecionados){
 			System.out.println("id do arquivo: " +arquivo.getId());
 			arquivoDao.delete(arquivo);

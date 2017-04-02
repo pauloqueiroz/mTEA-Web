@@ -10,6 +10,7 @@ import org.apache.commons.collections.CollectionUtils;
 
 import br.com.ufpi.api.Lesson;
 import br.com.ufpi.api.Student;
+import br.com.ufpi.dao.ArquivoDao;
 import br.com.ufpi.model.Atividade;
 import br.com.ufpi.model.Estudante;
 
@@ -22,20 +23,20 @@ import br.com.ufpi.model.Estudante;
  */
 public class EstudanteUtils {
 
-	public static List<Student> converterEstudante(List<Estudante> estudantes) {
+	public static List<Student> converterEstudante(List<Estudante> estudantes, ArquivoDao arquivoDao) {
 		if (!CollectionUtils.isEmpty(estudantes)) {
 			List<Student> students = new ArrayList<>();
 			for (Estudante estudante : estudantes)
-				students.add(converterEstudante(estudante));
+				students.add(converterEstudante(estudante, arquivoDao));
 			return students;
 		}
 		return null;
 	}
 	
-	public static Student converterEstudante(Estudante estudante){
+	public static Student converterEstudante(Estudante estudante, ArquivoDao arquivoDao){
 		System.out.println(estudante.getAtividades().size());
 		return new Student(estudante.getId(), estudante.getNome(),
-				getDataFormatada(estudante.getDataNascimento()), "null", "null", estudante.getAtividades()); 
+				getDataFormatada(estudante.getDataNascimento()), arquivoDao.buscarIdReforco(estudante) , "null", estudante.getAtividades()); 
 	}
 
 	public static String getDataFormatada(Date data) {

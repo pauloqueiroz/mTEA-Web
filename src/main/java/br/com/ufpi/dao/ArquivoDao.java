@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -13,6 +14,7 @@ import javax.persistence.criteria.Root;
 
 import br.com.ufpi.model.Arquivo;
 import br.com.ufpi.model.Atividade;
+import br.com.ufpi.model.Estudante;
 
 @Stateless
 public class ArquivoDao implements Serializable {
@@ -51,6 +53,18 @@ public class ArquivoDao implements Serializable {
 		query.setParameter("atividade", atividade);
 		List<Arquivo> arquivos = query.getResultList();
 		return arquivos;
+	}
+	
+	public String buscarIdReforco(Estudante e){
+		TypedQuery<Long> query = em.createQuery("Select arq.id FROM Arquivo arq WHERE arq.estudante = :estudante", Long.class);
+		query.setParameter("estudante", e);
+		Long idArquivo = null;
+		try {
+			idArquivo = query.getSingleResult();
+		} catch (NoResultException nre) {
+			return "null";
+		}
+		return String.valueOf(idArquivo);		
 	}
 
 	public void delete(Arquivo imagem) {

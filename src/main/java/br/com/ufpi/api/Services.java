@@ -41,7 +41,7 @@ public class Services {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getEstudantes(){
 		List<Estudante> estudantes = estudanteDao.listarTodos();
-		List<Student> students = EstudanteUtils.converterEstudante(estudantes);
+		List<Student> students = EstudanteUtils.converterEstudante(estudantes, arquivoDao);
 		return Response.status(200).entity(students).build();
 	}
 	
@@ -64,7 +64,7 @@ public class Services {
 				}
 			}
 			estudante.setAtividades(atividadesDoEstudante);
-			Student studentJson  = EstudanteUtils.converterEstudante(estudante);
+			Student studentJson  = EstudanteUtils.converterEstudante(estudante, arquivoDao);
 			return Response.status(404).entity(studentJson).build();
 		}
 		return Response.status(404).entity("Estudante não encontrado").build();

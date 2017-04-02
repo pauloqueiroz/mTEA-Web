@@ -17,6 +17,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
 
+import br.com.ufpi.model.Atividade;
 import br.com.ufpi.model.Estudante;
 
 /**
@@ -50,7 +51,16 @@ public class EstudanteDao implements Serializable {
 	}
 	
 	public List<Estudante> listarTodos(){
-		return (List<Estudante>)em.createQuery("Select e from Estudante e JOIN FETCH e.atividades a WHERE a.estudante = e", Estudante.class).getResultList();
+		List<Estudante> estudantes = new ArrayList<>();
+		estudantes = em.createQuery("Select e from Estudante e", Estudante.class).getResultList();
+		if(!CollectionUtils.isEmpty(estudantes)){
+			for (Estudante estudante : estudantes) {
+				TypedQuery<Atividade> query = em.createQuery("SELECT a FROM Atividade a WHERE a.estudante = :e", Atividade.class);
+				query.setParameter("e", estudante);
+				estudante.setAtividades(query.getResultList());
+			}
+		}
+		return estudantes;	 
 	}
 
 	public List<Estudante> listarEstudantes(String nomeEstudante, int first, int pageSize,
