@@ -53,7 +53,6 @@ public class Services {
 		/*
 		 * busca pelo id do estudante
 		 */
-		System.out.println("id:" + id);
 		Estudante estudante = estudanteDao.buscarPorId(id);
 		if(estudante != null){
 			List<Atividade> atividadesDoEstudante = atividadeDao.carregarAtividadesDoEstudante(estudante);
