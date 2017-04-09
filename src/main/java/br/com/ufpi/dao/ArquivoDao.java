@@ -66,6 +66,19 @@ public class ArquivoDao implements Serializable {
 		}
 		return String.valueOf(idArquivo);		
 	}
+	
+	public Arquivo buscarPorId(Long id){
+		TypedQuery<Arquivo> query = em.createQuery("Select arq FROM Arquivo arq WHERE arq.id = :id", Arquivo.class);
+		query.setParameter("id", id);
+		Arquivo arquivo = null;
+		try {
+			arquivo = query.getSingleResult();
+		} catch (NoResultException nre) {
+			System.out.println("Arquivo nao encontrado: "+id);
+			return null;
+		}
+		return arquivo;	
+	}
 
 	public void delete(Arquivo imagem) {
 		imagem = em.merge(imagem);

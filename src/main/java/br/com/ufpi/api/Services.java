@@ -1,5 +1,8 @@
 package br.com.ufpi.api;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
@@ -12,6 +15,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.apache.commons.collections.CollectionUtils;
 
@@ -21,6 +25,7 @@ import br.com.ufpi.dao.EstudanteDao;
 import br.com.ufpi.model.Arquivo;
 import br.com.ufpi.model.Atividade;
 import br.com.ufpi.model.Estudante;
+import br.com.ufpi.util.ArquivoUtil;
 import br.com.ufpi.util.EstudanteUtils;
 
 @Path("")
@@ -67,6 +72,63 @@ public class Services {
 			return Response.status(200).entity(studentJson).build();
 		}
 		return Response.status(404).entity("Estudante não encontrado").build();
+	}
+	
+	@GET
+	@Path("/reinforcements/{id}")
+	@Produces(MediaType.APPLICATION_OCTET_STREAM)
+	public Response getReforco(@Context HttpServletRequest request, @PathParam("id") Long id) {
+				
+		if (id != null && !id.equals(0l)) {
+			Arquivo arquivo = arquivoDao.buscarPorId(id);
+			try {
+				FileOutputStream file = new FileOutputStream(
+						ArquivoUtil.getDiretorio() + arquivo.getNomeArquivo());
+				file.write(arquivo.getBytesArquivo());
+				file.close();
+			} catch (IOException  e) {
+				System.out.println("Erro ao criar arquivo");
+				e.printStackTrace();
+			}
+		
+			
+		    File file = new File(ArquivoUtil.getDiretorio() + arquivo.getNomeArquivo());
+		    ResponseBuilder response = Response.ok((Object) file);
+			response.header("Content-Disposition",
+				"attachment; filename="+arquivo.getNomeArquivo());
+			return response.build();
+		}
+		return Response.status(404).entity("Reforço não encontrado").build();
+	}
+	
+	
+	@GET
+	@Path("/lessons/{id}")
+	@Produces("image/png")
+	public Response getImagem(@Context HttpServletRequest request, @PathParam("id") Long id) {
+		
+		System.out.println("RSRSRSRRSRSRSRRSRSRSRRSRSRSRSRRSRSRSRRSRSRSR");
+		
+		if (id != null && !id.equals(0l)) {
+			Arquivo arquivo = arquivoDao.buscarPorId(id);
+			try {
+				FileOutputStream file = new FileOutputStream(
+						ArquivoUtil.getDiretorio() + arquivo.getNomeArquivo());
+				file.write(arquivo.getBytesArquivo());
+				file.close();
+			} catch (IOException  e) {
+				System.out.println("Erro ao criar arquivo");
+				e.printStackTrace();
+			}
+		
+			File file = new File(ArquivoUtil.getDiretorio() + arquivo.getNomeArquivo());
+
+			ResponseBuilder response = Response.ok((Object) file);
+			response.header("Content-Disposition",
+				"attachment; filename="+arquivo.getNomeArquivo());
+			return response.build();
+		}
+		return Response.status(404).entity("Imagem não encontrada").build();
 	}
 
 }

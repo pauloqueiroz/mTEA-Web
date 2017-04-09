@@ -50,6 +50,10 @@ public class Atividade implements Serializable{
 	
 	private String reforco;
 	
+//	@OneToOne
+//	@JoinColumn(name="idArquivoReforco")
+//	private Arquivo arquivoReforco;
+	
 	public Atividade() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -122,5 +126,13 @@ public class Atividade implements Serializable{
 	public void setReforco(String reforco) {
 		this.reforco = reforco;
 	}
+
+//	public Arquivo getArquivoReforco() {
+//		return arquivoReforco;
+//	}
+//
+//	public void setArquivoReforco(Arquivo arquivoReforco) {
+//		this.arquivoReforco = arquivoReforco;
+//	}
 	
 }
