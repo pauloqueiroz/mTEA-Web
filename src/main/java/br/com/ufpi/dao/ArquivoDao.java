@@ -62,7 +62,7 @@ public class ArquivoDao implements Serializable {
 		try {
 			idArquivo = query.getSingleResult();
 		} catch (NoResultException nre) {
-			return "null";
+			return null;
 		}
 		return String.valueOf(idArquivo);		
 	}

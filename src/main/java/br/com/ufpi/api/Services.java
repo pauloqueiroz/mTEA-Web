@@ -64,7 +64,7 @@ public class Services {
 			}
 			estudante.setAtividades(atividadesDoEstudante);
 			Student studentJson  = EstudanteUtils.converterEstudante(estudante, arquivoDao);
-			return Response.status(404).entity(studentJson).build();
+			return Response.status(200).entity(studentJson).build();
 		}
 		return Response.status(404).entity("Estudante não encontrado").build();
 	}
