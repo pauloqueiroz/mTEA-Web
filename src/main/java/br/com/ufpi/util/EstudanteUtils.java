@@ -36,7 +36,7 @@ public class EstudanteUtils {
 	public static Student converterEstudante(Estudante estudante, ArquivoDao arquivoDao){
 		System.out.println(estudante.getAtividades().size());
 		return new Student(estudante.getId(), estudante.getNome(),
-				getDataFormatada(estudante.getDataNascimento()), arquivoDao.buscarIdReforco(estudante) , "null", estudante.getAtividades()); 
+				getDataFormatada(estudante.getDataNascimento()), arquivoDao.buscarIdReforco(estudante) , "null", estudante.getAtividades(), arquivoDao); 
 	}
 
 	public static String getDataFormatada(Date data) {
@@ -61,10 +61,17 @@ public class EstudanteUtils {
 		return calendar.getTime();
 	}
 	
-	public static List<Lesson> converterAtividades(List<Atividade> atividades) {
+	public static List<Lesson> converterAtividades(List<Atividade> atividades, ArquivoDao arquivoDao) {
 		List<Lesson> tarefas = new ArrayList<>();
 		for (Atividade atividade : atividades) {
-			Lesson lesson = new Lesson(atividade.getId(), atividade.getPalavra(), atividade.getTemplate().ordinal(), "null", String.valueOf(atividade.getEstudante().getId()), "null", null);
+			Lesson lesson = new Lesson(atividade.getId()
+					, atividade.getPalavra()
+					, atividade.getTemplate().ordinal()
+					, null
+					, String.valueOf(atividade.getEstudante().getId())
+					, null
+					, arquivoDao.buscarIdImagem(atividade)
+					, null);
 			tarefas.add(lesson);
 		}
 		return CollectionUtils.isEmpty(tarefas)?null:tarefas;

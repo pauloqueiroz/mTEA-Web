@@ -12,6 +12,8 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+import org.apache.commons.collections.CollectionUtils;
+
 import br.com.ufpi.model.Arquivo;
 import br.com.ufpi.model.Atividade;
 import br.com.ufpi.model.Estudante;
@@ -65,6 +67,16 @@ public class ArquivoDao implements Serializable {
 			return null;
 		}
 		return String.valueOf(idArquivo);		
+	}
+	
+	public String buscarIdImagem(Atividade a){
+		TypedQuery<Long> query = em.createQuery("Select arq.id FROM Arquivo arq WHERE arq.atividade = :atividade", Long.class);
+		query.setParameter("atividade", a);
+		List<Long> idsArquivos = null;
+		idsArquivos = query.getResultList();
+		if(!CollectionUtils.isEmpty(idsArquivos))
+			return String.valueOf(idsArquivos.get(0));
+		return null;
 	}
 	
 	public Arquivo buscarPorId(Long id){

@@ -19,10 +19,12 @@ public class Lesson {
 	
 	private String user_id;
 	
+	private String image;
+	
 	private List<Answer> ansewers;
-
+	
 	public Lesson(long id, String word, int template, String reinforcement, String student_id, String user_id,
-			List<Answer> ansewers) {
+			String image, List<Answer> ansewers) {
 		super();
 		this.id = id;
 		this.word = word;
@@ -30,8 +32,11 @@ public class Lesson {
 		this.reinforcement = reinforcement;
 		this.student_id = student_id;
 		this.user_id = user_id;
+		this.image = image;
 		this.ansewers = ansewers;
 	}
+
+
 
 	public long getId() {
 		return id;
@@ -87,6 +92,14 @@ public class Lesson {
 
 	public void setAnsewers(List<Answer> ansewers) {
 		this.ansewers = ansewers;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 	
 }

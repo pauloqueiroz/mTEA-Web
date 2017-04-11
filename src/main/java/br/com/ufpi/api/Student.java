@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.apache.commons.collections.CollectionUtils;
 
+import br.com.ufpi.dao.ArquivoDao;
 import br.com.ufpi.model.Atividade;
 import br.com.ufpi.util.EstudanteUtils;
 
@@ -32,7 +33,7 @@ public class Student{
 	
 	private List<Lesson> lessons;
 
-	public Student(long id, String name, String birth, String default_reinforcement, String user_id, List<Atividade> atividades) {
+	public Student(long id, String name, String birth, String default_reinforcement, String user_id, List<Atividade> atividades, ArquivoDao arquivoDao) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -43,7 +44,7 @@ public class Student{
 		if (CollectionUtils.isEmpty(atividades))
 			lessons = new ArrayList<>();
 		else
-			lessons = EstudanteUtils.converterAtividades(atividades); 
+			lessons = EstudanteUtils.converterAtividades(atividades, arquivoDao); 
 		setLessons(lessons);
 	}
 
