@@ -34,6 +34,8 @@ public class Tarefa implements Serializable{
 	
 	private Boolean encerrada;
 	
+	private Integer pontuacao;
+	
 	@ManyToOne
 	@JoinColumn(name="idAtividade")
 	private Atividade atividade;
@@ -145,6 +147,14 @@ public class Tarefa implements Serializable{
 
 	public void setTarefaEncerrada(String tarefaEncerrada) {
 		this.tarefaEncerrada = tarefaEncerrada;
+	}
+
+	public Integer getPontuacao() {
+		return pontuacao;
+	}
+
+	public void setPontuacao(Integer pontuacao) {
+		this.pontuacao = pontuacao;
 	}
 
 }
