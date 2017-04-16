@@ -23,8 +23,7 @@ public class Lesson {
 	
 	private List<Answer> ansewers;
 	
-	public Lesson(long id, String word, int template, String reinforcement, String student_id, String user_id,
-			String image, List<Answer> ansewers) {
+	public Lesson(long id, String word, int template, String reinforcement, String student_id, String user_id) {
 		super();
 		this.id = id;
 		this.word = word;
@@ -32,8 +31,6 @@ public class Lesson {
 		this.reinforcement = reinforcement;
 		this.student_id = student_id;
 		this.user_id = user_id;
-		this.image = image;
-		this.ansewers = ansewers;
 	}
 
 

@@ -5,12 +5,6 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.apache.commons.collections.CollectionUtils;
-
-import br.com.ufpi.dao.ArquivoDao;
-import br.com.ufpi.model.Atividade;
-import br.com.ufpi.util.EstudanteUtils;
-
 /**
  * Classe utilizada para conformizar o nome dos parametros dos objetos 
  * retornados no json com os atributos que eram retornados na versao 
@@ -33,19 +27,14 @@ public class Student{
 	
 	private List<Lesson> lessons;
 
-	public Student(long id, String name, String birth, String default_reinforcement, String user_id, List<Atividade> atividades, ArquivoDao arquivoDao) {
+	public Student(long id, String name, String birth, String default_reinforcement, String user_id) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.setBirth(birth);
 		this.setDefault_reinforcement(default_reinforcement);
 		this.setUser_id(user_id);
-		List<Lesson> lessons;
-		if (CollectionUtils.isEmpty(atividades))
-			lessons = new ArrayList<>();
-		else
-			lessons = EstudanteUtils.converterAtividades(atividades, arquivoDao); 
-		setLessons(lessons);
+		lessons = new ArrayList<>();
 	}
 
 	public long getId() {

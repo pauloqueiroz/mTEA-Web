@@ -106,9 +106,7 @@ public class Services {
 	@Path("/lessons/{id}")
 	@Produces("image/png")
 	public Response getImagem(@Context HttpServletRequest request, @PathParam("id") Long id) {
-		
-		System.out.println("RSRSRSRRSRSRSRRSRSRSRRSRSRSRSRRSRSRSRRSRSRSR");
-		
+				
 		if (id != null && !id.equals(0l)) {
 			Arquivo arquivo = arquivoDao.buscarPorId(id);
 			try {
@@ -130,5 +128,31 @@ public class Services {
 		}
 		return Response.status(404).entity("Imagem não encontrada").build();
 	}
+	
+	@GET
+	@Path("/ansewers/{id}")
+	@Produces("image/png")
+	public Response getAnswer(@Context HttpServletRequest request, @PathParam("id") Long id) {
+				
+		if (id != null && !id.equals(0l)) {
+			Arquivo arquivo = arquivoDao.buscarPorId(id);
+			try {
+				FileOutputStream file = new FileOutputStream(ArquivoUtil.getDiretorio() + arquivo.getNomeArquivo());
+				file.write(arquivo.getBytesArquivo());
+				file.close();
+			} catch (IOException  e) {
+				System.out.println("Erro ao criar arquivo");
+				e.printStackTrace();
+			}
+		
+			File file = new File(ArquivoUtil.getDiretorio() + arquivo.getNomeArquivo());
+
+			ResponseBuilder response = Response.ok((Object) file);
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																				response.header("Content-Disposition",
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																					"attachment; filename="+arquivo.getNomeArquivo());
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																				return response.build();
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																			}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																			return Response.status(404).entity("Imagem não encontrada").build();
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																		}
 
 }
