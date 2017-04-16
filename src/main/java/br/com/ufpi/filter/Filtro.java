@@ -24,7 +24,8 @@ import br.com.ufpi.model.Usuario;
 @WebFilter(urlPatterns = { "/*" })
 public class Filtro implements Filter {
 
-	private static final List<String> urlsWebServices = Arrays.asList("/student", "/activity", "/reinforcements", "/lessons");
+	private static final List<String> urlsWebServices = Arrays.asList("/student", "/activity", "/reinforcements",
+			"/lessons", "/ansewers", "/options");
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
