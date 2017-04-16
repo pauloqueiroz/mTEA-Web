@@ -46,7 +46,7 @@ public class Services {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getEstudantes(){
 		List<Estudante> estudantes = estudanteDao.listarTodos();
-		List<Student> students = EstudanteUtils.converterEstudante(estudantes, arquivoDao);
+		List<Student> students = EstudanteUtils.converterEstudante(estudantes);
 		return Response.status(200).entity(students).build();
 	}
 	

@@ -25,11 +25,11 @@ import br.com.ufpi.model.Estudante;
  */
 public class EstudanteUtils {
 
-	public static List<Student> converterEstudante(List<Estudante> estudantes, ArquivoDao arquivoDao) {
+	public static List<Student> converterEstudante(List<Estudante> estudantes) {
 		if (!CollectionUtils.isEmpty(estudantes)) {
 			List<Student> students = new ArrayList<>();
 			for (Estudante estudante : estudantes)
-				students.add(converterEstudante(estudante, arquivoDao));
+				students.add(converterEstudanteLazy(estudante));
 			return students;
 		}
 		return null;
@@ -42,6 +42,13 @@ public class EstudanteUtils {
 				getDataFormatada(estudante.getDataNascimento()), arquivoDao.buscarIdReforco(estudante) , "null");
 		List<Lesson> lessons = EstudanteUtils.converterAtividades(estudante.getAtividades(), arquivoDao);
 		student.setLessons(lessons);
+		return student; 
+	}
+	
+	public static Student converterEstudanteLazy(Estudante estudante){
+		System.out.println(estudante.getAtividades().size());
+		Student student = new Student(estudante.getId(), estudante.getNome(),
+				getDataFormatada(estudante.getDataNascimento()), null , null);
 		return student; 
 	}
 
