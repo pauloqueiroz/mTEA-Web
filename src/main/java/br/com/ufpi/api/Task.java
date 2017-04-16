@@ -4,16 +4,38 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+/**
+ * Classe que representa uma execucao de tarefa pelo aluno.
+ * 
+ * @author Paulo Sergio
+ *
+ */
+@XmlRootElement
 public class Task {
 
     private Long id;
+    
     private Date start;
+    
     private Date end;
+    
     private Integer touches;
+    
     private Integer hits;
+    
     private Integer faults;
+    
     private Boolean finished;
+    
     private Long lesson_id;
+
+    // pontuacao dada pelo aplicativo ao desempenho do aluno
+    private Integer rating;
+
+    // id do aluno relacionado ao teste
+    private Long student_id;
 
     public Task(){
         this.start = new Date();
@@ -104,8 +126,19 @@ public class Task {
         this.faults++;
     }
 
-    @Override
-    public String toString() {
-        return this.getDate();
-    }
+	public Integer getRating() {
+		return rating;
+	}
+
+	public void setRating(Integer rating) {
+		this.rating = rating;
+	}
+
+	public Long getStudent_id() {
+		return student_id;
+	}
+
+	public void setStudent_id(Long student_id) {
+		this.student_id = student_id;
+	}
 }
