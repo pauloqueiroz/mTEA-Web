@@ -12,7 +12,6 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Paulo Sergio
  *
  */
-@XmlRootElement
 public class Task {
 
     private Long id;

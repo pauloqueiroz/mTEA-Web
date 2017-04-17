@@ -25,7 +25,7 @@ import br.com.ufpi.model.Usuario;
 public class Filtro implements Filter {
 
 	private static final List<String> urlsWebServices = Arrays.asList("/student", "/activity", "/reinforcements",
-			"/lessons", "/ansewers", "/options");
+			"/lessons", "/ansewers", "/options", "/task");
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {

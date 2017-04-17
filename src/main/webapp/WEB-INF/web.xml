@@ -19,6 +19,10 @@
       		</param-value>
 		</init-param>
 		<init-param>
+			<param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
+			<param-value>true</param-value>
+		</init-param>
+		<init-param>
 			<param-name>jersey.config.server.provider.scanning.recursive</param-name>
 			<param-value>false</param-value>
 		</init-param>
@@ -50,16 +54,16 @@
 		<param-value>0</param-value>
 	</context-param>
 
-<!-- 	<context-param> -->
-<!-- 		<param-name>javax.faces.FACELETS_RESOURCE_RESOLVER</param-name> -->
-<!-- 		<param-value>br.com.ufpi.util.FileSystemResolver</param-value> -->
-<!-- 	</context-param> -->
+	<!-- <context-param> -->
+	<!-- <param-name>javax.faces.FACELETS_RESOURCE_RESOLVER</param-name> -->
+	<!-- <param-value>br.com.ufpi.util.FileSystemResolver</param-value> -->
+	<!-- </context-param> -->
 
 	<context-param>
 		<param-name>primefaces.THEME</param-name>
 		<param-value>bootstrap</param-value>
 	</context-param>
-	
+
 	<context-param>
 		<param-name>primefaces.FONT_AWESOME</param-name>
 		<param-value>true</param-value>
@@ -68,8 +72,8 @@
 	<session-config>
 		<session-timeout>120</session-timeout>
 	</session-config>
-	
-		<!-- CORS FILTER FOR ALLOWING CROSS DOMAIN ACCESS -->
+
+	<!-- CORS FILTER FOR ALLOWING CROSS DOMAIN ACCESS -->
 	<filter>
 		<filter-name>CORS</filter-name>
 		<filter-class>com.thetransactioncompany.cors.CORSFilter</filter-class>
@@ -111,5 +115,5 @@
 		<filter-name>CORS</filter-name>
 		<url-pattern>/api/*</url-pattern>
 	</filter-mapping>
-	
+
 </web-app>

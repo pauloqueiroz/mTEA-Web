@@ -64,6 +64,20 @@ public class Tarefa implements Serializable{
 		this.atividade = atividade;
 	}
 
+	public Tarefa(Date inicio, Date fim, Integer toques, Integer acertos, Integer erros, Boolean encerrada,
+			Integer pontuacao, Atividade atividade, Estudante estudante) {
+		super();
+		this.inicio = inicio;
+		this.fim = fim;
+		this.toques = toques;
+		this.acertos = acertos;
+		this.erros = erros;
+		this.encerrada = encerrada;
+		this.pontuacao = pontuacao;
+		this.atividade = atividade;
+		this.estudante = estudante;
+	}
+
 	public Long getId() {
 		return id;
 	}

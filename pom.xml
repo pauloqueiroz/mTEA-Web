@@ -141,7 +141,11 @@
 			<artifactId>jersey-server</artifactId>
 			<version>1.19</version>
 		</dependency>
-
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-json</artifactId>
+			<version>1.19</version>
+		</dependency>
 		<!-- dependencias para o web service -->
 		<dependency>
 			<groupId>javax.ws.rs</groupId>
