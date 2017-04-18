@@ -3,6 +3,7 @@ package br.com.ufpi.api;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
@@ -30,6 +31,7 @@ import br.com.ufpi.model.Atividade;
 import br.com.ufpi.model.Estudante;
 import br.com.ufpi.model.Tarefa;
 import br.com.ufpi.util.ArquivoUtil;
+import br.com.ufpi.util.EstudanteConverter;
 import br.com.ufpi.util.EstudanteUtils;
 
 @Path("")
@@ -159,17 +161,21 @@ public class Services {
 	@POST
 	@Path("/task")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createTaskInJSON(Task task) {
+	public Response createTaskInJSON(Task task) throws ParseException {
 		if(task != null && task.getStudent_id() != null){
+			System.out.println("Start: "+task.getStart());
+			System.out.println("End: "+task.getEnd());
 			Estudante estudante = estudanteDao.buscarPorId(task.getStudent_id());
 			if(estudante != null){
 				Atividade atividade = null;
 				if(task.getLesson_id() != null)
 					atividade = atividadeDao.buscarPorId(task.getLesson_id());
-				Tarefa tarefa = new Tarefa(task.getStart(), task.getEnd(), task.getTouches(), task.getHits(),
+				task.setInicio(EstudanteConverter.parse(task.getStart()));
+				task.setFim(EstudanteConverter.parse(task.getEnd()));
+				Tarefa tarefa = new Tarefa(task.getInicio(), task.getFim(), task.getTouches(), task.getHits(),
 						task.getFaults(), task.getFinished(), task.getRating(), atividade, estudante);
 				tarefaDao.adicionar(tarefa);
-				String result = "Task saved : " + task.getId();
+				String result = "Task saved : " + tarefa.getId();
 				return Response.status(201).entity(result).build();
 			}
 		}

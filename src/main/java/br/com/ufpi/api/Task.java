@@ -4,8 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
 /**
  * Classe que representa uma execucao de tarefa pelo aluno.
  * 
@@ -16,9 +14,13 @@ public class Task {
 
     private Long id;
     
-    private Date start;
+    private String start;
     
-    private Date end;
+    private String end;
+    
+    private Date inicio;
+    
+    private Date fim;
     
     private Integer touches;
     
@@ -37,7 +39,6 @@ public class Task {
     private Long student_id;
 
     public Task(){
-        this.start = new Date();
         this.touches = 0;
         this.hits = 0;
         this.faults = 0;
@@ -52,21 +53,21 @@ public class Task {
         this.id = id;
     }
 
-    public Date getStart() {
-        return start;
-    }
+//    public Date getStart() {
+//        return start;
+//    }
 
-    public void setStart(Date start) {
-        this.start = start;
-    }
+//    public void setStart(Date start) {
+//        this.start = start;
+//    }
 
-    public Date getEnd() {
-        return end;
-    }
+//    public Date getEnd() {
+//        return end;
+//    }
 
-    public void setEnd(Date end) {
-        this.end = end;
-    }
+//    public void setEnd(Date end) {
+//        this.end = end;
+//    }
 
     public Integer getTouches() {
         return touches;
@@ -100,9 +101,9 @@ public class Task {
         this.finished = finished;
     }
 
-    public Long getDuration(){
-        return (end.getTime() - start.getTime()) / 1000l;
-    }
+//    public Long getDuration(){
+//        return (end.getTime() - start.getTime()) / 1000l;
+//    }
 
     public Long getLesson_id() {
         return lesson_id;
@@ -114,7 +115,7 @@ public class Task {
 
     public String getDate(){
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.US);
-        return format.format(start);
+        return format.format(getStart());
     }
 
     public void addHit(){
@@ -139,5 +140,37 @@ public class Task {
 
 	public void setStudent_id(Long student_id) {
 		this.student_id = student_id;
+	}
+
+	public Date getInicio() {
+		return inicio;
+	}
+
+	public void setInicio(Date inicio) {
+		this.inicio = inicio;
+	}
+
+	public Date getFim() {
+		return fim;
+	}
+
+	public void setFim(Date fim) {
+		this.fim = fim;
+	}
+
+	public String getEnd() {
+		return end;
+	}
+
+	public void setEnd(String end) {
+		this.end = end;
+	}
+
+	public String getStart() {
+		return start;
+	}
+
+	public void setStart(String start) {
+		this.start = start;
 	}
 }

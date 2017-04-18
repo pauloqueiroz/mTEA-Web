@@ -1,5 +1,10 @@
 package br.com.ufpi.util;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -9,6 +14,7 @@ import br.com.ufpi.model.Estudante;
 
 @FacesConverter(value = "estudanteConverter", forClass = Estudante.class)
 public class EstudanteConverter implements Converter {
+	private static SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.US);
 
 	@Override
 	public Object getAsObject(FacesContext facesContext,
@@ -33,5 +39,14 @@ public class EstudanteConverter implements Converter {
 		}
 		return "";
 	}
+	
+  public static Date parse(String dateString) throws ParseException {
+	Date result = format.parse(dateString);
+	return result;
+  }
+  
+  public static String format(Date data){
+      return format.format(data);
+  }
 
 }
