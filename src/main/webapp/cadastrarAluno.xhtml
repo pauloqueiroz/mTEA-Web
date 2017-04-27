@@ -40,7 +40,7 @@ PrimeFaces.locales['pt'] = { closeText: 'Fechar', prevText: 'Anterior', nextText
 								value="#{cadastrarAlunoBean.estudante.nome}" required="true" requiredMessage="É necessário informar o nome do Aluno."/>
 								
 							<p:outputLabel for="dataNascimento" value="Data de Nascimento" />
-							<p:calendar id="dataNascimento" value="#{cadastrarAlunoBean.estudante.dataNascimento}" required="true" requiredMessage="É necessário informar a data de nascimento do Aluno." locale="pt"/>
+							<p:calendar id="dataNascimento" pattern="dd-MM-yyyy" mask="true" value="#{cadastrarAlunoBean.estudante.dataNascimento}" required="true" requiredMessage="É necessário informar a data de nascimento do Aluno." locale="pt"/>
 						</p:panelGrid>
 						<br />
 						<br />
