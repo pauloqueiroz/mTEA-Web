@@ -91,8 +91,10 @@ public class EstudanteDao implements Serializable {
 		}
 		List<Predicate> predicates = new ArrayList<Predicate>();
 		if (nomeEstudante != null && !nomeEstudante.equals("")) {
-			Predicate nomePredicate = criteriaBuilder.like(estudanteRoot.<String> get("nome"),
-					"%" + nomeEstudante + "%");
+			Predicate nomePredicate = criteriaBuilder.like(
+					criteriaBuilder.lower(
+							estudanteRoot.<String> get("nome")),
+					"%" + nomeEstudante.toLowerCase() + "%");
 			predicates.add(nomePredicate);
 		}
 		if (!CollectionUtils.isEmpty(predicates))
