@@ -47,7 +47,14 @@ public class EstudanteDao implements Serializable {
 	public Estudante buscarPorId(Long id){
 		TypedQuery<Estudante> query = em.createQuery("Select e from Estudante e where e.id = :idEstudante", Estudante.class);
 		query.setParameter("idEstudante", id);
-		return query.getSingleResult();
+		Estudante estudante = null;
+		try{
+			estudante = query.getSingleResult();
+		}catch(Exception e){
+			System.out.println("Estudante não encontrado.");
+			e.printStackTrace();
+		}
+		return estudante; 
 	}
 	
 	public List<Estudante> listarTodos(){
