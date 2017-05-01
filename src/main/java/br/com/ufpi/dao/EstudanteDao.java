@@ -131,5 +131,12 @@ public class EstudanteDao implements Serializable {
 		List<Estudante> estudantes = query.getResultList();
 		return estudantes;
 	}
+	
+	public int contarEstudantes(String nome) {
+		TypedQuery<Long> query = em.createQuery("Select count(e.id) from Estudante e where upper(e.nome) like:nome", Long.class);
+		query.setParameter("nome", "%"+nome.toUpperCase()+"%");
+		Long count = query.getSingleResult();
+		return count.intValue();
+	}
 
 }

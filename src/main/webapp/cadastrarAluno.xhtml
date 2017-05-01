@@ -38,15 +38,15 @@ PrimeFaces.locales['pt'] = { closeText: 'Fechar', prevText: 'Anterior', nextText
 							<p:outputLabel for="nome" value="Nome do aluno" />
 							<p:inputText id="nome"
 								value="#{cadastrarAlunoBean.estudante.nome}" validatorMessage="O nome do aluno deve conter somente letras." required="true" requiredMessage="É necessário informar o nome do Aluno." >
-								<f:validateRegex pattern="[a-zA-Z]+"/>
+								<f:validateRegex pattern="[a-zA-Z ]+"/>
 							</p:inputText>
 								
 							<p:outputLabel for="dataNascimento" value="Data de Nascimento" />
-							<p:calendar id="dataNascimento" pattern="dd-MM-yyyy" mask="true" value="#{cadastrarAlunoBean.estudante.dataNascimento}" required="true" requiredMessage="É necessário informar a data de nascimento do Aluno." locale="pt"/>
+							<p:calendar id="dataNascimento" pattern="dd-MM-yyyy" mask="true" value="#{cadastrarAlunoBean.estudante.dataNascimento}" required="true" requiredMessage="É necessário informar a data de nascimento do Aluno." locale="pt" showOn="button"/>
 						</p:panelGrid>
 						<br />
 						<br />
-						<p:outputLabel for="reforco" value="Reforço: "/>
+						<p:outputLabel for="reforco" value="Video reforçador: " />
 						<p:fileUpload id="reforco" value="#{cadastrarAlunoBean.arquivo}" mode="simple" label="Upload de reforço" skinSimple="true"/>
 						<br />
 						<br />

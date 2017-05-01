@@ -13,6 +13,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.primefaces.component.calendar.Calendar;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.event.FileUploadEvent;
@@ -53,11 +54,27 @@ public class CadastrarAlunoBean implements Serializable{
 	
 	public void salvar(){
 		FacesContext facesContext = FacesContext.getCurrentInstance();
+		String validacoes = validarAluno(estudante);
+		if(!StringUtils.isEmpty(validacoes)){
+			facesContext.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_ERROR, validacoes,
+					null));
+			return;
+		}
 		estudanteDao.adicionar(estudante);
 		facesContext.addMessage(null, new FacesMessage("Aluno cadastrado com sucesso.", null));
 		adicionarArquivo();
 	}
 	
+	private String validarAluno(Estudante estudante) {
+		int count = estudanteDao.contarEstudantes(estudante.getNome());
+		if(count > 0)
+			return "Já existe um aluno com o nome "+estudante.getNome()+" cadastrado.";
+		if(estudante.getDataNascimento().after(new Date()))
+			return "A data de nascimento não pode ser futura.";
+		return null;
+	}
+
 	private void adicionarArquivo() {
 		if (arquivo != null && arquivo.getSize() != 0) {
 			arquivoEstudante.setDataUpload(new Date());
