@@ -66,10 +66,11 @@
 							style="font-size:14px; font-weight:bold"
 							rendered="#{cadastroAtividadeBean.templatePalavra}"></p:outputLabel>
 						<p:inputText value="#{cadastroAtividadeBean.palavra}"
-							id="inputPalavra"
+							id="inputPalavra" validatorMessage="A palavra deve conter somente letras e não deve conter espaços."
 							required="#{cadastroAtividadeBean.templatePalavra}"
 							requiredMessage="É necessário informar a palavra do template"
 							rendered="#{cadastroAtividadeBean.templatePalavra}">
+							<f:validateRegex pattern="[a-zA-Z]+"/>
 						</p:inputText>
 						<br />
 						<br />
