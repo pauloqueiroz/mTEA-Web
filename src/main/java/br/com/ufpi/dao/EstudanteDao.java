@@ -14,6 +14,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
 
@@ -133,8 +134,15 @@ public class EstudanteDao implements Serializable {
 	}
 	
 	public int contarEstudantes(String nome) {
-		TypedQuery<Long> query = em.createQuery("Select count(e.id) from Estudante e where upper(e.nome) like:nome", Long.class);
-		query.setParameter("nome", "%"+nome.toUpperCase()+"%");
+		String hql = "Select count(e.id) from Estudante e";
+		
+		if(!StringUtils.isEmpty(nome))
+			hql += " where upper(e.nome) like:nome";
+		
+		TypedQuery<Long> query = em.createQuery(hql, Long.class);
+		if(!StringUtils.isEmpty(nome))
+			query.setParameter("nome", "%"+nome.toUpperCase()+"%");
+		
 		Long count = query.getSingleResult();
 		return count.intValue();
 	}

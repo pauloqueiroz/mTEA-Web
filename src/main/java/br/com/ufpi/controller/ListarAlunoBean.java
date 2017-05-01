@@ -34,7 +34,6 @@ public class ListarAlunoBean implements Serializable{
 
 	public ListarAlunoBean() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	@PostConstruct
@@ -58,7 +57,7 @@ public class ListarAlunoBean implements Serializable{
 						.listarEstudantes(nomeEstudante, first, pageSize, multiSortMeta);
 				
 				this.setRowCount(estudanteDao
-						.contarEstudantes());
+						.contarEstudantes(nomeEstudante));
 				
 				return listaEstudantes;
 			}
