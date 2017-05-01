@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.joda.time.DateTime;
+import org.joda.time.Seconds;
 
 import br.com.ufpi.api.Answer;
 import br.com.ufpi.api.Lesson;
@@ -73,6 +75,23 @@ public class EstudanteUtils {
 		calendar.add(Calendar.DAY_OF_MONTH, 1);
 		return calendar.getTime();
 	}
+	
+	public static Date processarDataFinalGrafico(List<TarefaGrafico> tarefas){
+		if(CollectionUtils.isEmpty(tarefas) || tarefas.size() < 2)
+			return new Date();
+		Seconds diferencaMenor = null;
+		for (int i = 1; i < tarefas.size(); i++) {
+			DateTime data1 = new DateTime(tarefas.get(i-1).getInicio());
+			DateTime data2 = new DateTime(tarefas.get(i).getInicio());
+			Seconds segundos = Seconds.secondsBetween(data1, data2);
+			if(diferencaMenor == null || segundos.isLessThan(diferencaMenor))
+				diferencaMenor = segundos;
+		}
+		DateTime ultimaData = new DateTime(tarefas.get(tarefas.size() - 1).getInicio());
+		DateTime dataFinal = ultimaData.plusSeconds(diferencaMenor.getSeconds());
+		return dataFinal.toDate();
+	}
+
 	
 	public static List<Lesson> converterAtividades(List<Atividade> atividades, ArquivoDao arquivoDao) {
 		List<Lesson> tarefas = new ArrayList<>();

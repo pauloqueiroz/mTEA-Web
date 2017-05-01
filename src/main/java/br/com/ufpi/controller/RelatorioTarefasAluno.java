@@ -88,10 +88,13 @@ public class RelatorioTarefasAluno implements Serializable {
 			povoarGrafico(graficoAcertos, serieAcertos, ultimaData);
 			graficoAcertos.setTitle("Relatório de acertos");
 			graficoAcertos.getAxis(AxisType.Y).setLabel("Acertos");
+			Date dataFinal = EstudanteUtils.processarDataFinalGrafico(tarefaGraficos); 
+			graficoAcertos.getAxis(AxisType.X).setMax(EstudanteUtils.getDataPadraoInternacional(dataFinal));
 
 			povoarGrafico(graficoErros, serieErros, ultimaData);
 			graficoErros.setTitle("Relatório de erros");
 			graficoErros.getAxis(AxisType.Y).setLabel("Erros");
+			graficoErros.getAxis(AxisType.X).setMax(EstudanteUtils.getDataPadraoInternacional(dataFinal));
 		}
 	}
 
