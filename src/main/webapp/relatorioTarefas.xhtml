@@ -125,16 +125,16 @@
 			</p:fieldset>
 			<br />
 			<br />
-			<p:fieldset legend="Gráfico de acertos" toggleable="false" rendered="#{relatorioTarefasAluno.graficoAcertos != null}">
-				<p:chart type="line" model="#{relatorioTarefasAluno.graficoAcertos}" rendered="#{relatorioTarefasAluno.graficoAcertos != null}"
-					widgetVar="chart" style="height:400px;" />
+			<p:fieldset legend="Gráfico de acertos" toggleable="true" rendered="#{relatorioTarefasAluno.alunoExecutouTarefa}">
+				<p:chart type="line" model="#{relatorioTarefasAluno.graficoAcertos}"
+					widgetVar="chart" />
 			</p:fieldset>
 
 			<br />
 			<br />
-			<p:fieldset legend="Gráfico de erros" toggleable="false" rendered="#{relatorioTarefasAluno.graficoErros != null}">
-				<p:chart type="line" model="#{relatorioTarefasAluno.graficoErros}" rendered="#{relatorioTarefasAluno.graficoErros != null}"
-					style="height:400px;" />
+			<p:fieldset legend="Gráfico de erros" toggleable="true" rendered="#{relatorioTarefasAluno.alunoExecutouTarefa}">
+				<p:chart type="line" model="#{relatorioTarefasAluno.graficoErros}"
+					 />
 			</p:fieldset>
 
 		</h:form>

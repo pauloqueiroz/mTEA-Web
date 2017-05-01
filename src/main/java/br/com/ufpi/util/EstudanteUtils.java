@@ -64,7 +64,7 @@ public class EstudanteUtils {
 	
 	public static String getDataPadraoInternacional(Date data){
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
-		return sdf.format(data);
+		return data != null?sdf.format(data):null;
 	}
 	
 	public static Date getDiaPosterior(Date data){

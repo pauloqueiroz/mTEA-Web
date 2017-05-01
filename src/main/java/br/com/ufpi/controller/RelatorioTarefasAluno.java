@@ -86,20 +86,22 @@ public class RelatorioTarefasAluno implements Serializable {
 			ultimaData = EstudanteUtils.getDiaPosterior(ultimaData);
 
 			povoarGrafico(graficoAcertos, serieAcertos, ultimaData);
+			graficoAcertos.setTitle("Relatório de acertos");
+			graficoAcertos.getAxis(AxisType.Y).setLabel("Acertos");
 
 			povoarGrafico(graficoErros, serieErros, ultimaData);
+			graficoErros.setTitle("Relatório de erros");
+			graficoErros.getAxis(AxisType.Y).setLabel("Erros");
 		}
 	}
 
 	private void povoarGrafico(LineChartModel graficoAcertos, LineChartSeries dadosGrafico, Date ultimaDataGrafico) {
 
 		graficoAcertos.addSeries(dadosGrafico);
-		graficoAcertos.setTitle("Relatório de acertos");
 		graficoAcertos.setZoom(true);
-		graficoAcertos.getAxis(AxisType.Y).setLabel("Acertos");
 		DateAxis axis = new DateAxis("Data de inicio");
 		axis.setTickAngle(-50);
-		axis.setMax(EstudanteUtils.getDataPadraoInternacional(ultimaDataGrafico));
+//		axis.setMax(EstudanteUtils.getDataPadraoInternacional(ultimaDataGrafico));
 		axis.setTickFormat("%d/%m/%y %H:%M:%S");
 
 		graficoAcertos.getAxes().put(AxisType.X, axis);
@@ -169,6 +171,10 @@ public class RelatorioTarefasAluno implements Serializable {
 
 	public void setIdEstudante(String idEstudante) {
 		this.idEstudante = idEstudante;
+	}
+	
+	public boolean isAlunoExecutouTarefa(){
+		return (!CollectionUtils.isEmpty(tarefaGraficos));
 	}
 
 }
