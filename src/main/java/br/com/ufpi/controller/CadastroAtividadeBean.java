@@ -104,7 +104,8 @@ public class CadastroAtividadeBean implements Serializable {
 			try {
 				byte[] bytes = IOUtils.toByteArray(stream);
 				arquivo.setBytesArquivo(bytes);
-				arquivo.setNomeArquivo(nomesArquivos.get(indiceNomeArquivo++));
+				arquivo.setNomeArquivo(nomesArquivos.get(indiceNomeArquivo));
+				indiceNomeArquivo++;
 				this.listaArquivos.add(arquivo);
 				getAtividade().setImagens(this.listaArquivos);
 				arquivo.setAtividade(getAtividade());
@@ -152,8 +153,10 @@ public class CadastroAtividadeBean implements Serializable {
 	}
 	
 	public void limpar(){
+		atividade = new Atividade();
 		listaArquivos.clear();
 		nomesArquivos.clear();
+		conteudoArquivos.clear();
 		templateSelecionado = null;
 		estudanteSelecionado = new Estudante();
 		palavra = "";
