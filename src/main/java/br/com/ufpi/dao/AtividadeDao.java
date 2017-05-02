@@ -151,18 +151,42 @@ public class AtividadeDao implements Serializable{
 		return lista;
 	}
 
-	public int contarAtividades() {
-
-		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-		CriteriaQuery<Long> estudanteQuery = criteriaBuilder.createQuery(Long.class);
-		Root<Atividade> estudanteRoot = estudanteQuery.from(Atividade.class);
-		TypedQuery<Long> query = em.createQuery(estudanteQuery.select(criteriaBuilder.count(estudanteRoot)));
-
-		return query.getSingleResult().intValue();
-	}
-
 	public void delete(Atividade atividadeSelecionada) {
 		atividadeSelecionada = em.merge(atividadeSelecionada);
 		em.remove(atividadeSelecionada);
+	}
+
+	public int contarAtividades(String nomeEstudante, TemplateEnum templateSelecionado, String palavra) {
+		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+		CriteriaQuery<Long> atividadeQuery = criteriaBuilder.createQuery(Long.class);
+		Root<Atividade> atividadeRoot = atividadeQuery.from(Atividade.class);
+		
+		List<Predicate> predicates = new ArrayList<Predicate>();
+		if (!StringUtils.isEmpty(nomeEstudante)) {
+			Predicate alunoPredicate = criteriaBuilder.like(criteriaBuilder.lower(
+					atividadeRoot.join("estudante").<Estudante> get("nome").as(String.class)),
+					"%" + nomeEstudante.toLowerCase() + "%");
+			predicates.add(alunoPredicate);
+		}
+		
+		if (templateSelecionado != null) {
+			Predicate tipoSelecionadoPredicate = criteriaBuilder.equal(atividadeRoot.<TemplateEnum> get("template"),
+					templateSelecionado);
+			predicates.add(tipoSelecionadoPredicate);
+		}
+
+		if (!StringUtils.isEmpty(palavra)) {
+			Predicate palavraPredicate = criteriaBuilder.like(
+					criteriaBuilder.lower(atividadeRoot.<String> get("palavra")), "%" + palavra.toLowerCase() + "%");
+			predicates.add(palavraPredicate);
+		}
+		
+		if (!CollectionUtils.isEmpty(predicates))
+			atividadeQuery.where(predicates.toArray(new Predicate[] {}));
+		
+		TypedQuery<Long> query = em.createQuery(atividadeQuery.select(criteriaBuilder.count(atividadeRoot)));
+
+		return query.getSingleResult().intValue();
+		
 	}
 }

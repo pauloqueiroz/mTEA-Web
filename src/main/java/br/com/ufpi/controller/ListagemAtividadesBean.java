@@ -78,7 +78,7 @@ public class ListagemAtividadesBean implements Serializable{
 						.listarAtividades(nomeEstudante, templateSelecionado, palavra, first, pageSize, multiSortMeta);
 				
 				this.setRowCount(atividadeDao
-						.contarAtividades());
+						.contarAtividades(nomeEstudante, templateSelecionado, palavra));
 				
 				return listaAtividades;
 			}

@@ -72,7 +72,7 @@
 			<p:fieldset legend="Pesquisar atividades" toggleable="true"
 				toggleSpeed="500">
 				<p:panelGrid columns="2" styleClass="semBorda">
-					<p:outputLabel value="Nome do estudante: " style="font-weight:bold" />
+					<p:outputLabel value="Nome do estudante: "/>
 					<p:inputText value="#{listagemAtividadesBean.nomeEstudante}" />
 					<p:outputLabel for="comboTemplate" value="Selecione o template: " />
 					<p:selectOneMenu id="comboTemplate"
@@ -80,7 +80,7 @@
 						<f:selectItem itemLabel="Selecione o template" itemValue="" />
 						<f:selectItems value="#{listagemAtividadesBean.templates}" />
 					</p:selectOneMenu>
-					<p:outputLabel value="Palavra: " style="font-weight:bold" />
+					<p:outputLabel value="Palavra: "/>
 					<p:inputText value="#{listagemAtividadesBean.palavra}" />
 				</p:panelGrid>
 				<p:panelGrid columns="3" cellpadding="10">
