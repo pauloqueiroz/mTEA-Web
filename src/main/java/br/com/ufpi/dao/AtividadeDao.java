@@ -79,7 +79,7 @@ public class AtividadeDao implements Serializable{
 	 */
 	public Atividade carregarAtividadeComArquivos(Long id) {
 		TypedQuery<Atividade> query = em.createQuery(
-				"select atividade from Atividade atividade join fetch atividade.imagens where atividade.id = :id",
+				"select atividade from Atividade atividade where atividade.id = :id",
 				Atividade.class);
 
 		query.setParameter("id", id);
@@ -89,6 +89,7 @@ public class AtividadeDao implements Serializable{
 		if (listaAtividade == null || listaAtividade.isEmpty()) {
 			return null;
 		}
+		
 
 		return listaAtividade.get(0);
 	}

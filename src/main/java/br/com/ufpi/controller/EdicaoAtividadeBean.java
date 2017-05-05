@@ -58,8 +58,12 @@ public class EdicaoAtividadeBean implements Serializable {
 
 	public void buscarAtividade() {
 		System.out.println("atividade id" +idAtividade);
-		if (idAtividade != null)
+		if (idAtividade != null){
 			atividade = atividadeDao.carregarAtividadeComArquivos(Long.parseLong(idAtividade));
+			List<Arquivo> arquivos = arquivoDao.carregarArquivosDaAtividade(atividade);
+			atividade.setImagens(arquivos);
+		}
+		
 	}
 
 	public StreamedContent downloadArquivo(Arquivo imagem) throws IOException {
@@ -100,25 +104,22 @@ public class EdicaoAtividadeBean implements Serializable {
 		}
 		int quantidadeArquivos = (atividade.getImagens().size() - arquivosSelecionados.size()
 				+ conteudoArquivos.size());
-		System.out.println("quant arquivos"+quantidadeArquivos);
-		System.out.println("quant permitida"+atividade.getTemplate().getQuantidadeArquivos());
-		if (quantidadeArquivos > atividade.getTemplate().getQuantidadeArquivos()){
+		if (quantidadeArquivos > atividade.getTemplate().getQuantidadeMaximaArquivos()){
 			facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
 					"O número máximo de arquivos permitidos para o template " + atividade.getTemplate().getDescricao()
-							+ " é de " + atividade.getTemplate().getQuantidadeArquivos() + ". Existem "
+							+ " é de " + atividade.getTemplate().getQuantidadeMaximaArquivos() + ". Existem "
 							+ quantidadeArquivos + " arquivos associados a atividade.",
 					null));
 			return;
-		}else if(atividade.getTemplate().getQuantidadeArquivos() > 0 && quantidadeArquivos == 0){
+		}else if(atividade.getTemplate().getQuantidadeMaximaArquivos() > quantidadeArquivos){
 			facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-					"A quantidade de imagens para o template desta tarefa não pode ser 0.",
+					"A quantidade de imagens para o template desta tarefa não pode ser "+quantidadeArquivos+".",
 					null));
 			return;
 		}
 		
 		atividadeDao.atualizar(atividade);
 		for (Arquivo arquivo : arquivosSelecionados){
-			System.out.println("id do arquivo: " +arquivo.getId());
 			arquivoDao.delete(arquivo);
 			atividade.getImagens().remove(arquivo);
 		}
