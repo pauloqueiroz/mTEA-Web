@@ -9,12 +9,14 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.primefaces.event.FileUploadEvent;
 
 import br.com.ufpi.dao.ArquivoDao;
@@ -135,8 +137,9 @@ public class CadastroAtividadeBean implements Serializable {
 		System.out.println(String.valueOf(templateUpload +""+templatePalavra));
 	}
 	
-	public void salvar(){
+	public void salvar() throws IOException{
 		FacesContext facesContext = FacesContext.getCurrentInstance();
+		ExternalContext ec = facesContext.getExternalContext();
 		System.out.println("lista size: " +listaArquivos.size());
 		System.out.println("palavra: "+palavra);
 		System.out.println(templateSelecionado.toString());
@@ -145,11 +148,18 @@ public class CadastroAtividadeBean implements Serializable {
 		getAtividade().setPalavra(palavra);
 		getAtividade().setTemplate(templateSelecionado);
 		getAtividade().setEstudanteTemplate(estudanteSelecionado.getNome() + " - " +templateSelecionado.getDescricao());
+		String validacoes = validarAtividade(atividade);
+		if(!StringUtils.isEmpty(validacoes)){
+			facesContext.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_ERROR, validacoes,
+					null));
+			return;
+		}
 		atividadeDao.adicionar(getAtividade());
 		salvarArquivos();
-		facesContext.addMessage(null, new FacesMessage(
-				FacesMessage.SEVERITY_INFO, "Atividade cadastrada com sucesso.", null));
-		limpar();
+//		limpar();
+//		ec.getRequestMap().put("atividade", atividade);
+		ec.redirect("sucessoCadastrarAtividade.xhtml?idAtividade="+atividade.getId());
 	}
 	
 	private String validarAtividade(Atividade atividade){
@@ -162,6 +172,11 @@ public class CadastroAtividadeBean implements Serializable {
 			return "A quantidade máxima de imagens para o template " + templateSelecionado.getDescricao() + " é "
 					+ templateSelecionado.getQuantidadeMaximaArquivos() + ". Você fez upload de "
 					+ conteudoArquivos.size();
+		if(templateSelecionado.getQuantidadeMinimaArquivos() > 0){
+			if(conteudoArquivos == null || (conteudoArquivos != null && conteudoArquivos.size() < templateSelecionado.getQuantidadeMinimaArquivos()))
+				return "A quantidade mínima de imagens para o template " + templateSelecionado.getDescricao() + " é "
+				+ templateSelecionado.getQuantidadeMaximaArquivos() + ".";
+		}
 		return null;
 	}
 	

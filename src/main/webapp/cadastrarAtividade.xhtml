@@ -79,8 +79,8 @@
 							mode="advanced" dragDropSupport="false" multiple="true"
 							disabled="#{cadastroAtividadeBean.templateSelecionado == null}"
 							auto="true"
-							fileLimitMessage="A quantidade máxima de imagens permitida é de #{cadastroAtividadeBean.templateSelecionado.quantidadeArquivos}"
-							fileLimit="#{cadastroAtividadeBean.templateSelecionado.quantidadeArquivos}"
+							fileLimitMessage="A quantidade máxima de imagens permitida é de #{cadastroAtividadeBean.templateSelecionado.quantidadeMaximaArquivos}"
+							fileLimit="#{cadastroAtividadeBean.templateSelecionado.quantidadeMaximaArquivos}"
 							allowTypes="/(\.|\/)(gif|jpe?g|png)$/" label="Upload de imagem" />
 					</p:panel>
 					<p:commandButton value="Cadastrar" id="cadastrarButton"
