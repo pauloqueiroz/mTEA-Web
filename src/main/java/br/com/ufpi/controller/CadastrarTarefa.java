@@ -42,7 +42,7 @@ public class CadastrarTarefa implements Serializable{
 	
 	public void salvar(){
 		FacesContext facesContext = FacesContext.getCurrentInstance();
-		tarefa.setEstudante(tarefa.getAtividade().getEstudante());
+//		tarefa.setEstudante(tarefa.getAtividade().getEstudante());
 		tarefaDao.adicionar(tarefa);
 		facesContext.addMessage(null, new FacesMessage(
 				FacesMessage.SEVERITY_INFO, "Tarefa cadastrada com sucesso.",

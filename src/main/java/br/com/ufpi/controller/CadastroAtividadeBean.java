@@ -54,6 +54,8 @@ public class CadastroAtividadeBean implements Serializable {
 	
 	private String palavra;
 	
+	private String nomeAtividade;
+	
 	private List<Arquivo> listaArquivos;
 	
 	private List<InputStream> conteudoArquivos;
@@ -144,8 +146,10 @@ public class CadastroAtividadeBean implements Serializable {
 		System.out.println("palavra: "+palavra);
 		System.out.println(templateSelecionado.toString());
 		System.out.println(estudanteSelecionado.getNome());
-		getAtividade().setEstudante(estudanteSelecionado);
+//		getAtividade().setEstudante(estudanteSelecionado);
 		getAtividade().setPalavra(palavra);
+		if(!StringUtils.isEmpty(nomeAtividade))
+			atividade.setNome(nomeAtividade);
 		getAtividade().setTemplate(templateSelecionado);
 		getAtividade().setEstudanteTemplate(estudanteSelecionado.getNome() + " - " +templateSelecionado.getDescricao());
 		String validacoes = validarAtividade(atividade);
@@ -163,8 +167,8 @@ public class CadastroAtividadeBean implements Serializable {
 	}
 	
 	private String validarAtividade(Atividade atividade){
-		if(atividade.getEstudante() == null)
-			return "É necessário informar o estudante.";
+//		if(atividade.getEstudante() == null)
+//			return "É necessário informar o estudante.";
 		if(atividade.getTemplate() == null)
 			return "É necessário informar o template.";
 		TemplateEnum templateSelecionado = atividade.getTemplate();
@@ -260,6 +264,14 @@ public class CadastroAtividadeBean implements Serializable {
 
 	public void setAtividade(Atividade atividade) {
 		this.atividade = atividade;
+	}
+
+	public String getNomeAtividade() {
+		return nomeAtividade;
+	}
+
+	public void setNomeAtividade(String nomeAtividade) {
+		this.nomeAtividade = nomeAtividade;
 	}
 
 }

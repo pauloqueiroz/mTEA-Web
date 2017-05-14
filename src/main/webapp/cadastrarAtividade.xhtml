@@ -28,6 +28,10 @@
 
 			<center>
 				<h:form id="formPrincipal" enctype="multipart/form-data">
+					<p:outputLabel value="Nome da atividade: " for="inputNomeAtividade"
+						style="font-size:14px; font-weight:bold"></p:outputLabel>
+					<p:inputText id="inputNomeAtividade"
+						value="#{cadastroAtividadeBean.nomeAtividade}" />
 
 					<p:outputLabel for="comboTemplate" value="Selecione o template: " />
 					<p:selectOneMenu id="comboTemplate" required="true"
@@ -38,19 +42,6 @@
 						<p:ajax listener="#{cadastroAtividadeBean.atualizarFlags}"
 							update="formPrincipal:divCadastro" />
 					</p:selectOneMenu>
-					<br />
-					<br />
-					<p:outputLabel value="Pesquisar aluno pelo nome: "
-						for="autoCompleteAluno" style="font-size:14px; font-weight:bold"></p:outputLabel>
-					<p:autoComplete id="autoCompleteAluno"
-						value="#{cadastroAtividadeBean.estudanteSelecionado}"
-						required="true" requiredMessage="É necessário selecionar o aluno"
-						completeMethod="#{cadastroAtividadeBean.buscarEstudante}"
-						converter="estudanteConverter" var="estudante" event="itemselect"
-						itemLabel="#{estudante.nome}" itemValue="#{estudante}"
-						minQueryLength="1" forceSelection="true" size="50"
-						style="font-size:14px" >
-					</p:autoComplete>
 					<br />
 					<br />
 					<p:outputLabel value="Link do reforço no youtube: "
@@ -66,11 +57,12 @@
 							style="font-size:14px; font-weight:bold"
 							rendered="#{cadastroAtividadeBean.templatePalavra}"></p:outputLabel>
 						<p:inputText value="#{cadastroAtividadeBean.palavra}"
-							id="inputPalavra" validatorMessage="A palavra deve conter somente letras e não deve conter espaços."
+							id="inputPalavra"
+							validatorMessage="A palavra deve conter somente letras e não deve conter espaços."
 							required="#{cadastroAtividadeBean.templatePalavra}"
 							requiredMessage="É necessário informar a palavra do template"
 							rendered="#{cadastroAtividadeBean.templatePalavra}">
-							<f:validateRegex pattern="[a-zA-Z]+"/>
+							<f:validateRegex pattern="[a-zA-Z]+" />
 						</p:inputText>
 						<br />
 						<br />

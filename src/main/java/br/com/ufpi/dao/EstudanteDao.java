@@ -61,13 +61,13 @@ public class EstudanteDao implements Serializable {
 	public List<Estudante> listarTodos(){
 		List<Estudante> estudantes = new ArrayList<>();
 		estudantes = em.createQuery("Select e from Estudante e", Estudante.class).getResultList();
-		if(!CollectionUtils.isEmpty(estudantes)){
-			for (Estudante estudante : estudantes) {
-				TypedQuery<Atividade> query = em.createQuery("SELECT a FROM Atividade a WHERE a.estudante = :e", Atividade.class);
-				query.setParameter("e", estudante);
-				estudante.setAtividades(query.getResultList());
-			}
-		}
+//		if(!CollectionUtils.isEmpty(estudantes)){
+//			for (Estudante estudante : estudantes) {
+//				TypedQuery<Atividade> query = em.createQuery("SELECT a FROM Atividade a WHERE a.estudante = :e", Atividade.class);
+//				query.setParameter("e", estudante);
+//				estudante.setAtividades(query.getResultList());
+//			}
+//		}
 		return estudantes;	 
 	}
 

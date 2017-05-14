@@ -1,6 +1,7 @@
 package br.com.ufpi.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -12,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import br.com.ufpi.enuns.TemplateEnum;
 
@@ -21,39 +24,40 @@ import br.com.ufpi.enuns.TemplateEnum;
  *
  */
 @Entity
-public class Atividade implements Serializable{
+public class Atividade implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	private TemplateEnum template;
-	
+
 	private String palavra;
-	
-	@OneToMany(mappedBy="atividade", cascade={CascadeType.MERGE, CascadeType.REMOVE})
+
+	@OneToMany(mappedBy = "atividade", cascade = { CascadeType.MERGE, CascadeType.REMOVE })
 	private List<Arquivo> imagens;
-	
-	@OneToMany(mappedBy="atividade", cascade=CascadeType.REMOVE)
+
+	@OneToMany(mappedBy = "atividade", cascade = CascadeType.REMOVE)
 	private List<Tarefa> tarefas;
-	
-	@ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="idEstudante")
-	private Estudante estudante;
- 
+
 	private String estudanteTemplate;
-	
+
 	private String reforco;
+
+	/*
+	 * Atributo novo para armazenar o nome da atividade, que sera utilizado nas
+	 * buscas das montagens das listas de atividades.
+	 */
+	private String nome;
 	
-//	@OneToOne
-//	@JoinColumn(name="idArquivoReforco")
-//	private Arquivo arquivoReforco;
-	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date dataCriacao;
+
 	public Atividade() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -83,14 +87,6 @@ public class Atividade implements Serializable{
 		this.palavra = palavra;
 	}
 
-	public Estudante getEstudante() {
-		return estudante;
-	}
-
-	public void setEstudante(Estudante estudante) {
-		this.estudante = estudante;
-	}
-
 	public List<Arquivo> getImagens() {
 		return imagens;
 	}
@@ -99,7 +95,7 @@ public class Atividade implements Serializable{
 		this.imagens = imagens;
 	}
 
-	public String getTemplateToString(){
+	public String getTemplateToString() {
 		return template.toString();
 	}
 
@@ -127,12 +123,12 @@ public class Atividade implements Serializable{
 		this.reforco = reforco;
 	}
 
-//	public Arquivo getArquivoReforco() {
-//		return arquivoReforco;
-//	}
-//
-//	public void setArquivoReforco(Arquivo arquivoReforco) {
-//		this.arquivoReforco = arquivoReforco;
-//	}
-	
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
 }

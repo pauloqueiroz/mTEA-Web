@@ -76,7 +76,7 @@ public class Services {
 					atividade.setImagens(arquivosDaAtividade);
 				}
 			}
-			estudante.setAtividades(atividadesDoEstudante);
+//			estudante.setAtividades(atividadesDoEstudante);
 			Student studentJson = EstudanteUtils.converterEstudante(estudante, arquivoDao);
 			return Response.status(200).entity(studentJson).build();
 		}

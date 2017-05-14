@@ -27,32 +27,38 @@ import br.com.ufpi.model.Estudante;
  */
 public class EstudanteUtils {
 
+	
 	public static List<Student> converterEstudante(List<Estudante> estudantes) {
 		if (!CollectionUtils.isEmpty(estudantes)) {
 			List<Student> students = new ArrayList<>();
-			for (Estudante estudante : estudantes)
-				students.add(converterEstudanteLazy(estudante));
+//			for (Estudante estudante : estudantes)
+//				students.add(converterEstudanteLazy(estudante));
 			return students;
 		}
 		return null;
 	}
 	
+	
+	
 	public static Student converterEstudante(Estudante estudante, ArquivoDao arquivoDao){
-		System.out.println(estudante.getAtividades().size());
+//		System.out.println(estudante.getAtividades().size());
 //		estudante.getAtividades(), arquivoDao
 		Student student = new Student(estudante.getId(), estudante.getNome(),
 				getDataFormatada(estudante.getDataNascimento()), arquivoDao.buscarIdReforco(estudante) , "null");
-		List<Lesson> lessons = EstudanteUtils.converterAtividades(estudante.getAtividades(), arquivoDao);
-		student.setLessons(lessons);
+//		List<Lesson> lessons = EstudanteUtils.converterAtividades(estudante.getAtividades(), arquivoDao);
+//		student.setLessons(lessons);
 		return student; 
 	}
 	
+	
+	/*
 	public static Student converterEstudanteLazy(Estudante estudante){
 		System.out.println(estudante.getAtividades().size());
 		Student student = new Student(estudante.getId(), estudante.getNome(),
 				getDataFormatada(estudante.getDataNascimento()), null , null);
 		return student; 
 	}
+	*/
 
 	public static String getDataFormatada(Date data) {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -92,7 +98,7 @@ public class EstudanteUtils {
 		return dataFinal.toDate();
 	}
 
-	
+	/*
 	public static List<Lesson> converterAtividades(List<Atividade> atividades, ArquivoDao arquivoDao) {
 		List<Lesson> tarefas = new ArrayList<>();
 		
@@ -103,9 +109,9 @@ public class EstudanteUtils {
 					, null
 					, String.valueOf(atividade.getEstudante().getId())
 					, null);
-			/*
-			 * Formar ou sobrepor palavras
-			 */
+			
+			//  Formar ou sobrepor palavras
+			 
 			if (atividade.getTemplate().ordinal() < 2) {
 				String idImagem = arquivoDao.buscarIdImagem(atividade);
 				lesson.setImage(idImagem);
@@ -117,6 +123,7 @@ public class EstudanteUtils {
 		}
 		return CollectionUtils.isEmpty(tarefas)?null:tarefas;
 	}
+	*/
 
 	private static List<Answer> converterAnswers(List<Arquivo> imagens) {
 		List<Answer> answers = new ArrayList<>();

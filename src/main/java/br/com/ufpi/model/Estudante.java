@@ -30,9 +30,6 @@ public class Estudante implements Serializable{
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataNascimento;
 	
-	@OneToMany(mappedBy="estudante")
-	private List<Atividade> atividades;
-	
 	@OneToOne(mappedBy="estudante")
 	private Arquivo arquivo;
 	
@@ -66,14 +63,6 @@ public class Estudante implements Serializable{
 
 	public void setDataNascimento(Date dataNascimento) {
 		this.dataNascimento = dataNascimento;
-	}
-
-	public List<Atividade> getAtividades() {
-		return atividades;
-	}
-
-	public void setAtividades(List<Atividade> atividades) {
-		this.atividades = atividades;
 	}
 
 	public Arquivo getArquivo() {
