@@ -28,11 +28,11 @@
 
 			<center>
 				<h:form id="formPrincipal" enctype="multipart/form-data">
-					<p:outputLabel value="Nome da atividade: " for="inputNomeAtividade"
-						style="font-size:14px; font-weight:bold"></p:outputLabel>
+					<p:outputLabel value="Nome da atividade: " for="inputNomeAtividade"/>
 					<p:inputText id="inputNomeAtividade"
 						value="#{cadastroAtividadeBean.nomeAtividade}" />
-
+					<br />
+					<br />
 					<p:outputLabel for="comboTemplate" value="Selecione o template: " />
 					<p:selectOneMenu id="comboTemplate" required="true"
 						requiredMessage="É necessário selecionar o template"
@@ -45,7 +45,7 @@
 					<br />
 					<br />
 					<p:outputLabel value="Link do reforço no youtube: "
-						for="inputReforco" style="font-size:14px; font-weight:bold" />
+						for="inputReforco"/>
 					<p:inputText value="#{cadastroAtividadeBean.atividade.reforco}"
 						id="inputReforco">
 					</p:inputText>
@@ -54,7 +54,6 @@
 
 					<p:panel id="divCadastro" styleClass="semBorda">
 						<p:outputLabel value="Palavra: " for="inputPalavra"
-							style="font-size:14px; font-weight:bold"
 							rendered="#{cadastroAtividadeBean.templatePalavra}"></p:outputLabel>
 						<p:inputText value="#{cadastroAtividadeBean.palavra}"
 							id="inputPalavra"

@@ -5,10 +5,10 @@
 	<artifactId>ProjetoAutista</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>projeto-autista</name>
+	<name>projeto-autista-lista-atividades</name>
 
 	<build>
-		<finalName>projeto-autista</finalName>
+		<finalName>projeto-autista-lista-atividades</finalName>
 		<plugins>
 
 			<!-- plugin para modificar a versão do java no projeto e configurar a 

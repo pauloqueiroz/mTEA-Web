@@ -21,11 +21,10 @@ import org.primefaces.event.FileUploadEvent;
 
 import br.com.ufpi.dao.ArquivoDao;
 import br.com.ufpi.dao.AtividadeDao;
-import br.com.ufpi.dao.EstudanteDao;
 import br.com.ufpi.enuns.TemplateEnum;
 import br.com.ufpi.model.Arquivo;
 import br.com.ufpi.model.Atividade;
-import br.com.ufpi.model.Estudante;
+import br.com.ufpi.util.EstudanteUtils;
 
 @Named
 @ViewScoped
@@ -38,17 +37,12 @@ public class CadastroAtividadeBean implements Serializable {
 
 	@Inject
 	private AtividadeDao atividadeDao;
-
-	@Inject
-	private EstudanteDao estudanteDao;
 	
 	@Inject
 	private ArquivoDao arquivoDao;
 	
 	@Inject
 	private Atividade atividade;
-
-	private Estudante estudanteSelecionado;
 
 	private TemplateEnum templateSelecionado;
 	
@@ -71,10 +65,6 @@ public class CadastroAtividadeBean implements Serializable {
 		listaArquivos = new ArrayList<>();
 		conteudoArquivos = new ArrayList<>();
 		nomesArquivos = new ArrayList<>();
-	}
-
-	public List<Estudante> buscarEstudante(String nome) {
-		return estudanteDao.buscarEstudante(nome);
 	}
 
 	public TemplateEnum[] getTemplates() {
@@ -113,8 +103,6 @@ public class CadastroAtividadeBean implements Serializable {
 				this.listaArquivos.add(arquivo);
 				getAtividade().setImagens(this.listaArquivos);
 				arquivo.setAtividade(getAtividade());
-//				int numeroArquivo = arquivoDao.contarArquivos();
-//				arquivo.setNomeArquivo(String.valueOf(numeroArquivo)+".jpg");
 				arquivoDao.adicionar(arquivo);
 			} catch (IOException e) {
 				System.out.println("Erro ao salvar imagens.");
@@ -145,13 +133,13 @@ public class CadastroAtividadeBean implements Serializable {
 		System.out.println("lista size: " +listaArquivos.size());
 		System.out.println("palavra: "+palavra);
 		System.out.println(templateSelecionado.toString());
-		System.out.println(estudanteSelecionado.getNome());
-//		getAtividade().setEstudante(estudanteSelecionado);
 		getAtividade().setPalavra(palavra);
 		if(!StringUtils.isEmpty(nomeAtividade))
 			atividade.setNome(nomeAtividade);
+		else
+			atividade.setNome(criarNome(atividade, templateSelecionado, palavra, templatePalavra));
 		getAtividade().setTemplate(templateSelecionado);
-		getAtividade().setEstudanteTemplate(estudanteSelecionado.getNome() + " - " +templateSelecionado.getDescricao());
+		atividade.setDataCriacao(new Date());
 		String validacoes = validarAtividade(atividade);
 		if(!StringUtils.isEmpty(validacoes)){
 			facesContext.addMessage(null, new FacesMessage(
@@ -161,14 +149,18 @@ public class CadastroAtividadeBean implements Serializable {
 		}
 		atividadeDao.adicionar(getAtividade());
 		salvarArquivos();
-//		limpar();
-//		ec.getRequestMap().put("atividade", atividade);
 		ec.redirect("sucessoCadastrarAtividade.xhtml?idAtividade="+atividade.getId());
 	}
 	
+	private String criarNome(Atividade atividade, TemplateEnum templateSelecionado, String palavra, boolean templatePalavra) {
+		String result = templateSelecionado.getDescricao();
+		if(templatePalavra)
+			result += " "+palavra;
+		result += EstudanteUtils.getDataFormatada(atividade.getDataCriacao());
+		return result;
+	}
+
 	private String validarAtividade(Atividade atividade){
-//		if(atividade.getEstudante() == null)
-//			return "É necessário informar o estudante.";
 		if(atividade.getTemplate() == null)
 			return "É necessário informar o template.";
 		TemplateEnum templateSelecionado = atividade.getTemplate();
@@ -189,8 +181,6 @@ public class CadastroAtividadeBean implements Serializable {
 		listaArquivos.clear();
 		nomesArquivos.clear();
 		conteudoArquivos.clear();
-//		templateSelecionado = null;
-		estudanteSelecionado = new Estudante();
 		palavra = "";
 	}
 
@@ -208,14 +198,6 @@ public class CadastroAtividadeBean implements Serializable {
 
 	public void setTemplateSelecionado(TemplateEnum templateSelecionado) {
 		this.templateSelecionado = templateSelecionado;
-	}
-
-	public Estudante getEstudanteSelecionado() {
-		return estudanteSelecionado;
-	}
-
-	public void setEstudanteSelecionado(Estudante estudanteSelecionado) {
-		this.estudanteSelecionado = estudanteSelecionado;
 	}
 
 	public boolean isTemplateUpload() {
