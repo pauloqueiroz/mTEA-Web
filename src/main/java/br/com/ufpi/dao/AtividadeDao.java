@@ -94,7 +94,7 @@ public class AtividadeDao implements Serializable{
 		return listaAtividade.get(0);
 	}
 	
-	public List<Atividade> listarAtividades(String nomeEstudante, TemplateEnum templateSelecionado, String palavra, int first, int pageSize,
+	public List<Atividade> listarAtividades(String nomeAtividade, TemplateEnum templateSelecionado, String palavra, int first, int pageSize,
 			List<SortMeta> multiSortMeta) {
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
 
@@ -122,11 +122,11 @@ public class AtividadeDao implements Serializable{
 		}
 		
 		List<Predicate> predicates = new ArrayList<Predicate>();
-		if (!StringUtils.isEmpty(nomeEstudante)) {
-			Predicate alunoPredicate = criteriaBuilder.like(criteriaBuilder.lower(
-					atividadeRoot.join("estudante").<Estudante> get("nome").as(String.class)),
-					"%" + nomeEstudante.toLowerCase() + "%");
-			predicates.add(alunoPredicate);
+		
+		if (!StringUtils.isEmpty(palavra)) {
+			Predicate palavraPredicate = criteriaBuilder.like(
+					criteriaBuilder.lower(atividadeRoot.<String> get("nome")), "%" + nomeAtividade.toLowerCase() + "%");
+			predicates.add(palavraPredicate);
 		}
 		
 		if (templateSelecionado != null) {
@@ -157,17 +157,17 @@ public class AtividadeDao implements Serializable{
 		em.remove(atividadeSelecionada);
 	}
 
-	public int contarAtividades(String nomeEstudante, TemplateEnum templateSelecionado, String palavra) {
+	public int contarAtividades(String nomeAtividade, TemplateEnum templateSelecionado, String palavra) {
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
 		CriteriaQuery<Long> atividadeQuery = criteriaBuilder.createQuery(Long.class);
 		Root<Atividade> atividadeRoot = atividadeQuery.from(Atividade.class);
 		
 		List<Predicate> predicates = new ArrayList<Predicate>();
-		if (!StringUtils.isEmpty(nomeEstudante)) {
-			Predicate alunoPredicate = criteriaBuilder.like(criteriaBuilder.lower(
-					atividadeRoot.join("estudante").<Estudante> get("nome").as(String.class)),
-					"%" + nomeEstudante.toLowerCase() + "%");
-			predicates.add(alunoPredicate);
+		
+		if (!StringUtils.isEmpty(palavra)) {
+			Predicate palavraPredicate = criteriaBuilder.like(
+					criteriaBuilder.lower(atividadeRoot.<String> get("nome")), "%" + nomeAtividade.toLowerCase() + "%");
+			predicates.add(palavraPredicate);
 		}
 		
 		if (templateSelecionado != null) {

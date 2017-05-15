@@ -47,7 +47,7 @@ public class ListagemAtividadesBean implements Serializable{
 	
 	private LazyDataModel<Atividade> atividades;
 	
-	private String nomeEstudante;
+	private String nomeAtividade;
 	
 	private String palavra;
 	
@@ -75,10 +75,10 @@ public class ListagemAtividadesBean implements Serializable{
 				List<Atividade> listaAtividades = new ArrayList<>();
 
 				listaAtividades = atividadeDao
-						.listarAtividades(nomeEstudante, templateSelecionado, palavra, first, pageSize, multiSortMeta);
+						.listarAtividades(nomeAtividade, templateSelecionado, palavra, first, pageSize, multiSortMeta);
 				
 				this.setRowCount(atividadeDao
-						.contarAtividades(nomeEstudante, templateSelecionado, palavra));
+						.contarAtividades(nomeAtividade, templateSelecionado, palavra));
 				
 				return listaAtividades;
 			}
@@ -91,7 +91,7 @@ public class ListagemAtividadesBean implements Serializable{
 	 * Limpa os dados de pesquisa.
 	 */
 	public void limparInformacoes() {
-		nomeEstudante = "";
+		nomeAtividade = "";
 		templateSelecionado = null;
 		palavra = "";
 		pesquisar();
@@ -105,6 +105,8 @@ public class ListagemAtividadesBean implements Serializable{
 		this.atividadeSelecionada = atividade;
 		atividade = atividadeDao.carregarAtividadeComArquivos(atividade.getId());
 		if(atividade != null){
+			List<Arquivo> arquivos = arquivoDao.carregarArquivosDaAtividade(atividade);
+			atividade.setImagens(arquivos);
 			atividadeSelecionada = atividade;
 			imagens = atividade.getImagens();
 		}	
@@ -144,17 +146,6 @@ public class ListagemAtividadesBean implements Serializable{
 	public void setAtividades(LazyDataModel<Atividade> atividades) {
 		this.atividades = atividades;
 	}
-
-
-	public String getNomeEstudante() {
-		return nomeEstudante;
-	}
-
-
-	public void setNomeEstudante(String nomeEstudante) {
-		this.nomeEstudante = nomeEstudante;
-	}
-
 
 	public String getPalavra() {
 		return palavra;
@@ -203,6 +194,16 @@ public class ListagemAtividadesBean implements Serializable{
 
 	public void setArquivoDao(ArquivoDao arquivoDao) {
 		this.arquivoDao = arquivoDao;
+	}
+
+
+	public String getNomeAtividade() {
+		return nomeAtividade;
+	}
+
+
+	public void setNomeAtividade(String nomeAtividade) {
+		this.nomeAtividade = nomeAtividade;
 	}
 
 }

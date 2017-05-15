@@ -73,7 +73,7 @@
 				toggleSpeed="500">
 				<p:panelGrid columns="2" styleClass="semBorda">
 					<p:outputLabel value="Nome do estudante: "/>
-					<p:inputText value="#{listagemAtividadesBean.nomeEstudante}" />
+					<p:inputText value="#{listagemAtividadesBean.nomeAtividade}" />
 					<p:outputLabel for="comboTemplate" value="Selecione o template: " />
 					<p:selectOneMenu id="comboTemplate"
 						value="#{listagemAtividadesBean.templateSelecionado}" required="false">
@@ -110,9 +110,9 @@
             			Atividades
         			</f:facet>
 
-					<p:column headerText="Nome do aluno"
-						sortBy="#{atividade.estudante.nome}">
-						<p:outputLabel value="#{atividade.estudante.nome}" />
+					<p:column headerText="Nome da atividade"
+						sortBy="#{atividade.nome}">
+						<p:outputLabel value="#{atividade.nome}" />
 					</p:column>
 					<p:column headerText="Template" sortBy="#{atividade.template}">
 						<p:outputLabel value="#{atividade.templateToString}" />
@@ -149,9 +149,9 @@
 				position="center" responsive="true" draggable="true">
 				<center>
 					<p:panelGrid columns="2">
-						<p:outputLabel value="Nome do estudante" style="font-weight: bold" />
+						<p:outputLabel value="Nome da atividade" style="font-weight: bold" />
 						<p:outputLabel
-							value="#{listagemAtividadesBean.atividadeSelecionada.estudante.nome}" />
+							value="#{listagemAtividadesBean.atividadeSelecionada.nome}" />
 
 						<p:outputLabel value="Template" style="font-weight: bold" />
 						<p:outputLabel
