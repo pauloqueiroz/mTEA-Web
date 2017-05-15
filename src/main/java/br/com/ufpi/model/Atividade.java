@@ -2,10 +2,13 @@ package br.com.ufpi.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -54,6 +57,9 @@ public class Atividade implements Serializable {
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataCriacao;
+	
+	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.REMOVE)
+	private Set<ListaAtividade> listas = new HashSet<>();
 
 	public Atividade() {
 		super();
@@ -134,6 +140,14 @@ public class Atividade implements Serializable {
 
 	public void setDataCriacao(Date dataCriacao) {
 		this.dataCriacao = dataCriacao;
+	}
+
+	public Set<ListaAtividade> getListas() {
+		return listas;
+	}
+
+	public void setListas(Set<ListaAtividade> listas) {
+		this.listas = listas;
 	}
 
 }

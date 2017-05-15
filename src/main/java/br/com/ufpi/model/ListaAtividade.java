@@ -2,15 +2,16 @@ package br.com.ufpi.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -40,11 +41,8 @@ public class ListaAtividade implements Serializable{
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataCriacao;
 	
-	@ManyToMany
-	@JoinTable(name = "lista_atividades",
-	joinColumns = @JoinColumn(name = "idlista"),
-	inverseJoinColumns = @JoinColumn(name = "idatividade"))
-	private Set<Atividade> atividades;
+	@OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+	private Set<ItemAtividade> atividades = new HashSet<>();
 
 	public ListaAtividade() {
 		super();
@@ -83,11 +81,11 @@ public class ListaAtividade implements Serializable{
 		this.dataCriacao = dataCriacao;
 	}
 
-	public Set<Atividade> getAtividades() {
+	public Set<ItemAtividade> getAtividades() {
 		return atividades;
 	}
 
-	public void setAtividades(Set<Atividade> atividades) {
+	public void setAtividades(Set<ItemAtividade> atividades) {
 		this.atividades = atividades;
 	}
 	
