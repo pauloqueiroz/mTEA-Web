@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html >
 <html xmlns="http://www.w3c.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
@@ -6,6 +6,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
 <h:head>
+	<meta charset="utf-8"/>
 	<title>Projeto Autista</title>
 	<style>
 * {
@@ -49,11 +50,10 @@
 						<p:menuitem value="Listar Atividades" icon="ui-icon-plus" url="listarAtividade.xhtml"/>
 					</p:submenu>
 					
-					<p:submenu label="Execucoes de atividades" icon="ui-icon-pencil">
-						<p:menuitem value="Cadastro de execucao" icon="ui-icon-plus" url="cadastrarTarefa.xhtml"/>
-					</p:submenu>
+					<p:menuitem value="Relatórios" icon="ui-icon-plus"
+						url="relatorioTarefas.xhtml" />
 					
-					<p:menuitem value="Cadastrar usuarios" icon="ui-icon-plus"
+					<p:menuitem value="Cadastrar usuários" icon="ui-icon-plus"
 						url="cadastrarUsuario.xhtml"
 						rendered="#{loginBean.usuarioLogado.admin}" />
 
