@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 import org.primefaces.model.chart.AxisType;
@@ -21,6 +22,7 @@ import org.primefaces.model.chart.LineChartSeries;
 
 import br.com.ufpi.dao.EstudanteDao;
 import br.com.ufpi.dao.TarefaDao;
+import br.com.ufpi.enuns.TemplateEnum;
 import br.com.ufpi.model.Estudante;
 import br.com.ufpi.model.Tarefa;
 import br.com.ufpi.util.EstudanteUtils;
@@ -42,6 +44,8 @@ public class RelatorioTarefasAluno implements Serializable {
 	private EstudanteDao estudanteDao;
 
 	private String idEstudante;
+	
+	private Estudante estudanteSelecionado;
 
 	private LazyDataModel<Tarefa> tarefasDoEstudante;
 
@@ -50,6 +54,8 @@ public class RelatorioTarefasAluno implements Serializable {
 	private LineChartModel graficoErros;
 
 	private List<TarefaGrafico> tarefaGraficos;
+	
+	private TemplateEnum templateSelecionado;
 
 	public RelatorioTarefasAluno() {
 		super();
@@ -58,13 +64,16 @@ public class RelatorioTarefasAluno implements Serializable {
 	@PostConstruct
 	public void init() {
 		tarefaGraficos = new ArrayList<>();
-		// pesquisar();
+		if(StringUtils.isEmpty(idEstudante)){
+			
+			pesquisar();
 
-		// createDateModel();
+			createDateModel();
+		}
 	}
 
 	private void createDateModel() {
-		if (idEstudante != null) {
+		if (!StringUtils.isEmpty(idEstudante)) {
 			tarefaGraficos = tarefaDao.buscarTarefasPorEstudante(Long.parseLong(idEstudante));
 			graficoAcertos = new LineChartModel();
 			graficoErros = new LineChartModel();
@@ -86,13 +95,13 @@ public class RelatorioTarefasAluno implements Serializable {
 			ultimaData = EstudanteUtils.getDiaPosterior(ultimaData);
 
 			povoarGrafico(graficoAcertos, serieAcertos, ultimaData);
-			graficoAcertos.setTitle("Relatório de acertos");
+			graficoAcertos.setTitle("RelatÃ³rio de acertos");
 			graficoAcertos.getAxis(AxisType.Y).setLabel("Acertos");
 			Date dataFinal = EstudanteUtils.processarDataFinalGrafico(tarefaGraficos); 
 			graficoAcertos.getAxis(AxisType.X).setMax(EstudanteUtils.getDataPadraoInternacional(dataFinal));
 
 			povoarGrafico(graficoErros, serieErros, ultimaData);
-			graficoErros.setTitle("Relatório de erros");
+			graficoErros.setTitle("RelatÃ³rio de erros");
 			graficoErros.getAxis(AxisType.Y).setLabel("Erros");
 			graficoErros.getAxis(AxisType.X).setMax(EstudanteUtils.getDataPadraoInternacional(dataFinal));
 		}
@@ -120,20 +129,40 @@ public class RelatorioTarefasAluno implements Serializable {
 			@Override
 			public List<Tarefa> load(int first, int pageSize, String sortField, SortOrder sortOrder,
 					Map<String, Object> filters) {
+				List<Tarefa> listaDocumento = null;
+				if (isParametroInformado()) {
+					if (!StringUtils.isEmpty(idEstudante) && isParametroBuscaNaoInformado())
+						estudanteSelecionado = estudanteDao.buscarPorId(Long.parseLong(idEstudante));
+					listaDocumento = tarefaDao.buscarTarefasPorEstudante(estudanteSelecionado, templateSelecionado,
+							first, pageSize);
 
-				List<Tarefa> listaDocumento = tarefaDao.buscarTarefasPorEstudante(Long.parseLong(idEstudante), first,
-						pageSize);
+					this.setRowCount(tarefaDao.contarTarefas(estudanteSelecionado, templateSelecionado));
+				} else
+					this.setRowCount(0);
 
-				this.setRowCount(tarefaDao.contarDocumentosPorStatusSetorProcessual(Long.parseLong(idEstudante)));
 				return listaDocumento;
 			}
 
 		});
 	}
+	
+	private boolean isParametroInformado(){
+		return (!StringUtils.isEmpty(idEstudante)) || estudanteSelecionado != null || templateSelecionado != null;
+	}
+	
+	private boolean isParametroBuscaNaoInformado(){
+		return estudanteSelecionado == null && templateSelecionado == null;
+	}
 
 	public void limpar() {
 		this.idEstudante = "";
+		estudanteSelecionado = null;
+		
 		pesquisar();
+	}
+	
+	public TemplateEnum[] getTemplates() {
+		return TemplateEnum.values();
 	}
 
 	public List<Estudante> buscarEstudante(String nome) {
@@ -178,6 +207,22 @@ public class RelatorioTarefasAluno implements Serializable {
 	
 	public boolean isAlunoExecutouTarefa(){
 		return (!CollectionUtils.isEmpty(tarefaGraficos));
+	}
+
+	public Estudante getEstudanteSelecionado() {
+		return estudanteSelecionado;
+	}
+
+	public void setEstudanteSelecionado(Estudante estudanteSelecionado) {
+		this.estudanteSelecionado = estudanteSelecionado;
+	}
+
+	public TemplateEnum getTemplateSelecionado() {
+		return templateSelecionado;
+	}
+
+	public void setTemplateSelecionado(TemplateEnum templateSelecionado) {
+		this.templateSelecionado = templateSelecionado;
 	}
 
 }
