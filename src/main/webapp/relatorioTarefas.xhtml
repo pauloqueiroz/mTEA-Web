@@ -36,29 +36,6 @@
 }
 </style>
 
-		<script>			
-		function descricaoCancelamento(){
-			var flag = document.getElementById('descricao');
-			flag.style.display = "block";
-			limparTextArea();
-		}		 		
-
-</script>
-
-		<script>		
-		function ocultar(){
-			var flag = document.getElementById('descricao');
-			flag.style.display = "none";
-		}		
-						  		
-</script>
-
-		<script>
-		function limparTextArea(){
-			document.getElementById('desc').value = "";
-		}
-</script>
-
 		<script>
 		function detalhes(){
 			var informacao = document.getElementById('detalhes');
@@ -81,7 +58,6 @@
 						for="autoCompleteAluno" style="font-size:14px; font-weight:bold"></p:outputLabel>
 					<p:autoComplete id="autoCompleteAluno"
 						value="#{relatorioTarefasAluno.estudanteSelecionado}"
-						required="true" requiredMessage="É necessário selecionar o aluno"
 						completeMethod="#{relatorioTarefasAluno.buscarEstudante}"
 						converter="estudanteConverter" var="estudante" event="itemselect"
 						itemLabel="#{estudante.nome}" itemValue="#{estudante}"
@@ -98,11 +74,11 @@
 				</p:panelGrid>
 				<p:panelGrid columns="3" cellpadding="10">
 					<p:commandButton value="Pesquisar " id="ajax" update="@form"
-						actionListener="#{listagemAtividadesBean.pesquisar}"
+						actionListener="#{relatorioTarefasAluno.pesquisar}"
 						styleClass="ui-priority-primary" ajax="false" />
 
 					<p:commandButton value="Limpar " id="ajax2" update="@form"
-						actionListener="#{listagemAtividadesBean.limparInformacoes}"
+						actionListener="#{relatorioTarefasAluno.limpar}"
 						styleClass="ui-priority-primary" ajax="false" />
 
 				</p:panelGrid>

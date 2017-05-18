@@ -68,13 +68,14 @@ public class RelatorioTarefasAluno implements Serializable {
 			
 			pesquisar();
 
-			createDateModel();
 		}
 	}
 
 	private void createDateModel() {
-		if (!StringUtils.isEmpty(idEstudante)) {
-			tarefaGraficos = tarefaDao.buscarTarefasPorEstudante(Long.parseLong(idEstudante));
+		System.out.println("++++++++++++CreateDateModel+++++++++++++++++++++");
+		if (estudanteSelecionado != null) {
+			System.out.println("idEstudante diferente de null");
+			tarefaGraficos = tarefaDao.buscarTarefasPorEstudante(estudanteSelecionado, templateSelecionado);
 			graficoAcertos = new LineChartModel();
 			graficoErros = new LineChartModel();
 			LineChartSeries serieAcertos = new LineChartSeries();
@@ -120,7 +121,7 @@ public class RelatorioTarefasAluno implements Serializable {
 	}
 
 	public void pesquisar() {
-		createDateModel();
+		
 
 		setTarefasDoEstudante(new LazyDataModel<Tarefa>() {
 
@@ -139,11 +140,12 @@ public class RelatorioTarefasAluno implements Serializable {
 					this.setRowCount(tarefaDao.contarTarefas(estudanteSelecionado, templateSelecionado));
 				} else
 					this.setRowCount(0);
-
+				createDateModel();
 				return listaDocumento;
 			}
 
 		});
+		
 	}
 	
 	private boolean isParametroInformado(){
@@ -157,6 +159,8 @@ public class RelatorioTarefasAluno implements Serializable {
 	public void limpar() {
 		this.idEstudante = "";
 		estudanteSelecionado = null;
+		templateSelecionado = null;
+		tarefaGraficos = new ArrayList<>();
 		
 		pesquisar();
 	}
