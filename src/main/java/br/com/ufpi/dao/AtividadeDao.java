@@ -3,6 +3,7 @@ package br.com.ufpi.dao;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -94,7 +95,7 @@ public class AtividadeDao implements Serializable{
 		return listaAtividade.get(0);
 	}
 	
-	public List<Atividade> listarAtividades(String nomeAtividade, TemplateEnum templateSelecionado, String palavra, int first, int pageSize,
+	public List<Atividade> listarAtividades(String nomeAtividade, TemplateEnum templateSelecionado, String palavra, Set<Long> idsAtividadesExcluidas, int first, int pageSize,
 			List<SortMeta> multiSortMeta) {
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
 
@@ -141,6 +142,11 @@ public class AtividadeDao implements Serializable{
 			predicates.add(palavraPredicate);
 		}
 		
+		if(!CollectionUtils.isEmpty(idsAtividadesExcluidas)){
+			Predicate idsPredicate = criteriaBuilder.not(atividadeRoot.<String> get("id").in(idsAtividadesExcluidas));
+			predicates.add(idsPredicate);
+		}
+		
 		if (!CollectionUtils.isEmpty(predicates))
 			atividadeQuery.where(predicates.toArray(new Predicate[] {}));
 		TypedQuery<Atividade> query = em.createQuery(atividadeQuery);
@@ -157,7 +163,7 @@ public class AtividadeDao implements Serializable{
 		em.remove(atividadeSelecionada);
 	}
 
-	public int contarAtividades(String nomeAtividade, TemplateEnum templateSelecionado, String palavra) {
+	public int contarAtividades(String nomeAtividade, TemplateEnum templateSelecionado, String palavra, Set<Long> idsAtividadesExcluidas) {
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
 		CriteriaQuery<Long> atividadeQuery = criteriaBuilder.createQuery(Long.class);
 		Root<Atividade> atividadeRoot = atividadeQuery.from(Atividade.class);
@@ -180,6 +186,11 @@ public class AtividadeDao implements Serializable{
 			Predicate palavraPredicate = criteriaBuilder.like(
 					criteriaBuilder.lower(atividadeRoot.<String> get("palavra")), "%" + palavra.toLowerCase() + "%");
 			predicates.add(palavraPredicate);
+		}
+		
+		if(!CollectionUtils.isEmpty(idsAtividadesExcluidas)){
+			Predicate idsPredicate = criteriaBuilder.not(atividadeRoot.<String> get("id").in(idsAtividadesExcluidas));
+			predicates.add(idsPredicate);
 		}
 		
 		if (!CollectionUtils.isEmpty(predicates))

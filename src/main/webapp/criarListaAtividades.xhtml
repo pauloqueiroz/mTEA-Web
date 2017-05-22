@@ -4,117 +4,227 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core" template="index.xhtml">
 
+
 	<ui:define name="centro">
 		<style>
 .primeira-coluna {
-	width: 70%;
+	width: 60%;
 }
 
 .segunda-coluna {
-	width: 30%;
+	width: 40%;
 	display: inline;
 }
 </style>
-		<script>
-			function showDialog() {
-				PF('dialogo').show();
-			}
+		<script type="text/javascript">
+		    function handleDrop(event, ui) {
+		        var droppedAtividade = ui.draggable;
+		 
+		        droppedAtividade.fadeOut('fast');
+		    }
 		</script>
-		<p:tabView style="min-height: 99%">
-			<p:tab title="Produtos">
-				<h:form>
-					<h:panelGrid columns="2"
-						columnClasses="primeira-coluna, segunda-coluna" cellpadding="0"
-						cellspacing="0">
-						<p:fieldset legend="Produtos Disponíveis">
-							<p:dataGrid id="produtosDisponiveis" var="produto"
-								value="#{produtoBean.produtos}" lazy="true" rows="12"
-								columns="4" paginator="true" paginatorPosition="bottom">
-								<p:panel id="pnl" header="#{produto.descricao}"
-									style="text-align:center">
-									<h:panelGrid columns="1" style="width:100%">
-										<p:graphicImage name="produto.png" width="70" height="60" />
-										<h:outputText value="#{produto.precoUnitario}">
-											<f:convertNumber pattern="R$ #,##0.00" />
-										</h:outputText>
-										<p:outputPanel>
-											<p:commandButton icon="ui-icon-plus"
-												action="#{carrinhoBean.adicionarNoCarrinho(produto)}"
-												title="Adicionar no carrinho"
-												update=":#{p:component('areaSelecao')}" />
-											<p:commandButton icon="ui-icon-search"
-												title="Detalhes do Produto" oncomplete="showDialog()"
-												update=":#{p:component('dialog')}">
-												<f:setPropertyActionListener
-													target="#{carrinhoBean.produtoSelecionado}"
-													value="#{produto}" />
-											</p:commandButton>
-										</p:outputPanel>
-									</h:panelGrid>
-								</p:panel>
 
-								<p:draggable for="pnl" revert="true" handle=".ui-panel-titlebar"
-									stack=".ui-panel" />
-							</p:dataGrid>
-							<p:dialog id="dialog" header="Detalhes do Produto"
-								widgetVar="dialogo" modal="true" appendTo="@(body)" width="400"
-								height="200" draggable="false">
-								<h:panelGrid columns="2">
-									<p:outputLabel for="id" value="Id" />
-									<h:outputText id="id"
-										value="#{carrinhoBean.produtoSelecionado.id}" />
-									<p:outputLabel for="descricao" value="Descrição" />
-									<h:outputText id="descricao"
-										value="#{carrinhoBean.produtoSelecionado.descricao}" />
-									<p:outputLabel for="preco" value="Preço" />
-									<h:outputText id="preco"
-										value="#{carrinhoBean.produtoSelecionado.precoUnitario}" />
-									<p:outputLabel for="tipo" value="Tipo" />
-									<h:outputText id="tipo"
-										value="#{carrinhoBean.produtoSelecionado.tipo}" />
-								</h:panelGrid>
-							</p:dialog>
-						</p:fieldset>
+		<h:form id="listaAtividadeForm">
+			<center>
+				<h1>Dados da lista</h1>
+				<p:panelGrid columns="2" id="panelDadosLista">
+					<p:outputLabel for="nome" value="Nome da lista" />
+					<p:inputText id="nome"
+						value="#{cadastroListaAtividadeBean.lista.nome}"
+						validatorMessage="O nome do aluno deve conter somente letras."
+						required="true"
+						requiredMessage="É necessário informar o nome do Aluno.">
+					</p:inputText>
+					<p:outputLabel for="desc" value="Descrição" />
+					<p:inputTextarea
+						value="#{cadastroListaAtividadeBean.lista.descricao}" id="desc" />
+				</p:panelGrid>
+				<br />
+<!-- 				<p:fieldset legend="Filtrar atividades" toggleable="true" -->
+<!-- 					toggleSpeed="500" collapsed="true"> -->
+<!-- 					<p:panelGrid columns="2" styleClass="semBorda"> -->
+<!-- 						<p:outputLabel value="Nome do estudante: " /> -->
+<!-- 						<p:inputText value="#{cadastroListaAtividadeBean.nomeAtividade}" /> -->
+<!-- 						<p:outputLabel for="comboTemplate" value="Selecione o template: " /> -->
+<!-- 						<p:selectOneMenu id="comboTemplate" -->
+<!-- 							value="#{cadastroListaAtividadeBean.templateSelecionado}" -->
+<!-- 							required="false"> -->
+<!-- 							<f:selectItem itemLabel="Selecione o template" itemValue="" /> -->
+<!-- 							<f:selectItems value="#{cadastroListaAtividadeBean.templates}" /> -->
+<!-- 						</p:selectOneMenu> -->
+<!-- 						<p:outputLabel value="Palavra: " /> -->
+<!-- 						<p:inputText value="#{cadastroListaAtividadeBean.palavra}" /> -->
+<!-- 					</p:panelGrid> -->
+<!-- 					<p:panelGrid columns="2" cellpadding="10"> -->
+<!-- 						<p:commandButton value="Pesquisar " id="ajax" -->
+<!-- 							update=":listaAtividadeForm:atividadesDisponiveisField" -->
+<!-- 							actionListener="#{cadastroListaAtividadeBean.pesquisar}" -->
+<!-- 							styleClass="ui-priority-primary" ajax="true" /> -->
+<!-- 						<p:commandButton value="Limpar" id="ajax2" -->
+<!-- 							update=":listaAtividadeForm:atividadesDisponiveis" -->
+<!-- 							actionListener="#{cadastroListaAtividadeBean.limparInformacoes}" -->
+<!-- 							styleClass="ui-priority-primary" ajax="true" /> -->
+<!-- 					</p:panelGrid> -->
+<!-- 				</p:fieldset> -->
+			</center>
+			<br />
+			<h:panelGrid columns="2"
+				columnClasses="primeira-coluna, segunda-coluna" cellpadding="0"
+				cellspacing="0">
+				<p:fieldset id="atividadesDisponiveisField"
+					legend="Atividades disponiveis">
+					<p:dataTable id="atividadesDisponiveis" var="atividade"
+						paginator="true" rows="5"
+						emptyMessage="Nenhuma atividade disponível"
+						style="text-align: center" paginatorPosition="bottom" lazy="true"
+						value="#{cadastroListaAtividadeBean.atividades}"
+						rowKey="atividade" sortMode="multiple">
+						<p:column style="width:20px" headerText="Arraste">
+							<h:outputText id="dragIcon" styleClass="ui-icon ui-icon-arrow-4"
+								title="clique e arraste" />
+							<p:draggable for="dragIcon" revert="true" helper="clone" />
+						</p:column>
 
-						<p:fieldset id="produtoSelecionados"
-							legend="Produtos selecionados">
-							<p:outputPanel id="areaSelecao">
-								<p:dataTable id="tabela" value="#{carrinhoBean.itemCarrinho}"
-									var="itemCarrinho" emptyMessage="Nenhum produto no carrinho"
-									rows="5" paginator="true" paginatorPosition="bottom">
-									<p:column width="40">
-										<p:commandButton icon="ui-icon-trash" title="Remover item"
-											action="#{carrinhoBean.remover(itemCarrinho)}"
-											update="tabela" />
-									</p:column>
-									<p:column headerText="Descrição">
-										<h:outputText value="#{itemCarrinho.produto.descricao}" />
-									</p:column>
-									<p:column headerText="Quantidade" width="100">
-										<p:inputText value="#{itemCarrinho.quantidade}"
-											style="width: 90px" />
-									</p:column>
-									<f:facet name="footer">
-										<p:commandButton value="Finalizar compra" icon="ui-icon-check" />
-									</f:facet>
-								</p:dataTable>
+						<p:column headerText="Nome da atividade"
+							sortBy="#{atividade.nome}">
+							<p:outputLabel value="#{atividade.nome}" />
+						</p:column>
+						<p:column headerText="Template" sortBy="#{atividade.template}">
+							<p:outputLabel value="#{atividade.templateToString}" />
+						</p:column>
+						<p:column headerText="Palavra" sortBy="#{atividade.palavra}">
+							<p:outputLabel value="#{atividade.palavra}" />
+						</p:column>
+						<p:column headerText="Ações">
+							<p:commandButton id="detalheAtividadeButton"
+								actionListener="#{cadastroListaAtividadeBean.definirAtividadeDetalhes(atividade)}"
+								oncomplete="PF('detalhesAtividade').show();"
+								style="margin-right: 10px" icon="ui-icon-search"
+								update=":#{p:component('detalhesAtividade')}"
+								title="Ver detalhes da atividade" />
+							<p:commandButton icon="ui-icon-plus" id="botaoAdicionar"
+								actionListener="#{cadastroListaAtividadeBean.adicionar(atividade)}"
+								update=":listaAtividadeForm:dropArea :listaAtividadeForm:atividadesSelecionadas :listaAtividadeForm:atividadesDisponiveis"
+								title="Adicionar atividade" />
+						</p:column>
 
-							</p:outputPanel>
-						</p:fieldset>
+					</p:dataTable>
+				</p:fieldset>
+				<p:fieldset id="atividadesSelecionadas"
+					legend="Atividades selecionadas"
+					style="margin-top:20px;margin-left:5%;">
+					<p:outputPanel id="dropArea">
+						<h:outputText value="Arraste as atividades para cá"
+							rendered="#{empty cadastroListaAtividadeBean.atividadesSelecionadas}"
+							style="font-size:24px;" />
+						<p:dataTable id="atividadesSelecionadasTable" var="atividade"
+							value="#{cadastroListaAtividadeBean.atividadesSelecionadas}"
+							rendered="#{not empty cadastroListaAtividadeBean.atividadesSelecionadas}">
 
-						<p:droppable for="produtoSelecionados" tolerance="touch"
-							activeStyleClass="ui-state-highlight"
-							datasource="produtosDisponiveis">
-							<p:ajax listener="#{carrinhoBean.quandoSelecionarUmProduto}"
-								update="areaSelecao produtosDisponiveis" />
-						</p:droppable>
+							<p:column headerText="Nome da atividade"
+								sortBy="#{atividade.nome}">
+								<p:outputLabel value="#{atividade.nome}" />
+							</p:column>
+							<p:column headerText="Template" sortBy="#{atividade.template}">
+								<p:outputLabel value="#{atividade.templateToString}" />
+							</p:column>
+							<p:column headerText="Palavra" sortBy="#{atividade.palavra}">
+								<p:outputLabel value="#{atividade.palavra}" />
+							</p:column>
 
+							<p:column headerText="Ações">
+								<p:commandButton icon="ui-icon-close" id="botaoRemover"
+									style="margin-right: 10px"
+									actionListener="#{cadastroListaAtividadeBean.remover(atividade)}"
+									update=":listaAtividadeForm:dropArea :listaAtividadeForm:atividadesSelecionadas :listaAtividadeForm:atividadesDisponiveis"
+									title="Remover atividade" />
+							</p:column>
 
-					</h:panelGrid>
+						</p:dataTable>
+					</p:outputPanel>
+				</p:fieldset>
 
-				</h:form>
-			</p:tab>
-		</p:tabView>
+				<p:droppable for="atividadesSelecionadas" tolerance="touch"
+					id="droppableAtividades" activeStyleClass="ui-state-highlight"
+					datasource="atividadesDisponiveis" onDrop="handleDrop">
+					<p:ajax listener="#{cadastroListaAtividadeBean.onAtividadeDrop}"
+						update="dropArea atividadesDisponiveis" />
+				</p:droppable>
+			</h:panelGrid>
+
+			<p:panelGrid columns="2" cellpadding="10">
+				<p:commandButton value="Criar lista" id="ajax3"
+					action="#{cadastroListaAtividadeBean.cadastrar}"
+					styleClass="ui-priority-primary"/>
+				<p:commandButton value="Limpar" id="ajax4"
+					update=":listaAtividadeForm:atividadesDisponiveis"
+					actionListener="#{cadastroListaAtividadeBean.cancelar}"
+					styleClass="ui-priority-primary"/>
+			</p:panelGrid>
+
+			<p:dialog id="detalhesAtividade" header="Detalhes da Atividade"
+				widgetVar="detalhesAtividade" closable="true" height="400"
+				width="800" closeOnEscape="true" showHeader="true" showEffect="true"
+				position="center" responsive="true" draggable="true">
+				<center>
+					<p:panelGrid columns="2">
+						<p:outputLabel value="Nome da atividade" style="font-weight: bold" />
+						<p:outputLabel
+							value="#{cadastroListaAtividadeBean.atividadeSelecionada.nome}" />
+
+						<p:outputLabel value="Template" style="font-weight: bold" />
+						<p:outputLabel
+							value="#{cadastroListaAtividadeBean.atividadeSelecionada.templateToString}" />
+
+						<p:outputLabel value="Link do reforço" style="font-weight: bold" />
+						<p:outputLabel
+							value="#{cadastroListaAtividadeBean.atividadeSelecionada.reforco}" />
+
+						<p:outputLabel value="Palavra" style="font-weight: bold" />
+						<p:outputLabel
+							value="#{cadastroListaAtividadeBean.atividadeSelecionada.palavra}" />
+
+					</p:panelGrid>
+					<p:dataTable var="imagem" paginator="true" rows="5"
+						style="width: 400" paginatorPosition="bottom" id="tabelaImagens"
+						value="#{cadastroListaAtividadeBean.imagens}"
+						rowIndexVar="rowIndex"
+						emptyMessage="Não foram encontrados registros">
+						<p:column>
+							<p:commandLink value="Imagem #{rowIndex+1}" ajax="false"
+								style="font-size:14px;color:blue;" target="_blank">
+								<p:fileDownload
+									value="#{cadastroListaAtividadeBean.downloadImagem(imagem)}" />
+							</p:commandLink>
+						</p:column>
+					</p:dataTable>
+				</center>
+			</p:dialog>
+
+			<!--     <p:dialog header="Car Detail" widgetVar="carDialog" resizable="false" draggable="false" -->
+			<!--                 showEffect="fade" hideEffect="fade" modal="true"> -->
+
+			<!--         <p:outputPanel id="display"> -->
+			<!--             <h:panelGrid columns="2" cellpadding="4" rendered="#{not empty dndCarsView.selectedCar}"> -->
+			<!--                 <f:facet name="header"> -->
+			<!--                     <p:graphicImage name="demo/images/car/#{dndCarsView.selectedCar.brand}.gif"/> -->
+			<!--                 </f:facet> -->
+
+			<!--                 <h:outputText value="Id:" /> -->
+			<!--                 <h:outputText value="#{dndCarsView.selectedCar.id}" style="font-weight:bold"/> -->
+
+			<!--                 <h:outputText value="Year:" /> -->
+			<!--                 <h:outputText value="#{dndCarsView.selectedCar.year}" style="font-weight:bold"/> -->
+
+			<!--                 <h:outputText value="Brand:" /> -->
+			<!--                 <h:outputText value="#{dndCarsView.selectedCar.brand}" style="font-weight:bold"/> -->
+
+			<!--                 <h:outputText value="Color:" /> -->
+			<!--                 <h:outputText value="#{dndCarsView.selectedCar.color}" style="font-weight:bold"/> -->
+			<!--             </h:panelGrid> -->
+			<!--         </p:outputPanel> -->
+			<!--     </p:dialog> -->
+		</h:form>
 	</ui:define>
 
 </ui:composition>
