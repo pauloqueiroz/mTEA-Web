@@ -1,0 +1,78 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core" template="index.xhtml">
+
+	<ui:define name="centro">
+		<style>
+.companyHeaderGrid tr, .companyHeaderGrid td {
+	border: none !important;
+}
+
+.ui-growl {
+	left: 850px;
+	top: 93px;
+}
+</style>
+		<style>
+.semBorda tr, .semBorda td {
+	border: none !important;
+}
+</style>
+		<h:body>
+
+			<p:messages id="mensagem" showDetail="false" closable="true" />
+			<center>
+				<h:form id="formPrincipal">
+					<f:metadata>
+						<f:viewParam name="idListaAtividade"
+							value="#{edicaoListaAtividadeBean.idListaAtividade}" />
+						<f:event type="preRenderView"
+							listener="#{edicaoListaAtividadeBean.buscarListaAtividade()}" />
+					</f:metadata>
+					<p:panelGrid id="panelDadosListaAtividade" header="Dados da lista"
+						columns="2">
+						<p:outputLabel for="nome" value="Nome da lista" />
+						<p:inputText id="nome" size="60"
+							value="#{edicaoListaAtividadeBean.lista.nome}" required="true"
+							requiredMessage="É necessário informar o nome do lista de atividade.">
+							<p:outputLabel for="desc" value="Descrição:" />
+							<p:inputTextarea
+								value="#{edicaoListaAtividadeBean.lista.descricao}" id="desc"
+								cols="60" />
+					</p:panelGrid>
+					<br />
+					<br />
+					<p:dataTable var="item" reflow="true" id="tabelaAtividades"
+						style="max-width:800px;" draggableRows="true"
+						value="#{edicaoListaAtividadeBean.lista.atividades}"
+						rowIndexVar="rowIndex"
+						emptyMessage="Não foram encontrados registros">
+						<f:facet name="header">
+            						Atividades
+        						</f:facet>
+						<p:column headerText="Nome da atividade">
+							<p:outputLabel value="#{item.atividade.nome}" />
+						</p:column>
+						<p:column headerText="Template">
+							<p:outputLabel value="#{item.atividade.templateToString}" />
+						</p:column>
+						<p:column headerText="Palavra">
+							<p:outputLabel value="#{item.atividade.palavra}" />
+						</p:column>
+						<p:column headerText="selecione para remover" width="100">
+							<p:selectBooleanCheckbox value="#{item.deletar}" />
+						</p:column>
+					</p:dataTable>
+					<p:panelGrid id="panelButtons" columns="2">
+						<p:commandButton value="Editar"
+							action="#{edicaoListaAtividadeBean.editar()}" ajax="false" />
+						<p:commandButton value="Cancelar" ajax="false"
+							action="listarListaAtividades.xhtml?faces-redirect=true" />
+					</p:panelGrid>
+				</h:form>
+			</center>
+		</h:body>
+	</ui:define>
+</ui:composition>

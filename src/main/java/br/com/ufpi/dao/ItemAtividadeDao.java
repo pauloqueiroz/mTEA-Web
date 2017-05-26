@@ -33,7 +33,6 @@ public class ItemAtividadeDao implements Serializable {
 
 	public ItemAtividadeDao() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public void atualizar(ItemAtividade itemAtividade) {
@@ -41,13 +40,19 @@ public class ItemAtividadeDao implements Serializable {
 	}
 	
 	public Set<ItemAtividade> carregarAtividades(ListaAtividade lista){
-		String hql = "Select i from ItemAtividade i where i.lista = :lista";
+		String hql = "Select i from ItemAtividade i where i.lista = :lista order by i.ordem";
 		TypedQuery<ItemAtividade> query = em.createQuery(hql, ItemAtividade.class);
 		query.setParameter("lista", lista);
 		List<ItemAtividade> list = query.getResultList();
 		if(!CollectionUtils.isEmpty(list))
 			return new HashSet<>(list);
 		return null;
+	}
+
+	public void deletar(ItemAtividade atividade) {
+		atividade = em.merge(atividade);
+		em.remove(atividade);
+		
 	}
 
 }

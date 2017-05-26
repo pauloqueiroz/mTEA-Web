@@ -31,6 +31,8 @@ public class ItemAtividade implements Serializable{
     
 	@ManyToOne(fetch=FetchType.EAGER)
 	private Atividade atividade;
+	
+	private transient boolean deletar;
 
 	public ItemAtividade() {
 	
@@ -66,6 +68,14 @@ public class ItemAtividade implements Serializable{
 
 	public void setAtividade(Atividade atividade) {
 		this.atividade = atividade;
+	}
+	
+	public boolean isDeletar() {
+		return deletar;
+	}
+
+	public void setDeletar(boolean deletar) {
+		this.deletar = deletar;
 	}
 
 }

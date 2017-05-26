@@ -6,10 +6,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
-import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
@@ -33,7 +34,7 @@ import br.com.ufpi.util.ArquivoUtil;
  */
 @Named
 @ViewScoped
-public class SucessoCadastrarListaAtividadeBean implements Serializable{
+public class EdicaoListaAtividadeBean implements Serializable{
 
 	/**
 	 * 
@@ -50,13 +51,6 @@ public class SucessoCadastrarListaAtividadeBean implements Serializable{
 	
 	private ListaAtividade lista;
 	
-	@PostConstruct
-	public void init(){
-		FacesContext facesContext = FacesContext.getCurrentInstance();
-		facesContext.addMessage(null, new FacesMessage(
-				FacesMessage.SEVERITY_INFO, "Lista de atividades cadastrada com sucesso.", null));
-	}
-	
 	public void buscarListaAtividade() {
 		System.out.println("lista atividade id" +getIdListaAtividade());
 		if (getIdListaAtividade() != null){
@@ -64,7 +58,33 @@ public class SucessoCadastrarListaAtividadeBean implements Serializable{
 			Set<ItemAtividade> atividades = itemAtividadeDao.carregarAtividades(lista);
 			lista.setAtividades(atividades);
 		}
+	}
+	
+	public void editar(){
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		List<ItemAtividade> atividadesSelecionadas = new ArrayList<>();
+		// TODO Validar duplicidade no nome da lista de atividades.
+		for (ItemAtividade atividade : lista.getAtividades()) {
+			if (atividade.isDeletar())
+				atividadesSelecionadas.add(atividade);
+		}
+		int quantidadeAtividades = (lista.getAtividades().size() - atividadesSelecionadas.size());
+		if (quantidadeAtividades == 0 ){
+			facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					"A lista de atividades deve conter ao menos uma atividade",
+					null));
+			return;
+		}
 		
+		listaAtividadeDao.atualizar(lista);
+		for (ItemAtividade atividade : atividadesSelecionadas){
+			itemAtividadeDao.deletar(atividade);
+			lista.getAtividades().remove(atividade);
+		}
+		buscarListaAtividade();
+		facesContext.addMessage(null, new FacesMessage(
+				FacesMessage.SEVERITY_INFO, "Lista de atividades alterada com sucesso.",
+				null));
 	}
 	
 	public StreamedContent downloadArquivo(Arquivo imagem) throws IOException {
@@ -116,5 +136,7 @@ public class SucessoCadastrarListaAtividadeBean implements Serializable{
 	public void setIdListaAtividade(String idListaAtividade) {
 		this.idListaAtividade = idListaAtividade;
 	}	
+
+	
 
 }
