@@ -1,6 +1,7 @@
 package br.com.ufpi.dao;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -43,5 +44,22 @@ public class ListaAtividadeDao implements Serializable {
 
 	public void atualizar(ListaAtividade lista) {
 		em.merge(lista);
+	}
+
+	public ListaAtividade buscarPorId(long id) {
+		TypedQuery<ListaAtividade> query = em.createQuery(
+				"select lista from ListaAtividade lista where lista.id = :id",
+				ListaAtividade.class);
+
+		query.setParameter("id", id);
+
+		List<ListaAtividade> listaAtividade = query.getResultList();
+
+		if (listaAtividade == null || listaAtividade.isEmpty()) {
+			return null;
+		}
+		
+
+		return listaAtividade.get(0);
 	}
 }

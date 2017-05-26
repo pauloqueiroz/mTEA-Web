@@ -3,6 +3,7 @@ package br.com.ufpi.model;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -28,11 +29,43 @@ public class ItemAtividade implements Serializable{
 	@ManyToOne
 	private ListaAtividade lista;
     
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.EAGER)
 	private Atividade atividade;
 
 	public ItemAtividade() {
 	
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public int getOrdem() {
+		return ordem;
+	}
+
+	public void setOrdem(int ordem) {
+		this.ordem = ordem;
+	}
+
+	public ListaAtividade getLista() {
+		return lista;
+	}
+
+	public void setLista(ListaAtividade lista) {
+		this.lista = lista;
+	}
+
+	public Atividade getAtividade() {
+		return atividade;
+	}
+
+	public void setAtividade(Atividade atividade) {
+		this.atividade = atividade;
 	}
 
 }

@@ -15,6 +15,7 @@ import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -30,9 +31,11 @@ import org.primefaces.model.StreamedContent;
 
 import br.com.ufpi.dao.ArquivoDao;
 import br.com.ufpi.dao.AtividadeDao;
+import br.com.ufpi.dao.ListaAtividadeDao;
 import br.com.ufpi.enuns.TemplateEnum;
 import br.com.ufpi.model.Arquivo;
 import br.com.ufpi.model.Atividade;
+import br.com.ufpi.model.ItemAtividade;
 import br.com.ufpi.model.ListaAtividade;
 import br.com.ufpi.util.ArquivoUtil;
 
@@ -69,6 +72,9 @@ public class CadastroListaAtividadeBean implements Serializable {
 
 	@Inject
 	private ListaAtividade lista;
+	
+	@Inject
+	private ListaAtividadeDao listaAtividadeDao;
 
 	@PostConstruct
 	public void postConstructor() {
@@ -135,11 +141,29 @@ public class CadastroListaAtividadeBean implements Serializable {
 		pesquisar();
 	}
 
-	public void cadastrar() {
+	public void cadastrar() throws IOException {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		String validacoes = validarListaAtividades();
 		if (!StringUtils.isEmpty(validacoes))
 			facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, validacoes, null));
+		criarItensAtividade(lista, atividadesSelecionadas);
+		listaAtividadeDao.adicionar(lista);
+		ExternalContext ec = facesContext.getExternalContext();
+		ec.redirect("sucessoCadastrarListaAtividade.xhtml?idListaAtividade="+lista.getId());
+	}
+
+	private void criarItensAtividade(ListaAtividade lista, Set<Atividade> atividadesSelecionadas) {
+		Set<ItemAtividade> itens = new HashSet<>();
+		int ordem = 0;
+		for (Atividade atividade : atividadesSelecionadas) {
+			ItemAtividade item = new ItemAtividade();
+			item.setAtividade(atividade);
+			item.setLista(lista);
+			item.setOrdem(ordem);
+			itens.add(item);
+			ordem++;
+		}
+		lista.setAtividades(itens);
 	}
 
 	private String validarListaAtividades() {
@@ -147,7 +171,10 @@ public class CadastroListaAtividadeBean implements Serializable {
 			return "É necessário informar o nome da lista.";
 		if (CollectionUtils.isEmpty(atividadesSelecionadas))
 			return "É necessário adicionar atividades para a lista.";
-
+		int count = listaAtividadeDao.buscarListaPorNome(lista.getNome());
+		if(count > 0)	
+			return "Já existe uma atividade cadastrada com o nome "+lista.getNome()+".";
+		
 		return null;
 	}
 
@@ -268,6 +295,14 @@ public class CadastroListaAtividadeBean implements Serializable {
 
 	public void setTemplateSelecionado(TemplateEnum templateSelecionado) {
 		this.templateSelecionado = templateSelecionado;
+	}
+
+	public ListaAtividadeDao getListaAtividadeDao() {
+		return listaAtividadeDao;
+	}
+
+	public void setListaAtividadeDao(ListaAtividadeDao listaAtividadeDao) {
+		this.listaAtividadeDao = listaAtividadeDao;
 	}
 
 }

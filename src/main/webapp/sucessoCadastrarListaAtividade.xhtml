@@ -1,0 +1,80 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core" template="index.xhtml">
+
+	<ui:define name="centro">
+		<style>
+.companyHeaderGrid tr, .companyHeaderGrid td {
+	border: none !important;
+}
+
+.ui-growl {
+	left: 850px;
+	top: 93px;
+}
+</style>
+		<style>
+.semBorda tr, .semBorda td {
+	border: none !important;
+}
+</style>
+		<h:body>
+
+			<p:messages id="mensagem" showDetail="false" closable="true" />
+			<center>
+				<h:form id="formPrincipal">
+					<f:metadata>
+						<f:viewParam name="idListaAtividade"
+							value="#{sucessoCadastrarListaAtividadeBean.idListaAtividade}" />
+						<f:event type="preRenderView"
+							listener="#{sucessoCadastrarListaAtividadeBean.buscarListaAtividade}" />
+					</f:metadata>
+					<p:fieldset legend="Dados da Lista">
+						<p:panelGrid id="panelDadosListaAtividade" header="Dados da Lista"
+							columns="2">
+							<p:outputLabel value="Nome da list" />
+							<p:outputLabel
+								value="#{sucessoCadastrarListaAtividadeBean.lista.nome}" />
+							<p:outputLabel value="Descrição" />
+							<p:outputLabel
+								value="#{sucessoCadastrarListaAtividadeBean.lista.descricao}" />
+							<p:outputLabel value="Data de criação: " />
+							<p:outputLabel
+								value="#{sucessoCadastrarListaAtividadeBean.lista.dataCriacao}"
+								id="inputDataCriacao" />
+						</p:panelGrid>
+						<br />
+						<p:dataTable var="item" paginator="true" rows="10" reflow="true"
+							paginatorPosition="bottom" id="tabelaArquivos"
+							style="max-width:800px;"
+							value="#{sucessoCadastrarListaAtividadeBean.lista.atividades}"
+							rowIndexVar="rowIndex"
+							emptyMessage="Não foram encontrados registros">
+							<f:facet name="header">
+            					Atividades adicionadas
+        					</f:facet>
+
+							<p:column headerText="Nome da atividade">
+								<p:outputLabel value="#{item.atividade.nome}" />
+							</p:column>
+							<p:column headerText="Template">
+								<p:outputLabel value="#{item.atividade.templateToString}" />
+							</p:column>
+							<p:column headerText="Palavra">
+								<p:outputLabel value="#{item.atividade.palavra}" />
+							</p:column>
+						</p:dataTable>
+						<br />
+						<br />
+					</p:fieldset>
+					<p:commandButton style="align:center;"
+						value="Cadastrar outra lista" ajax="false"
+						action="criarListaAtividades.xhtml?faces-redirect=true" />
+
+				</h:form>
+			</center>
+		</h:body>
+	</ui:define>
+</ui:composition>
