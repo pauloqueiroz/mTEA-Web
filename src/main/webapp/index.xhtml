@@ -6,7 +6,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
 <h:head>
-	<meta charset="utf-8"/>
+	<meta charset="utf-8" />
 	<title>Projeto Autista</title>
 	<style>
 * {
@@ -29,6 +29,16 @@
 .ui-layout-south .ui-layout-unit-content {
 	overflow: hidden !important;
 }
+
+.textoRodape {
+	text-align: left;
+	font-weight: bold;
+	float: right;
+	padding-top: 12px;
+}
+.imagemRodape{
+	float: right;
+}
 </style>
 </h:head>
 <h:body>
@@ -41,18 +51,22 @@
 						url="index.xhtml" />
 
 					<p:submenu label="Alunos" icon="ui-icon-carat-1-s">
-						<p:menuitem value="Cadastrar Alunos" icon="ui-icon-plus" url="cadastrarAluno.xhtml"/>
-						<p:menuitem value="Listar Alunos" icon="ui-icon-bookmark" url="listarAluno.xhtml"/>
+						<p:menuitem value="Cadastrar Alunos" icon="ui-icon-plus"
+							url="cadastrarAluno.xhtml" />
+						<p:menuitem value="Listar Alunos" icon="ui-icon-bookmark"
+							url="listarAluno.xhtml" />
 					</p:submenu>
-					
+
 					<p:submenu label="Atividades" icon="ui-icon-pencil">
-						<p:menuitem value="Cadastrar Atividades" icon="ui-icon-plus" url="cadastrarAtividade.xhtml"/>
-						<p:menuitem value="Listar Atividades" icon="ui-icon-plus" url="listarAtividade.xhtml"/>
+						<p:menuitem value="Cadastrar Atividades" icon="ui-icon-plus"
+							url="cadastrarAtividade.xhtml" />
+						<p:menuitem value="Listar Atividades" icon="ui-icon-plus"
+							url="listarAtividade.xhtml" />
 					</p:submenu>
-					
+
 					<p:menuitem value="Relatórios" icon="ui-icon-plus"
 						url="relatorioTarefas.xhtml" />
-					
+
 					<p:menuitem value="Cadastrar usuários" icon="ui-icon-plus"
 						url="cadastrarUsuario.xhtml"
 						rendered="#{loginBean.usuarioLogado.admin}" />
@@ -70,9 +84,15 @@
 				Bem vindo
 			</ui:insert>
 		</p:layoutUnit>
-		<p:layoutUnit position="south" size="35"
-			style="text-align: right; padding-right: 40px; font-weight: bold">
-			<h:outputText value="&#169; Copyright 2017 - UFPI" />
+		<p:layoutUnit position="south" size="55">
+			<div class="imagemRodape">
+				<img src="resources/project-theme/images/footer.jpg" alt="laço" height="45"/>
+			</div>
+<!-- 			<p:graphicImage library="project-theme" name="images/footer.jpg" -->
+<!-- 				height="45" styleClass="imagemRodape"/> -->
+			<div class="textoRodape">
+				<h:outputText value="&#169; Copyright 2017 - UFPI" />
+			</div>
 		</p:layoutUnit>
 	</p:layout>
 </h:body>
