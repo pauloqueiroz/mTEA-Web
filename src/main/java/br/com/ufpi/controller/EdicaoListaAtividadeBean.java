@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -51,24 +52,30 @@ public class EdicaoListaAtividadeBean implements Serializable{
 	
 	private ListaAtividade lista;
 	
-	public void buscarListaAtividade() {
+	private Set<ItemAtividade> atividades;
+	
+	public void buscarListaAtividade() throws IOException {
 		System.out.println("lista atividade id" +getIdListaAtividade());
 		if (getIdListaAtividade() != null){
 			lista = listaAtividadeDao.buscarPorId(Long.parseLong(getIdListaAtividade()));
-			Set<ItemAtividade> atividades = itemAtividadeDao.carregarAtividades(lista);
-			lista.setAtividades(atividades);
+			atividades = itemAtividadeDao.carregarAtividades(lista);
+//			lista.setAtividades(atividades);
+		}else{
+			FacesContext facesContext = FacesContext.getCurrentInstance();
+			ExternalContext ec = facesContext.getExternalContext();
+			ec.redirect("index.xhtml");
 		}
 	}
 	
-	public void editar(){
+	public void editar() throws IOException{
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		List<ItemAtividade> atividadesSelecionadas = new ArrayList<>();
 		// TODO Validar duplicidade no nome da lista de atividades.
-		for (ItemAtividade atividade : lista.getAtividades()) {
+		for (ItemAtividade atividade : atividades) {
 			if (atividade.isDeletar())
 				atividadesSelecionadas.add(atividade);
 		}
-		int quantidadeAtividades = (lista.getAtividades().size() - atividadesSelecionadas.size());
+		int quantidadeAtividades = (atividades.size() - atividadesSelecionadas.size());
 		if (quantidadeAtividades == 0 ){
 			facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
 					"A lista de atividades deve conter ao menos uma atividade",
@@ -79,12 +86,17 @@ public class EdicaoListaAtividadeBean implements Serializable{
 		listaAtividadeDao.atualizar(lista);
 		for (ItemAtividade atividade : atividadesSelecionadas){
 			itemAtividadeDao.deletar(atividade);
-			lista.getAtividades().remove(atividade);
+			atividades.remove(atividade);
 		}
-		buscarListaAtividade();
-		facesContext.addMessage(null, new FacesMessage(
-				FacesMessage.SEVERITY_INFO, "Lista de atividades alterada com sucesso.",
-				null));
+		int ordem = 0;
+		for (ItemAtividade itemAtividade : atividades) {
+			System.out.println(itemAtividade.getOrdem());
+			itemAtividade.setOrdem(ordem);
+			itemAtividadeDao.atualizar(itemAtividade);
+			ordem++;
+		}
+		ExternalContext ec = facesContext.getExternalContext();
+		ec.redirect("sucessoCadastrarListaAtividade.xhtml?idListaAtividade="+lista.getId());
 	}
 	
 	public StreamedContent downloadArquivo(Arquivo imagem) throws IOException {
@@ -135,6 +147,14 @@ public class EdicaoListaAtividadeBean implements Serializable{
 
 	public void setIdListaAtividade(String idListaAtividade) {
 		this.idListaAtividade = idListaAtividade;
+	}
+
+	public Set<ItemAtividade> getAtividades() {
+		return atividades;
+	}
+
+	public void setAtividades(Set<ItemAtividade> atividades) {
+		this.atividades = atividades;
 	}	
 
 	
