@@ -147,6 +147,7 @@ public class CadastroListaAtividadeBean implements Serializable {
 		if (!StringUtils.isEmpty(validacoes))
 			facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, validacoes, null));
 		criarItensAtividade(lista, atividadesSelecionadas);
+		lista.setDataCriacao(new Date());
 		listaAtividadeDao.adicionar(lista);
 		ExternalContext ec = facesContext.getExternalContext();
 		ec.redirect("sucessoCadastrarListaAtividade.xhtml?idListaAtividade="+lista.getId());

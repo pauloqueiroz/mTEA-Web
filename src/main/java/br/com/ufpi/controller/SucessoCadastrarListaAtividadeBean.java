@@ -54,7 +54,7 @@ public class SucessoCadastrarListaAtividadeBean implements Serializable{
 	public void init(){
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		facesContext.addMessage(null, new FacesMessage(
-				FacesMessage.SEVERITY_INFO, "Lista de atividades cadastrada com sucesso.", null));
+				FacesMessage.SEVERITY_INFO, "Sucesso ao realizar operação.", null));
 	}
 	
 	public void buscarListaAtividade() {

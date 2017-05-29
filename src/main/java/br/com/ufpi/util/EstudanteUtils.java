@@ -27,38 +27,35 @@ import br.com.ufpi.model.Estudante;
  */
 public class EstudanteUtils {
 
-	
 	public static List<Student> converterEstudante(List<Estudante> estudantes) {
 		if (!CollectionUtils.isEmpty(estudantes)) {
 			List<Student> students = new ArrayList<>();
-//			for (Estudante estudante : estudantes)
-//				students.add(converterEstudanteLazy(estudante));
+			// for (Estudante estudante : estudantes)
+			// students.add(converterEstudanteLazy(estudante));
 			return students;
 		}
 		return null;
 	}
-	
-	
-	
-	public static Student converterEstudante(Estudante estudante, ArquivoDao arquivoDao){
-//		System.out.println(estudante.getAtividades().size());
-//		estudante.getAtividades(), arquivoDao
+
+	public static Student converterEstudante(Estudante estudante, ArquivoDao arquivoDao) {
+		// System.out.println(estudante.getAtividades().size());
+		// estudante.getAtividades(), arquivoDao
 		Student student = new Student(estudante.getId(), estudante.getNome(),
-				getDataFormatada(estudante.getDataNascimento()), arquivoDao.buscarIdReforco(estudante) , "null");
-//		List<Lesson> lessons = EstudanteUtils.converterAtividades(estudante.getAtividades(), arquivoDao);
-//		student.setLessons(lessons);
-		return student; 
+				getDataFormatada(estudante.getDataNascimento()), arquivoDao.buscarIdReforco(estudante), "null");
+		// List<Lesson> lessons =
+		// EstudanteUtils.converterAtividades(estudante.getAtividades(),
+		// arquivoDao);
+		// student.setLessons(lessons);
+		return student;
 	}
-	
-	
+
 	/*
-	public static Student converterEstudanteLazy(Estudante estudante){
-		System.out.println(estudante.getAtividades().size());
-		Student student = new Student(estudante.getId(), estudante.getNome(),
-				getDataFormatada(estudante.getDataNascimento()), null , null);
-		return student; 
-	}
-	*/
+	 * public static Student converterEstudanteLazy(Estudante estudante){
+	 * System.out.println(estudante.getAtividades().size()); Student student =
+	 * new Student(estudante.getId(), estudante.getNome(),
+	 * getDataFormatada(estudante.getDataNascimento()), null , null); return
+	 * student; }
+	 */
 
 	public static String getDataFormatada(Date data) {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -69,28 +66,28 @@ public class EstudanteUtils {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
 		return sdf.format(data);
 	}
-	
-	public static String getDataPadraoInternacional(Date data){
+
+	public static String getDataPadraoInternacional(Date data) {
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
-		return data != null?sdf.format(data):null;
+		return data != null ? sdf.format(data) : null;
 	}
-	
-	public static Date getDiaPosterior(Date data){
+
+	public static Date getDiaPosterior(Date data) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(data);
 		calendar.add(Calendar.DAY_OF_MONTH, 1);
 		return calendar.getTime();
 	}
-	
-	public static Date processarDataFinalGrafico(List<TarefaGrafico> tarefas){
-		if(CollectionUtils.isEmpty(tarefas) || tarefas.size() < 2)
+
+	public static Date processarDataFinalGrafico(List<TarefaGrafico> tarefas) {
+		if (CollectionUtils.isEmpty(tarefas) || tarefas.size() < 2)
 			return new Date();
 		Seconds diferencaMenor = null;
 		for (int i = 1; i < tarefas.size(); i++) {
-			DateTime data1 = new DateTime(tarefas.get(i-1).getInicio());
+			DateTime data1 = new DateTime(tarefas.get(i - 1).getInicio());
 			DateTime data2 = new DateTime(tarefas.get(i).getInicio());
 			Seconds segundos = Seconds.secondsBetween(data1, data2);
-			if(diferencaMenor == null || segundos.isLessThan(diferencaMenor))
+			if (diferencaMenor == null || segundos.isLessThan(diferencaMenor))
 				diferencaMenor = segundos;
 		}
 		DateTime ultimaData = new DateTime(tarefas.get(tarefas.size() - 1).getInicio());
@@ -99,31 +96,23 @@ public class EstudanteUtils {
 	}
 
 	/*
-	public static List<Lesson> converterAtividades(List<Atividade> atividades, ArquivoDao arquivoDao) {
-		List<Lesson> tarefas = new ArrayList<>();
-		
-		for (Atividade atividade : atividades) {
-			Lesson lesson = new Lesson(atividade.getId()
-					, atividade.getPalavra()
-					, atividade.getTemplate().ordinal()
-					, null
-					, String.valueOf(atividade.getEstudante().getId())
-					, null);
-			
-			//  Formar ou sobrepor palavras
-			 
-			if (atividade.getTemplate().ordinal() < 2) {
-				String idImagem = arquivoDao.buscarIdImagem(atividade);
-				lesson.setImage(idImagem);
-			}else{
-				List<Answer> answers = converterAnswers(atividade.getImagens());
-				lesson.setAnsewers(answers);
-			}
-			tarefas.add(lesson);
-		}
-		return CollectionUtils.isEmpty(tarefas)?null:tarefas;
-	}
-	*/
+	 * public static List<Lesson> converterAtividades(List<Atividade>
+	 * atividades, ArquivoDao arquivoDao) { List<Lesson> tarefas = new
+	 * ArrayList<>();
+	 * 
+	 * for (Atividade atividade : atividades) { Lesson lesson = new
+	 * Lesson(atividade.getId() , atividade.getPalavra() ,
+	 * atividade.getTemplate().ordinal() , null ,
+	 * String.valueOf(atividade.getEstudante().getId()) , null);
+	 * 
+	 * // Formar ou sobrepor palavras
+	 * 
+	 * if (atividade.getTemplate().ordinal() < 2) { String idImagem =
+	 * arquivoDao.buscarIdImagem(atividade); lesson.setImage(idImagem); }else{
+	 * List<Answer> answers = converterAnswers(atividade.getImagens());
+	 * lesson.setAnsewers(answers); } tarefas.add(lesson); } return
+	 * CollectionUtils.isEmpty(tarefas)?null:tarefas; }
+	 */
 
 	private static List<Answer> converterAnswers(List<Arquivo> imagens) {
 		List<Answer> answers = new ArrayList<>();
@@ -134,4 +123,21 @@ public class EstudanteUtils {
 		return answers;
 	}
 
+	public static Calendar beginDateToCalendar(Date date) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MILLISECOND, 0);
+
+		return cal;
+	}
+
+	public static Calendar endDateToCalendar(Date date) {
+		Calendar cal = beginDateToCalendar(date);
+		cal.add(Calendar.DATE, 1);
+		cal.add(Calendar.MILLISECOND, -1);
+		return cal;
+	}
 }

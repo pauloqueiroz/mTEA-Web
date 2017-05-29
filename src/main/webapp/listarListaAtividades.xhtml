@@ -1,0 +1,194 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core" template="index.xhtml">
+
+	<ui:define name="centro">
+
+		<style>
+.textArea {
+	resize: none;
+	width: 500px;
+	height: 300px;
+	overflow-y: auto;
+	margin-left: 400px;
+	margin-top: 10px;
+}
+
+.old {
+	background-color: #CCCCDD;
+	color: red;
+}
+
+.companyHeaderGrid tr, .companyHeaderGrid td {
+	border: none !important;
+}
+
+.centralizado tr, .centralizado td {
+	text-align: center;
+}
+</style>
+
+		<style>
+.semBorda tr, .semBorda td {
+	border: none !important;
+}
+</style>
+
+		<script>			
+		function descricaoCancelamento(){
+			var flag = document.getElementById('descricao');
+			flag.style.display = "block";
+			limparTextArea();
+		}		 		
+
+</script>
+
+		<script>		
+		function ocultar(){
+			var flag = document.getElementById('descricao');
+			flag.style.display = "none";
+		}		
+						  		
+</script>
+
+		<script>
+		function limparTextArea(){
+			document.getElementById('desc').value = "";
+		}
+</script>
+
+		<script>
+		function detalhes(){
+			var informacao = document.getElementById('detalhes');
+			informacao.style.display = "block";
+		}
+</script>
+
+		<p:messages id="growl" showDetail="false" closable="true" />
+
+		<h:form id="formPesquisar">
+			<p:fieldset legend="Pesquisar lista" toggleable="true"
+				toggleSpeed="500">
+				<p:panelGrid columns="2" styleClass="semBorda">
+					<p:outputLabel value="Nome da lista: " />
+					<p:inputText
+						value="#{listagemListaAtividadeBean.nomeListaAtividade}" />
+					<p:outputLabel value="Descricao: " />
+					<p:inputTextarea value="#{listagemListaAtividadeBean.descricao}"
+						id="desc" cols="60" />
+					<p:outputLabel value="Data de criação (início)" />
+					<p:calendar value="#{listagemListaAtividadeBean.dataInicio}"
+						pattern="dd/MM/yyyy" mask="true" />
+					<p:outputLabel value="Data de criação (fim)" />
+					<p:calendar value="#{listagemListaAtividadeBean.dataFinal}"
+						pattern="dd/MM/yyyy" mask="true" />
+				</p:panelGrid>
+				<p:panelGrid columns="3" cellpadding="10">
+					<p:commandButton value="Pesquisar " id="ajax" update="@form"
+						actionListener="#{listagemListaAtividadeBean.pesquisar()}"
+						styleClass="ui-priority-primary" ajax="false" />
+
+					<p:commandButton value="Limpar " id="ajax2" update="@form"
+						actionListener="#{listagemListaAtividadeBean.limparInformacoes()}"
+						styleClass="ui-priority-primary" ajax="false" />
+
+				</p:panelGrid>
+			</p:fieldset>
+
+		</h:form>
+
+		<p></p>
+		<h:form id="formTabelaEstudantes" enctype="multipart/form-data">
+			<p:fieldset legend="Listas de atividades" toggleable="true"
+				toggleSpeed="500">
+
+				<p:dataTable var="lista" paginator="true" rows="5"
+					emptyMessage="Nenhuma lista encontrada" style="text-align: center"
+					paginatorPosition="bottom" lazy="true" id="tabelaListas"
+					widgetVar="tabelaListas"
+					value="#{listagemListaAtividadeBean.listas}" rowKey="lista"
+					sortMode="multiple">
+
+					<f:facet name="header">
+            			Listas de atividades
+        			</f:facet>
+
+					<p:column headerText="Nome da lista" sortBy="#{lista.nome}">
+						<p:outputLabel value="#{lista.nome}" />
+					</p:column>
+					<p:column headerText="Descricao" sortBy="#{lista.descricao}">
+						<p:outputLabel value="#{lista.descricao}" />
+					</p:column>
+					<p:column headerText="Data de criação"
+						sortBy="#{lista.dataCriacao}">
+						<p:outputLabel value="##{lista.dataCriacao}">
+							<f:convertDateTime pattern="dd/MM/yyyy HH:mm"
+								timeZone="GMT-03:00" />
+						</p:outputLabel>
+					</p:column>
+
+					<p:column headerText="Ações">
+						<p:commandButton id="detalheListaButton"
+							actionListener="#{listagemListaAtividadeBean.definirListaDetalhes(lista)}"
+							oncomplete="PF('detalhesLista').show();"
+							style="margin-right: 10px" icon="ui-icon-search"
+							update=":#{p:component('detalhesLista')}"
+							title="Ver detalhes da lista" />
+						<p:link value="Editar"
+							outcome="editarListaAtividade.xhtml?idListaAtividade=#{lista.id}"
+							includeViewParams="false" target="_blank" />
+					</p:column>
+				</p:dataTable>
+
+			</p:fieldset>
+		</h:form>
+		<h:form id="formDetalhesLista" enctype="multipart">
+			<p:dialog id="detalhesLista" header="Detalhes da Lista"
+				widgetVar="detalhesLista" closable="true" height="400" width="800"
+				closeOnEscape="true" showHeader="true" showEffect="true"
+				position="center" responsive="true" draggable="true">
+				<center>
+					<p:panelGrid columns="2">
+						<p:outputLabel value="Nome da lista" style="font-weight: bold" />
+						<p:outputLabel
+							value="#{listagemListaAtividadeBean.listaSelecionada.nome}" />
+
+						<p:outputLabel value="Descrição" style="font-weight: bold" />
+						<p:outputLabel
+							value="#{listagemListaAtividadeBean.listaSelecionada.descricao}" />
+
+						<p:outputLabel value="Data de criação" style="font-weight: bold" />
+						<p:outputLabel
+							value="#{listagemListaAtividadeBean.listaSelecionada.dataCriacao}">
+							<f:convertDateTime pattern="dd/MM/yyyy HH:mm"
+								timeZone="GMT-03:00" />
+						</p:outputLabel>
+						<!-- colocar situacao depois -->
+						<!-- 						<p:outputLabel value="Palavra" style="font-weight: bold" /> -->
+						<!-- 						<p:outputLabel -->
+						<!-- 							value="#{listagemAtividadesBean.atividadeSelecionada.palavra}" /> -->
+
+					</p:panelGrid>
+					<p:dataTable var="item" paginator="true" rows="5"
+						style="width: 400" paginatorPosition="bottom"
+						id="tabelaAtividades"
+						value="#{listagemListaAtividadeBean.atividades}"
+						rowIndexVar="rowIndex"
+						emptyMessage="Não foram encontrados registros">
+						<p:column headerText="Nome da atividade">
+							<p:outputLabel value="#{item.atividade.nome}" />
+						</p:column>
+						<p:column headerText="Template" sortBy="#{item.atividade.template}">
+							<p:outputLabel value="#{item.atividade.templateToString}" />
+						</p:column>
+						<p:column headerText="Palavra" sortBy="#{atividade.palavra}">
+							<p:outputLabel value="#{item.atividade.palavra}" />
+						</p:column>
+					</p:dataTable>
+				</center>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

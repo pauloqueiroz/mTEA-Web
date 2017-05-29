@@ -8,12 +8,12 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -23,11 +23,11 @@ import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.StreamedContent;
 
-import br.com.ufpi.dao.ArquivoDao;
-import br.com.ufpi.dao.AtividadeDao;
-import br.com.ufpi.enuns.TemplateEnum;
+import br.com.ufpi.dao.ItemAtividadeDao;
+import br.com.ufpi.dao.ListaAtividadeDao;
 import br.com.ufpi.model.Arquivo;
-import br.com.ufpi.model.Atividade;
+import br.com.ufpi.model.ItemAtividade;
+import br.com.ufpi.model.ListaAtividade;
 import br.com.ufpi.util.ArquivoUtil;
 
 /**
@@ -37,92 +37,93 @@ import br.com.ufpi.util.ArquivoUtil;
  */
 @Named
 @ViewScoped
-public class ListagemListaAtividadeBean implements Serializable{
+public class ListagemListaAtividadeBean implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
+	private LazyDataModel<ListaAtividade> listas;
+
+	private String nomeListaAtividade;
+
+	private String descricao;
+
+	private Date dataInicio;
+
+	private Date dataFinal;
+
+	private Set<ItemAtividade> atividades;
+
 	@Inject
-	private AtividadeDao atividadeDao;
-	
+	private ListaAtividadeDao listaAtividadeDao;
+
 	@Inject
-	private ArquivoDao arquivoDao;
-	
-	private LazyDataModel<Atividade> atividades;
-	
-	private String nomeAtividade;
-	
-	private TemplateEnum templateSelecionado;
-	
-	private Atividade atividadeSelecionada;
-	
-	private List<Arquivo> imagens;
-	
+	private ItemAtividadeDao itemAtividadeDao;
+
+	private ListaAtividade listaSelecionada;
+
 	@PostConstruct
 	public void postConstructor() {
-		imagens = new ArrayList<>();
+		atividades = new HashSet<>();
 		pesquisar();
 	}
 
-
 	public void pesquisar() {
-//		atividades = new LazyDataModel<Atividade>() {
-//
-//			private static final long serialVersionUID = 1L;
-//
-//			@Override
-//			public List<Atividade> load(int first, int pageSize,
-//					List<SortMeta> multiSortMeta, Map<String, Object> filters) {
-//				List<Atividade> listaAtividades = new ArrayList<>();
-//
-//				listaAtividades = atividadeDao
-//						.listarAtividades(nomeAtividade, templateSelecionado, palavra, null, first, pageSize, multiSortMeta);
-//				
-//				this.setRowCount(atividadeDao
-//						.contarAtividades(nomeAtividade, templateSelecionado, palavra, null));
-//				
-//				return listaAtividades;
-//			}
-//
-//		};
-		
+		listas = new LazyDataModel<ListaAtividade>() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public List<ListaAtividade> load(int first, int pageSize, List<SortMeta> multiSortMeta,
+					Map<String, Object> filters) {
+				List<ListaAtividade> listas = new ArrayList<>();
+
+				listas = listaAtividadeDao.listar(nomeListaAtividade, descricao, dataInicio, dataFinal, first, pageSize,
+						multiSortMeta);
+
+				this.setRowCount(listaAtividadeDao.contar(nomeListaAtividade, descricao, dataInicio, dataFinal));
+
+				return listas;
+			}
+
+		};
+
 	}
-	
+
 	/**
 	 * Limpa os dados de pesquisa.
 	 */
 	public void limparInformacoes() {
-		nomeAtividade = "";
-		templateSelecionado = null;
-//		palavra = "";
+		nomeListaAtividade = "";
+		descricao = "";
+		dataInicio = null;
+		dataFinal = null;
 		pesquisar();
 	}
 
-	public TemplateEnum[] getTemplates() {
-		return TemplateEnum.values();
+	// public TemplateEnum[] getTemplates() {
+	// return TemplateEnum.values();
+	// }
+
+	public void definirListaDetalhes(ListaAtividade atividade) {
+		this.setListaSelecionada(atividade);
+		if (atividade != null) {
+			Set<ItemAtividade> arquivos = itemAtividadeDao.carregarAtividades(atividade);
+			atividade.setAtividades(arquivos);
+			setAtividades(atividade.getAtividades());
+		}
 	}
-	
-	public void definirAtividadeDetalhes(Atividade atividade){
-		this.atividadeSelecionada = atividade;
-		atividade = atividadeDao.carregarAtividadeComArquivos(atividade.getId());
-		if(atividade != null){
-			List<Arquivo> arquivos = arquivoDao.carregarArquivosDaAtividade(atividade);
-			atividade.setImagens(arquivos);
-			atividadeSelecionada = atividade;
-			imagens = atividade.getImagens();
-		}	
-	}
-	
-	public void excluir(){
-		atividadeDao.delete(atividadeSelecionada);
-		FacesContext facesContext = FacesContext.getCurrentInstance();
-		facesContext.addMessage(null, new FacesMessage(
-				FacesMessage.SEVERITY_INFO, "Atividade apagada com sucesso.",
-				"Atividade apagada com sucesso."));
-	}
-	
+
+	// public void excluir(){
+	// atividadeDao.delete(atividadeSelecionada);
+	// FacesContext facesContext = FacesContext.getCurrentInstance();
+	// facesContext.addMessage(null, new FacesMessage(
+	// FacesMessage.SEVERITY_INFO, "Atividade apagada com sucesso.",
+	// "Atividade apagada com sucesso."));
+	// }
+
 	public StreamedContent downloadImagem(Arquivo imagem) throws IOException {
 		SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyyhhmmss");
 		Date d = new Date();
@@ -141,61 +142,76 @@ public class ListagemListaAtividadeBean implements Serializable{
 		return arquivo;
 	}
 
-	public LazyDataModel<Atividade> getAtividades() {
+	public LazyDataModel<ListaAtividade> getListas() {
+		return listas;
+	}
+
+	public void setListas(LazyDataModel<ListaAtividade> listas) {
+		this.listas = listas;
+	}
+
+	public String getNomeListaAtividade() {
+		return nomeListaAtividade;
+	}
+
+	public void setNomeListaAtividade(String nomeListaAtividade) {
+		this.nomeListaAtividade = nomeListaAtividade;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
+	public Date getDataInicio() {
+		return dataInicio;
+	}
+
+	public void setDataInicio(Date dataInicio) {
+		this.dataInicio = dataInicio;
+	}
+
+	public Date getDataFinal() {
+		return dataFinal;
+	}
+
+	public void setDataFinal(Date dataFinal) {
+		this.dataFinal = dataFinal;
+	}
+
+	public ListaAtividadeDao getListaAtividadeDao() {
+		return listaAtividadeDao;
+	}
+
+	public void setListaAtividadeDao(ListaAtividadeDao listaAtividadeDao) {
+		this.listaAtividadeDao = listaAtividadeDao;
+	}
+
+	public ItemAtividadeDao getItemAtividadeDao() {
+		return itemAtividadeDao;
+	}
+
+	public void setItemAtividadeDao(ItemAtividadeDao itemAtividadeDao) {
+		this.itemAtividadeDao = itemAtividadeDao;
+	}
+
+	public ListaAtividade getListaSelecionada() {
+		return listaSelecionada;
+	}
+
+	public void setListaSelecionada(ListaAtividade listaSelecionada) {
+		this.listaSelecionada = listaSelecionada;
+	}
+
+	public Set<ItemAtividade> getAtividades() {
 		return atividades;
 	}
 
-
-	public void setAtividades(LazyDataModel<Atividade> atividades) {
+	public void setAtividades(Set<ItemAtividade> atividades) {
 		this.atividades = atividades;
 	}
 
-	public TemplateEnum getTemplateSelecionado() {
-		return templateSelecionado;
-	}
-
-
-	public void setTemplateSelecionado(TemplateEnum templateSelecionado) {
-		this.templateSelecionado = templateSelecionado;
-	}
-
-
-	public Atividade getAtividadeSelecionada() {
-		return atividadeSelecionada;
-	}
-
-
-	public void setAtividadeSelecionada(Atividade atividadeSelecionada) {
-		this.atividadeSelecionada = atividadeSelecionada;
-	}
-
-
-	public List<Arquivo> getImagens() {
-		return imagens;
-	}
-
-
-	public void setImagens(List<Arquivo> imagens) {
-		this.imagens = imagens;
-	}
-
-
-	public ArquivoDao getArquivoDao() {
-		return arquivoDao;
-	}
-
-
-	public void setArquivoDao(ArquivoDao arquivoDao) {
-		this.arquivoDao = arquivoDao;
-	}
-
-
-	public String getNomeAtividade() {
-		return nomeAtividade;
-	}
-
-
-	public void setNomeAtividade(String nomeAtividade) {
-		this.nomeAtividade = nomeAtividade;
-	}
 }
