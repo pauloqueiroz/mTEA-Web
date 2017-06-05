@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -75,6 +76,15 @@ public class LoginBean implements Serializable{
 		Map<String, Object> session = FacesContext.getCurrentInstance()
 				.getExternalContext().getSessionMap();
 		return (Usuario) session.get("usuarioDaSessao");
+	}
+	
+	public boolean isPaginaInicial(){
+		ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+		String uri = ((HttpServletRequest) externalContext.getRequest()).getRequestURI();
+		System.out.println("URI: " +uri);
+		if(uri.contains("index.xhtml"))
+			return true;
+		return false;
 	}
 
 	public String getLogin() {
