@@ -80,10 +80,10 @@ public class ListagemListaAtividadeBean implements Serializable {
 					Map<String, Object> filters) {
 				List<ListaAtividade> listas = new ArrayList<>();
 
-				listas = listaAtividadeDao.listar(nomeListaAtividade, descricao, dataInicio, dataFinal, first, pageSize,
+				listas = listaAtividadeDao.listar(nomeListaAtividade, descricao, dataInicio, dataFinal, null, first, pageSize,
 						multiSortMeta);
 
-				this.setRowCount(listaAtividadeDao.contar(nomeListaAtividade, descricao, dataInicio, dataFinal));
+				this.setRowCount(listaAtividadeDao.contar(nomeListaAtividade, descricao, dataInicio, dataFinal, null));
 
 				return listas;
 			}

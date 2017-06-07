@@ -179,52 +179,13 @@
 						<center>
 							<p:outputPanel>
 								<p:commandButton value="Criar lista" id="ajax3"
-									action="#{cadastroListaAtividadeBean.cadastrar}"
+									action="#{associarListaAtividades.cadastrar}"
 									styleClass="ui-priority-primary" />
 							</p:outputPanel>
 						</center>
 					</p:panel>
 				</p:tab>
 			</p:wizard>
-
-			<p:dialog id="detalhesAtividade" header="Detalhes da Atividade"
-				widgetVar="detalhesAtividade" closable="true" height="400"
-				width="800" closeOnEscape="true" showHeader="true" showEffect="true"
-				position="center" responsive="true" draggable="true">
-				<center>
-					<p:panelGrid columns="2">
-						<p:outputLabel value="Nome da atividade" style="font-weight: bold" />
-						<p:outputLabel
-							value="#{cadastroListaAtividadeBean.atividadeSelecionada.nome}" />
-
-						<p:outputLabel value="Template" style="font-weight: bold" />
-						<p:outputLabel
-							value="#{cadastroListaAtividadeBean.atividadeSelecionada.templateToString}" />
-
-						<p:outputLabel value="Link do reforço" style="font-weight: bold" />
-						<p:outputLabel
-							value="#{cadastroListaAtividadeBean.atividadeSelecionada.reforco}" />
-
-						<p:outputLabel value="Palavra" style="font-weight: bold" />
-						<p:outputLabel
-							value="#{cadastroListaAtividadeBean.atividadeSelecionada.palavra}" />
-
-					</p:panelGrid>
-					<p:dataTable var="imagem" paginator="true" rows="5"
-						style="width: 400" paginatorPosition="bottom" id="tabelaImagens"
-						value="#{cadastroListaAtividadeBean.imagens}"
-						rowIndexVar="rowIndex"
-						emptyMessage="Não foram encontrados registros">
-						<p:column>
-							<p:commandLink value="Imagem #{rowIndex+1}" ajax="false"
-								style="font-size:14px;color:blue;" target="_blank">
-								<p:fileDownload
-									value="#{cadastroListaAtividadeBean.downloadImagem(imagem)}" />
-							</p:commandLink>
-						</p:column>
-					</p:dataTable>
-				</center>
-			</p:dialog>
 
 		</h:form>
 	</ui:define>

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -14,6 +15,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
@@ -73,7 +75,7 @@ public class ListaAtividadeDao implements Serializable {
 	}
 
 	public List<ListaAtividade> listar(String nomeListaAtividade, String descricao, Date dataInicial, Date dataFinal,
-			int first, int pageSize, List<SortMeta> multiSortMeta) {
+			Set<Long> idsListasSelecionadas, int first, int pageSize, List<SortMeta> multiSortMeta) {
 
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
 
@@ -138,6 +140,11 @@ public class ListaAtividadeDao implements Serializable {
 			}
 		}
 		
+		if(!CollectionUtils.isEmpty(idsListasSelecionadas)){
+			Predicate idsPredicate = criteriaBuilder.not(listaRoot.<String> get("id").in(idsListasSelecionadas));
+			predicates.add(idsPredicate);
+		}
+		
 		if (predicates.size() > 0) {
             listaQuery.where(predicates.toArray(new Predicate[] {}));
         }
@@ -156,7 +163,7 @@ public class ListaAtividadeDao implements Serializable {
 
 	}
 
-	public int contar(String nomeListaAtividade, String descricao, Date dataInicial, Date dataFinal) {
+	public int contar(String nomeListaAtividade, String descricao, Date dataInicial, Date dataFinal, Set<Long> idsListasSelecionadas) {
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
         CriteriaQuery<Long> countQuery = criteriaBuilder.createQuery(Long.class);
         Root<ListaAtividade> listaRoot = countQuery.from(ListaAtividade.class);
@@ -197,6 +204,11 @@ public class ListaAtividadeDao implements Serializable {
 						.lessThanOrEqualTo(listaRoot.<Date> get("dataCriacao"), dataF);
 				predicates.add(dataEnvioFimPredicate);
 			}
+		}
+		
+		if(!CollectionUtils.isEmpty(idsListasSelecionadas)){
+			Predicate idsPredicate = criteriaBuilder.not(listaRoot.<String> get("id").in(idsListasSelecionadas));
+			predicates.add(idsPredicate);
 		}
  
         if (predicates.size() > 0) {

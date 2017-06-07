@@ -6,6 +6,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
 <h:head>
+	<meta charset="utf-8" />
 	<title>Projeto Autista</title>
 	<style>
 * {
@@ -52,13 +53,14 @@
 					<p:submenu label="Listas de atividades" icon="ui-icon-pencil">
 						<p:menuitem value="Criar Lista" icon="ui-icon-plus" url="criarListaAtividades.xhtml"/>
 						<p:menuitem value="Ver Listas" icon="ui-icon-plus" url="listarListaAtividades.xhtml"/>
+						<p:menuitem value="Exercícios" icon="ui-icon-plus" url="associarListaAtividade.xhtml"/>
 					</p:submenu>
 					
 					<p:submenu label="Execucoes de atividades" icon="ui-icon-pencil">
 						<p:menuitem value="Cadastro de execucao" icon="ui-icon-plus" url="cadastrarTarefa.xhtml"/>
 					</p:submenu>
 					
-					<p:menuitem value="Cadastrar usuários" icon="ui-icon-plus"
+					<p:menuitem value="Cadastrar usuÃ¡rios" icon="ui-icon-plus"
 						url="cadastrarUsuario.xhtml"
 						rendered="#{loginBean.usuarioLogado.admin}" />
 

@@ -3,10 +3,12 @@ package br.com.ufpi.controller;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -60,6 +62,13 @@ public class AssociarListaAtividades implements Serializable{
 		super();
 	}
 	
+	@PostConstruct
+	public void postConstructor() {
+		listasSelecionadas = new HashSet<>();
+		idsListasSelecionadas = new HashSet<>();
+		pesquisar();
+	}
+	
 	public void pesquisar() {
 		listas = new LazyDataModel<ListaAtividade>() {
 
@@ -70,10 +79,10 @@ public class AssociarListaAtividades implements Serializable{
 					Map<String, Object> filters) {
 				List<ListaAtividade> listas = new ArrayList<>();
 
-				listas = listaAtividadeDao.listar(nomeListaAtividade, descricao, dataInicio, dataFinal, first, pageSize,
+				listas = listaAtividadeDao.listar(nomeListaAtividade, descricao, dataInicio, dataFinal, idsListasSelecionadas, first, pageSize,
 						multiSortMeta);
 
-				this.setRowCount(listaAtividadeDao.contar(nomeListaAtividade, descricao, dataInicio, dataFinal));
+				this.setRowCount(listaAtividadeDao.contar(nomeListaAtividade, descricao, dataInicio, dataFinal, idsListasSelecionadas));
 
 				return listas;
 			}
