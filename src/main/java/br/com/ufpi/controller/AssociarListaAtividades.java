@@ -103,7 +103,17 @@ public class AssociarListaAtividades implements Serializable{
 		idsListasSelecionadas.remove(atividade.getId());
 		pesquisar();
 	}
+	
+	public void cadastrar(){
+		System.out.println(listasSelecionadas.size());
+		validarListas(listasSelecionadas);
+	}
 
+
+	private void validarListas(Set<ListaAtividade> listasSelecionadas2) {
+		// TODO Auto-generated method stub
+		
+	}
 
 	/**
 	 * Limpa os dados de pesquisa.

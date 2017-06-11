@@ -54,9 +54,9 @@
 						</h:panelGrid>
 					</p:panel>
 				</p:tab>
-				<p:tab id="tabSelecionarAtividades" title="Selecionar Listas">
+				<p:tab id="tabSelecionarListas" title="Selecionar Listas">
 					<br />
-					<p:panel columns="2" id="panelAtividadesSelecionadas"
+					<p:panel columns="2" id="panelListasSelecionadas"
 						style="margin-bottom:20px"
 						header="Selecionar Listas de Atividades">
 						<p:panel header="Filtrar listas" toggleable="true" closable="true"
@@ -89,11 +89,11 @@
 						<h:panelGrid columns="2"
 							columnClasses="primeira-coluna, segunda-coluna" cellpadding="0"
 							cellspacing="0">
-							<p:fieldset id="atividadesDisponiveisField"
+							<p:fieldset id="listasDisponiveisField"
 								legend="Listas disponiveis">
-								<p:dataTable id="atividadesDisponiveis" var="lista"
+								<p:dataTable id="listasDisponiveis" var="lista"
 									paginator="true" rows="5"
-									emptyMessage="Nenhuma atividade disponível"
+									emptyMessage="Nenhuma lista disponível"
 									style="text-align: center" paginatorPosition="bottom"
 									lazy="true" value="#{associarListaAtividades.listas}"
 									rowKey="lista" sortMode="multiple">
@@ -117,28 +117,22 @@
 										</p:outputLabel>
 									</p:column>
 									<p:column headerText="Ações">
-										<!-- 										<p:commandButton id="detalheAtividadeButton" -->
-										<!-- 											actionListener="#{cadastroListaAtividadeBean.definirAtividadeDetalhes(atividade)}" -->
-										<!-- 											oncomplete="PF('detalhesAtividade').show();" -->
-										<!-- 											style="margin-right: 10px" icon="ui-icon-search" -->
-										<!-- 											update=":#{p:component('detalhesAtividade')}" -->
-										<!-- 											title="Ver detalhes da atividade" /> -->
 										<p:commandButton icon="ui-icon-plus" id="botaoAdicionar"
 											actionListener="#{associarListaAtividades.adicionar(lista)}"
-											update=":listaAtividadeForm:dropArea :listaAtividadeForm:atividadesSelecionadas :listaAtividadeForm:atividadesDisponiveis"
+											update=":listaAtividadeForm:dropArea :listaAtividadeForm:listasSelecionadas :listaAtividadeForm:listasDisponiveis"
 											title="Adicionar lista" />
 									</p:column>
 
 								</p:dataTable>
 							</p:fieldset>
-							<p:fieldset id="atividadesSelecionadas"
+							<p:fieldset id="listasSelecionadas"
 								legend="Listas selecionadas"
 								style="margin-top:20px;margin-left:5%;">
 								<p:outputPanel id="dropArea">
 									<h:outputText value="Arraste as listas para cá"
 										rendered="#{empty associarListaAtividades.listasSelecionadas}"
 										style="font-size:24px;" />
-									<p:dataTable id="atividadesSelecionadasTable" var="lista"
+									<p:dataTable id="listasSelecionadasTable" var="lista"
 										value="#{associarListaAtividades.listasSelecionadas}"
 										rendered="#{not empty associarListaAtividades.listasSelecionadas}">
 
@@ -160,7 +154,7 @@
 											<p:commandButton icon="ui-icon-close" id="botaoRemover"
 												style="margin-right: 10px"
 												actionListener="#{associarListaAtividades.remover(lista)}"
-												update=":listaAtividadeForm:dropArea :listaAtividadeForm:atividadesSelecionadas :listaAtividadeForm:atividadesDisponiveis"
+												update=":listaAtividadeForm:dropArea :listaAtividadeForm:listasSelecionadas :listaAtividadeForm:listasDisponiveis"
 												title="Remover lista" />
 										</p:column>
 
@@ -168,17 +162,17 @@
 								</p:outputPanel>
 							</p:fieldset>
 
-							<p:droppable for="atividadesSelecionadas" tolerance="touch"
-								id="droppableAtividades" activeStyleClass="ui-state-highlight"
-								datasource="atividadesDisponiveis" onDrop="handleDrop">
+							<p:droppable for="listasSelecionadas" tolerance="touch"
+								id="droppableListas" activeStyleClass="ui-state-highlight"
+								datasource="listasDisponiveis" onDrop="handleDrop">
 								<p:ajax listener="#{associarListaAtividades.onListaDrop}"
-									update="dropArea atividadesDisponiveis" />
+									update="dropArea listasDisponiveis" />
 							</p:droppable>
 						</h:panelGrid>
 						<br />
 						<center>
 							<p:outputPanel>
-								<p:commandButton value="Criar lista" id="ajax3"
+								<p:commandButton value="Concluir" id="ajax3"
 									action="#{associarListaAtividades.cadastrar}"
 									styleClass="ui-priority-primary" />
 							</p:outputPanel>
