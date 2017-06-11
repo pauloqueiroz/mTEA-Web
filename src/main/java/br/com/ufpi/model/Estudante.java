@@ -2,9 +2,13 @@ package br.com.ufpi.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -35,6 +39,9 @@ public class Estudante implements Serializable{
 	
 	@OneToMany(mappedBy="estudante")
 	private List<Tarefa> tarefas;
+	
+	@OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+	private Set<ItemListaEstudante> listas = new HashSet<>();
 
 	public Estudante() {
 		super();
@@ -79,6 +86,14 @@ public class Estudante implements Serializable{
 
 	public void setTarefas(List<Tarefa> tarefas) {
 		this.tarefas = tarefas;
+	}
+
+	public Set<ItemListaEstudante> getListas() {
+		return listas;
+	}
+
+	public void setListas(Set<ItemListaEstudante> listas) {
+		this.listas = listas;
 	}
 
 }
