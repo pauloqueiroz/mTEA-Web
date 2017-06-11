@@ -43,7 +43,10 @@
 							<p:outputLabel value="Data de criação: " />
 							<p:outputLabel
 								value="#{sucessoCadastrarListaAtividadeBean.lista.dataCriacao}"
-								id="inputDataCriacao" />
+								id="inputDataCriacao" >
+							<f:convertDateTime pattern="dd/MM/yyyy HH:mm"
+								timeZone="GMT-03:00" />
+							</p:outputLabel>
 						</p:panelGrid>
 						<br />
 						<p:dataTable var="item" paginator="true" rows="10" reflow="true"
