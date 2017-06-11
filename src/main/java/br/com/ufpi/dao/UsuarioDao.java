@@ -28,12 +28,14 @@ public class UsuarioDao implements Serializable{
 	private EntityManager em;
 	
 	public Usuario buscarUsuario(String email, String senha) {
+		String senhaHash = Md5Utils.convertStringToMd5(senha);
+		System.out.println("SENHA: "+senhaHash);
 		TypedQuery<Usuario> query = em
 				.createQuery(
 						"SELECT u FROM Usuario u WHERE u.login = :login AND u.senha = :senha",
 						Usuario.class);
 		query.setParameter("login", email);
-		query.setParameter("senha", Md5Utils.convertStringToMd5(senha));
+		query.setParameter("senha", senhaHash);
 
 		List<Usuario> usuarios = query.getResultList();
 
