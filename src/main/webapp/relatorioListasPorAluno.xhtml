@@ -1,0 +1,206 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core" template="index.xhtml">
+
+	<ui:define name="centro">
+
+		<style>
+.textArea {
+	resize: none;
+	width: 500px;
+	height: 300px;
+	overflow-y: auto;
+	margin-left: 400px;
+	margin-top: 10px;
+}
+
+.old {
+	background-color: #CCCCDD;
+	color: red;
+}
+
+.companyHeaderGrid tr, .companyHeaderGrid td {
+	border: none !important;
+}
+
+.centralizado tr, .centralizado td {
+	text-align: center;
+}
+</style>
+
+		<style>
+.semBorda tr, .semBorda td {
+	border: none !important;
+}
+</style>
+
+		<script>			
+		function descricaoCancelamento(){
+			var flag = document.getElementById('descricao');
+			flag.style.display = "block";
+			limparTextArea();
+		}		 		
+
+</script>
+
+		<script>		
+		function ocultar(){
+			var flag = document.getElementById('descricao');
+			flag.style.display = "none";
+		}		
+						  		
+</script>
+
+		<script>
+		function limparTextArea(){
+			document.getElementById('desc').value = "";
+		}
+</script>
+
+		<script>
+		function detalhes(){
+			var informacao = document.getElementById('detalhes');
+			informacao.style.display = "block";
+		}
+</script>
+
+		<p:messages id="growl" showDetail="false" closable="true" />
+		
+		<h:form id="formPesquisar">
+			<p:fieldset legend="Pesquisar atividades" toggleable="true"
+				toggleSpeed="500">
+				<p:panelGrid columns="2" styleClass="semBorda">
+					<p:outputLabel value="Nome do estudante: "/>
+					<p:inputText value="#{listagemAtividadesBean.nomeAtividade}" />
+					<p:outputLabel for="comboTemplate" value="Selecione o template: " />
+					<p:selectOneMenu id="comboTemplate"
+						value="#{listagemAtividadesBean.templateSelecionado}" required="false">
+						<f:selectItem itemLabel="Selecione o template" itemValue="" />
+						<f:selectItems value="#{listagemAtividadesBean.templates}" />
+					</p:selectOneMenu>
+					<p:outputLabel value="Palavra: "/>
+					<p:inputText value="#{listagemAtividadesBean.palavra}" />
+				</p:panelGrid>
+				<p:panelGrid columns="3" cellpadding="10">
+					<p:commandButton value="Pesquisar " id="ajax" update="@form"
+						actionListener="#{listagemAtividadesBean.pesquisar}"
+						styleClass="ui-priority-primary" ajax="false" />
+
+					<p:commandButton value="Limpar " id="ajax2" update="@form"
+						actionListener="#{listagemAtividadesBean.limparInformacoes}"
+						styleClass="ui-priority-primary" ajax="false" />
+
+				</p:panelGrid>
+			</p:fieldset>
+
+		</h:form>
+
+		<p></p>
+		<h:form id="formTabelaEstudantes" enctype="multipart/form-data">
+			<p:fieldset legend="Atividades" toggleable="true" toggleSpeed="500">
+
+				<p:dataTable var="atividade" paginator="true" rows="5" emptyMessage="Nenhuma atividade encontrada"
+					style="text-align: center" paginatorPosition="bottom" lazy="true"
+					id="tabelaAtividades" widgetVar="tabelaAtividades" value="#{listagemAtividadesBean.atividades}"
+					rowKey="atividade" sortMode="multiple">
+
+					<f:facet name="header">
+            			Atividades
+        			</f:facet>
+
+					<p:column headerText="Nome da atividade"
+						sortBy="#{atividade.nome}">
+						<p:outputLabel value="#{atividade.nome}" />
+					</p:column>
+					<p:column headerText="Template" sortBy="#{atividade.template}">
+						<p:outputLabel value="#{atividade.templateToString}" />
+					</p:column>
+					<p:column headerText="Palavra" sortBy="#{atividade.palavra}">
+						<p:outputLabel value="#{atividade.palavra}" />
+					</p:column>
+
+					<p:column headerText="Ações">
+						<p:commandButton id="detalheAtividadeButton"
+							actionListener="#{listagemAtividadesBean.definirAtividadeDetalhes(atividade)}"
+							oncomplete="PF('detalhesAtividade').show();"
+							style="margin-right: 10px" icon="ui-icon-search"
+							update=":#{p:component('detalhesAtividade')}"
+							title="Ver detalhes da atividade" />
+						<p:commandButton icon="ui-icon-circle-close" id="botaoDeletar"
+									actionListener="#{listagemAtividadesBean.definirAtividadeDetalhes(atividade)}"
+									oncomplete="PF('confirmarExclusao').show();"
+									update=":#{p:component('confirmarExclusao')}"
+									title="Excluir atividade" />
+						<p:link	value="Editar"
+								outcome="editarAtividade.xhtml?idAtividade=#{atividade.id}"
+								includeViewParams="false" target="_blank"/>
+									
+					</p:column>
+				</p:dataTable>
+
+			</p:fieldset>
+		</h:form>
+		<h:form id="formDetalhesAtividade" enctype="multipart">
+			<p:dialog id="detalhesAtividade" header="Detalhes da Atividade"
+				widgetVar="detalhesAtividade" closable="true" height="400"
+				width="800" closeOnEscape="true" showHeader="true" showEffect="true"
+				position="center" responsive="true" draggable="true">
+				<center>
+					<p:panelGrid columns="2">
+						<p:outputLabel value="Nome da atividade" style="font-weight: bold" />
+						<p:outputLabel
+							value="#{listagemAtividadesBean.atividadeSelecionada.nome}" />
+
+						<p:outputLabel value="Template" style="font-weight: bold" />
+						<p:outputLabel
+							value="#{listagemAtividadesBean.atividadeSelecionada.templateToString}" />
+							
+						<p:outputLabel value="Link do reforço" style="font-weight: bold" />
+						<p:outputLabel
+							value="#{listagemAtividadesBean.atividadeSelecionada.reforco}" />
+
+						<p:outputLabel value="Palavra" style="font-weight: bold" />
+						<p:outputLabel
+							value="#{listagemAtividadesBean.atividadeSelecionada.palavra}" />
+
+					</p:panelGrid>
+					<p:dataTable var="imagem" paginator="true" rows="5" style="width: 400"
+						paginatorPosition="bottom" id="tabelaImagens"
+						value="#{listagemAtividadesBean.imagens}" rowIndexVar="rowIndex"
+						emptyMessage="Não foram encontrados registros">
+						<p:column>
+							<p:commandLink value="Imagem #{rowIndex+1}" ajax="false"
+								style="font-size:14px;color:blue;" target="_blank">
+								<p:fileDownload
+									value="#{listagemAtividadesBean.downloadImagem(imagem)}" />
+							</p:commandLink>
+						</p:column>
+					</p:dataTable>
+				</center>
+			</p:dialog>
+		</h:form>
+		
+		<p:dialog id="confirmarExclusao" header="Mensagem"
+			widgetVar="confirmarExclusao" resizable="false" height="100"
+			closeOnEscape="true" showHeader="true" responsive="true"
+			draggable="true">
+			<p:outputPanel style="text-align:center">
+				<h:outputText value="Tem certeza que deseja excluir a atividade?"
+					style="font-weight: bold; color:gray" />
+			</p:outputPanel>
+			<h:form>
+				<center>
+					<p:commandButton value="Sim"
+						actionListener="#{listagemAtividadesBean.excluir}"
+						update=":#{p:component('tabelaAtividades')} :confirmarExclusao :growl" />
+
+					<p:commandButton value="Cancelar" update=":confirmarExclusao " />
+				</center>
+			</h:form>
+
+
+		</p:dialog>
+	</ui:define>
+</ui:composition>

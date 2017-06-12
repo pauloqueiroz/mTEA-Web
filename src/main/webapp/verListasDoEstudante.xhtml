@@ -1,0 +1,92 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core" template="index.xhtml">
+
+	<ui:define name="centro">
+		<style>
+.companyHeaderGrid tr, .companyHeaderGrid td {
+	border: none !important;
+}
+
+.ui-growl {
+	left: 850px;
+	top: 93px;
+}
+</style>
+		<style>
+.semBorda tr, .semBorda td {
+	border: none !important;
+}
+</style>
+
+<style>
+
+.ui-messages-info, .ui-message-info{
+	color: #fff;
+    background-color: #9ccc65;
+    border-color: black;
+}
+ </style>
+ 
+		<h:body>
+
+			<p:messages id="mensagem" showDetail="false" closable="true" />
+			<center>
+				<h:form id="formPrincipal">
+					<f:metadata>
+						<f:viewParam name="idEstudante"
+							value="#{listasDoEstudanteBean.idEstudante}" />
+						<f:event type="preRenderView"
+							listener="#{listasDoEstudanteBean.buscarEstudante()}" />
+					</f:metadata>
+					<p:fieldset legend="Dados do Aluno">
+						<p:panelGrid id="panelDadosEstudante" header="Dados do Aluno"
+							columns="2">
+							<p:outputLabel value="Nome da aluno" />
+							<p:outputLabel value="#{listasDoEstudanteBean.estudante.nome}" />
+							<p:outputLabel value="Data de nascimento: " />
+							<p:outputLabel
+								value="#{sucessoCadastrarListaAtividadeBean.lista.dataCriacao}">
+								<f:convertDateTime pattern="dd/MM/yyyy HH:mm"
+									timeZone="GMT-03:00" />
+							</p:outputLabel>
+						</p:panelGrid>
+						<br />
+						<p:dataTable var="item" reflow="true" id="tabelaListas"
+							style="max-width:800px;" value="#{listasDoEstudanteBean.listas}"
+							rowIndexVar="rowIndex"
+							emptyMessage="Não foram encontrados registros">
+							<f:facet name="header">
+            					Listas atribuidas
+        					</f:facet>
+
+							<p:column headerText="Nome da lista">
+								<p:outputLabel value="#{item.lista.nome}" />
+							</p:column>
+							<p:column headerText="Descricao">
+								<p:outputLabel value="#{item.lista.descricao}" />
+							</p:column>
+							<p:column headerText="Data de criação">
+								<p:outputLabel value="#{item.lista.dataCriacao}">
+									<f:convertDateTime pattern="dd/MM/yyyy HH:mm"
+										timeZone="GMT-03:00" />
+								</p:outputLabel>
+							</p:column>
+							<p:column headerText="Situação">
+								<p:outputLabel value="#{item.situacao.toString()}" />
+							</p:column>
+						</p:dataTable>
+						<br />
+						<br />
+					</p:fieldset>
+					<p:commandButton style="align:center;"
+						value="Atribuir outra lista" ajax="false"
+						action="associarListaAtividade.xhtml?faces-redirect=true" />
+
+				</h:form>
+			</center>
+		</h:body>
+	</ui:define>
+</ui:composition>

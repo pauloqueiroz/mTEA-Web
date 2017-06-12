@@ -1,5 +1,6 @@
 package br.com.ufpi.controller;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -9,17 +10,25 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.primefaces.event.DragDropEvent;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortMeta;
 
 import br.com.ufpi.dao.EstudanteDao;
+import br.com.ufpi.dao.ItemListaEstudanteDao;
 import br.com.ufpi.dao.ListaAtividadeDao;
+import br.com.ufpi.enuns.SituacaoEnum;
 import br.com.ufpi.model.Estudante;
+import br.com.ufpi.model.ItemListaEstudante;
 import br.com.ufpi.model.ListaAtividade;
 
 /**
@@ -49,6 +58,9 @@ public class AssociarListaAtividades implements Serializable{
 	
 	@Inject
 	private ListaAtividadeDao listaAtividadeDao;
+	
+	@Inject
+	private ItemListaEstudanteDao itemListaEstudanteDao;
 	
 	private String nomeListaAtividade;
 
@@ -104,15 +116,37 @@ public class AssociarListaAtividades implements Serializable{
 		pesquisar();
 	}
 	
-	public void cadastrar(){
+	public void cadastrar() throws IOException{
+		FacesContext facesContext = FacesContext.getCurrentInstance();
 		System.out.println(listasSelecionadas.size());
-		validarListas(listasSelecionadas);
+		String validacoes = validarListas(listasSelecionadas);
+		if(!StringUtils.isEmpty(validacoes)){
+			facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, validacoes, null));
+			return;
+		}
+		criarItensListaEstudante(estudanteSelecionado, listasSelecionadas);
+		ExternalContext ec = facesContext.getExternalContext();
+		ec.redirect("verListasDoEstudante.xhtml?idEstudante="+estudanteSelecionado.getId());
 	}
 
-
-	private void validarListas(Set<ListaAtividade> listasSelecionadas2) {
-		// TODO Auto-generated method stub
+	private void criarItensListaEstudante(Estudante estudanteSelecionado, Set<ListaAtividade> listasSelecionadas) {
+		for (ListaAtividade listaAtividade : listasSelecionadas) {
+			ItemListaEstudante item = new ItemListaEstudante();
+			item.setDataCriacao(new Date());
+			item.setEstudante(estudanteSelecionado);
+			item.setLista(listaAtividade);
+			item.setSituacao(SituacaoEnum.CADASTRADO);
+			itemListaEstudanteDao.salvar(item);
+		}
 		
+	}
+
+	private String validarListas(Set<ListaAtividade> listasSelecionadas) {
+		if(CollectionUtils.isEmpty(listasSelecionadas))
+			return "É necessário selecionar ao menos uma lista de atividades.";
+		if(estudanteSelecionado == null)
+			return "É necessário selecionar o estudante no passo 1.";
+		return null;
 	}
 
 	/**

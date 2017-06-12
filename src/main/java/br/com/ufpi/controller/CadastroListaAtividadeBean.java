@@ -144,8 +144,10 @@ public class CadastroListaAtividadeBean implements Serializable {
 	public void cadastrar() throws IOException {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		String validacoes = validarListaAtividades();
-		if (!StringUtils.isEmpty(validacoes))
+		if (!StringUtils.isEmpty(validacoes)){
 			facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, validacoes, null));
+			return;
+		}
 		criarItensAtividade(lista, atividadesSelecionadas);
 		lista.setDataCriacao(new Date());
 		listaAtividadeDao.adicionar(lista);

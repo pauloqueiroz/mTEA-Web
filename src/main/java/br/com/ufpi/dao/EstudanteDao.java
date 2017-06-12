@@ -18,7 +18,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
 
-import br.com.ufpi.model.Atividade;
 import br.com.ufpi.model.Estudante;
 
 /**
@@ -52,7 +51,7 @@ public class EstudanteDao implements Serializable {
 		try{
 			estudante = query.getSingleResult();
 		}catch(Exception e){
-			System.out.println("Estudante n„o encontrado.");
+			System.out.println("Estudante n√£o encontrado.");
 			e.printStackTrace();
 		}
 		return estudante; 
@@ -61,13 +60,6 @@ public class EstudanteDao implements Serializable {
 	public List<Estudante> listarTodos(){
 		List<Estudante> estudantes = new ArrayList<>();
 		estudantes = em.createQuery("Select e from Estudante e", Estudante.class).getResultList();
-//		if(!CollectionUtils.isEmpty(estudantes)){
-//			for (Estudante estudante : estudantes) {
-//				TypedQuery<Atividade> query = em.createQuery("SELECT a FROM Atividade a WHERE a.estudante = :e", Atividade.class);
-//				query.setParameter("e", estudante);
-//				estudante.setAtividades(query.getResultList());
-//			}
-//		}
 		return estudantes;	 
 	}
 
