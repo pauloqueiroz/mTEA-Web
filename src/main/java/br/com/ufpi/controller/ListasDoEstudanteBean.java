@@ -55,10 +55,9 @@ public class ListasDoEstudanteBean implements Serializable{
 		System.out.println("estudante id" +idEstudante);
 		if (idEstudante != null){
 			estudante = estudanteDao.buscarPorId(Long.parseLong(idEstudante));
-			listas = itemListaEstudanteDao.buscar(estudante,null);
+			listas = itemListaEstudanteDao.buscar(estudante);
 		}
 	}
-
 
 	public Set<ItemListaEstudante> getListas() {
 		return listas;

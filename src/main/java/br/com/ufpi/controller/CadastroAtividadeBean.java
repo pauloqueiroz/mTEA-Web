@@ -162,15 +162,15 @@ public class CadastroAtividadeBean implements Serializable {
 
 	private String validarAtividade(Atividade atividade){
 		if(atividade.getTemplate() == null)
-			return "É necessário informar o template.";
+			return "Ã‰ necessÃ¡rio informar o template.";
 		TemplateEnum templateSelecionado = atividade.getTemplate();
 		if(conteudoArquivos!= null && conteudoArquivos.size() > templateSelecionado.getQuantidadeMaximaArquivos())
-			return "A quantidade máxima de imagens para o template " + templateSelecionado.getDescricao() + " é "
-					+ templateSelecionado.getQuantidadeMaximaArquivos() + ". Você fez upload de "
+			return "A quantidade mÃ¡xima de imagens para o template " + templateSelecionado.getDescricao() + " ï¿½ "
+					+ templateSelecionado.getQuantidadeMaximaArquivos() + ". VocÃª fez upload de "
 					+ conteudoArquivos.size();
 		if(templateSelecionado.getQuantidadeMinimaArquivos() > 0){
 			if(conteudoArquivos == null || (conteudoArquivos != null && conteudoArquivos.size() < templateSelecionado.getQuantidadeMinimaArquivos()))
-				return "A quantidade mínima de imagens para o template " + templateSelecionado.getDescricao() + " é "
+				return "A quantidade mï¿½nima de imagens para o template " + templateSelecionado.getDescricao() + " ï¿½ "
 				+ templateSelecionado.getQuantidadeMaximaArquivos() + ".";
 		}
 		return null;

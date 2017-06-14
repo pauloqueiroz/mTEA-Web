@@ -86,13 +86,13 @@ public class RelatorioTarefasAluno implements Serializable {
 			ultimaData = EstudanteUtils.getDiaPosterior(ultimaData);
 
 			povoarGrafico(graficoAcertos, serieAcertos, ultimaData);
-			graficoAcertos.setTitle("Relatório de acertos");
+			graficoAcertos.setTitle("Relatï¿½rio de acertos");
 			graficoAcertos.getAxis(AxisType.Y).setLabel("Acertos");
 			Date dataFinal = EstudanteUtils.processarDataFinalGrafico(tarefaGraficos); 
 			graficoAcertos.getAxis(AxisType.X).setMax(EstudanteUtils.getDataPadraoInternacional(dataFinal));
 
 			povoarGrafico(graficoErros, serieErros, ultimaData);
-			graficoErros.setTitle("Relatório de erros");
+			graficoErros.setTitle("Relatï¿½rio de erros");
 			graficoErros.getAxis(AxisType.Y).setLabel("Erros");
 			graficoErros.getAxis(AxisType.X).setMax(EstudanteUtils.getDataPadraoInternacional(dataFinal));
 		}
@@ -104,7 +104,6 @@ public class RelatorioTarefasAluno implements Serializable {
 		graficoAcertos.setZoom(true);
 		DateAxis axis = new DateAxis("Data de inicio");
 		axis.setTickAngle(-50);
-//		axis.setMax(EstudanteUtils.getDataPadraoInternacional(ultimaDataGrafico));
 		axis.setTickFormat("%d/%m/%y %H:%M:%S");
 
 		graficoAcertos.getAxes().put(AxisType.X, axis);

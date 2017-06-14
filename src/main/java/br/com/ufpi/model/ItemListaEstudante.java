@@ -51,7 +51,6 @@ public class ItemListaEstudante implements Serializable{
 
 	public ItemListaEstudante() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public Long getId() {
