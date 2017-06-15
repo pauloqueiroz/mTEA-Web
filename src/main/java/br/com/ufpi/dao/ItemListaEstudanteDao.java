@@ -128,4 +128,10 @@ public class ItemListaEstudanteDao implements Serializable{
 		return query.getSingleResult().intValue();
 	}
 
+	public void delete(ItemListaEstudante listaSelecionada) {
+		listaSelecionada = em.merge(listaSelecionada);
+		em.remove(listaSelecionada);
+		
+	}
+
 }

@@ -51,7 +51,7 @@
 						itemLabel="#{estudante.nome}" itemValue="#{estudante}"
 						minQueryLength="1" forceSelection="true" size="50"
 						style="font-size:14px">
-						<p:ajax listener="#{relatorioListasPorAluno.limpar()}" event="itemSelect" update="fieldsetPesquisa :formTabelaListas:fieldsetTabelaListas"/>
+						<p:ajax listener="#{relatorioListasPorAluno.doNothing()}" event="itemSelect" update="fieldsetPesquisa :formTabelaListas:fieldsetTabelaListas"/>
 					</p:autoComplete>
 					<p:outputLabel id="labelSituacao" for="comboSituacao" value="Selecione a situação: " rendered="#{not empty relatorioListasPorAluno.estudante}"/>
 					<p:selectOneMenu id="comboSituacao" rendered="#{not empty relatorioListasPorAluno.estudante}"
@@ -105,11 +105,103 @@
 					</p:column>
 					
 					<p:column headerText="Ações">
+						<p:commandButton id="detalheListaButton"
+							actionListener="#{relatorioListasPorAluno.definirListaDetalhes(item)}"
+							oncomplete="PF('detalhesLista').show();"
+							style="margin-right: 10px" icon="ui-icon-search"
+							update=":#{p:component('detalhesLista')}"
+							title="Ver detalhes da lista" />
+							
+						<p:commandButton icon="ui-icon-circle-close" id="botaoDeletar"
+							actionListener="#{relatorioListasPorAluno.definirListaDetalhes(item)}"
+							oncomplete="PF('confirmarExclusao').show();"
+							update=":#{p:component('confirmarExclusao')}"
+							rendered="#{item.podeSerExcluido}"
+							title="Excluir lista" />
 
 					</p:column>
 				</p:dataTable>
 
 			</p:fieldset>
 		</h:form>
+		
+		<h:form id="formDetalhesLista" enctype="multipart">
+			<p:dialog id="detalhesLista" header="Detalhes da Lista"
+				widgetVar="detalhesLista" closable="true" height="400"
+				width="800" closeOnEscape="true" showHeader="true" showEffect="true"
+				position="center" responsive="true" draggable="true">
+				<center>
+					<p:panelGrid columns="2">
+						<p:outputLabel value="Nome da lista" style="font-weight: bold" />
+						<p:outputLabel value="#{relatorioListasPorAluno.listaSelecionada.lista.nome}" />
+
+						<p:outputLabel value="Descricao" style="font-weight: bold" />
+						<p:outputLabel
+							value="#{relatorioListasPorAluno.listaSelecionada.lista.descricao}" />
+							
+						<p:outputLabel value="Data de criação da lista" style="font-weight: bold" />
+						<p:outputLabel
+							value="#{relatorioListasPorAluno.listaSelecionada.lista.dataCriacao}" >
+						<f:convertDateTime pattern="dd/MM/yyyy HH:mm"
+								timeZone="GMT-03:00" />
+						</p:outputLabel>
+
+						<p:outputLabel value="Situação" style="font-weight: bold" />
+						<p:outputLabel
+							value="#{relatorioListasPorAluno.listaSelecionada.situacao.toString()}" />
+						
+						<p:outputLabel value="Data de vinculo" style="font-weight: bold" />
+						<p:outputLabel
+							value="#{relatorioListasPorAluno.listaSelecionada.dataAlteracao}" >
+						<f:convertDateTime pattern="dd/MM/yyyy HH:mm"
+								timeZone="GMT-03:00" />
+						</p:outputLabel>
+
+					</p:panelGrid>
+					<p:dataTable var="item" style="width: 400" id="tabelaAtividades"
+						value="#{relatorioListasPorAluno.atividades}" rowIndexVar="rowIndex"
+						emptyMessage="Não foram encontrados registros">
+						<f:facet name="header">
+            				Atividades
+        				</f:facet>
+
+						<p:column headerText="Nome da atividade">
+							<p:outputLabel value="#{item.atividade.nome}" />
+						</p:column>
+						<p:column headerText="Template">
+							<p:outputLabel value="#{item.atividade.templateToString}" />
+						</p:column>
+						<p:column headerText="Palavra">
+							<p:outputLabel value="#{item.atividade.palavra}" />
+						</p:column>
+					</p:dataTable>
+				</center>
+			</p:dialog>
+		</h:form>
+		
+		<p:dialog id="confirmarExclusao" header="Mensagem"
+			widgetVar="confirmarExclusao" resizable="false" height="100"
+			closeOnEscape="true" showHeader="true" responsive="true"
+			draggable="true">
+			<p:outputPanel style="text-align:center">
+				<h:outputText value="Caro usuário, ao excluir a lista a mesma não estará disponível para o aluno realizar no aplicativo."
+					style="font-weight: bold; color:gray" />
+				<br/>
+				<h:outputText style="font-weight: bold; color:gray" value="Porém, a lista ainda permanece disponível na funcionalidade de exercícios."/>
+				<br/>
+				<h:outputText style="font-weight: bold; color:gray" value="Tem certeza que deseja excluir a lista do aluno?"/>
+				<br/>
+				<br/>
+			</p:outputPanel>
+			<h:form>
+				<center>
+					<p:commandButton value="Sim"
+						actionListener="#{relatorioListasPorAluno.excluir}"
+						update=":#{p:component('fieldsetTabelaListas')} :confirmarExclusao :growl" />
+
+					<p:commandButton value="Cancelar" update=":confirmarExclusao " />
+				</center>
+			</h:form>
+		</p:dialog>
 	</ui:define>
 </ui:composition>

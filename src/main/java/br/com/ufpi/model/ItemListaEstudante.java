@@ -48,6 +48,9 @@ public class ItemListaEstudante implements Serializable{
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataExecucao;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date dataAlteracao;
 
 	public ItemListaEstudante() {
 		super();
@@ -99,6 +102,20 @@ public class ItemListaEstudante implements Serializable{
 
 	public void setDataExecucao(Date dataExecucao) {
 		this.dataExecucao = dataExecucao;
+	}
+
+	public Date getDataAlteracao() {
+		return dataAlteracao;
+	}
+
+	public void setDataAlteracao(Date dataAlteracao) {
+		this.dataAlteracao = dataAlteracao;
+	}
+
+	public boolean isPodeSerExcluido() {
+		boolean naoEnviado = this.situacao.equals(SituacaoEnum.CADASTRADO);
+		System.out.println("Pode ser excluido:" +naoEnviado);
+		return naoEnviado?true:false;
 	}
 	
 }

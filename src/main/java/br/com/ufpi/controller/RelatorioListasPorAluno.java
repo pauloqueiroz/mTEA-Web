@@ -1,9 +1,13 @@
 package br.com.ufpi.controller;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -12,9 +16,11 @@ import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortMeta;
 
 import br.com.ufpi.dao.EstudanteDao;
+import br.com.ufpi.dao.ItemAtividadeDao;
 import br.com.ufpi.dao.ItemListaEstudanteDao;
 import br.com.ufpi.enuns.SituacaoEnum;
 import br.com.ufpi.model.Estudante;
+import br.com.ufpi.model.ItemAtividade;
 import br.com.ufpi.model.ItemListaEstudante;
 
 /**
@@ -37,14 +43,22 @@ public class RelatorioListasPorAluno implements Serializable{
 	@Inject
 	private ItemListaEstudanteDao itemListaEstudanteDao;
 	
+	@Inject
+	private ItemAtividadeDao itemAtividadeDao;
+	
 	private SituacaoEnum situacaoSelecionada;
 	
 	private Estudante estudante;
 	
 	private LazyDataModel<ItemListaEstudante> listas;
+	
+	private ItemListaEstudante listaSelecionada;
+	
+	private Set<ItemAtividade> atividades;
 
 	public RelatorioListasPorAluno() {
 		super();
+		atividades = new HashSet<>();
 	}
 	
 	public SituacaoEnum[] getSituacoes(){
@@ -72,7 +86,28 @@ public class RelatorioListasPorAluno implements Serializable{
 	}
 	
 	public void limpar(){
+		estudante = null;
+		situacaoSelecionada = null;
+	}
+	
+	public void doNothing(){
 		
+	}
+	
+	public void excluir(){
+		itemListaEstudanteDao.delete(listaSelecionada);
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		facesContext.addMessage(null, new FacesMessage(
+				FacesMessage.SEVERITY_INFO, "Lista apagada com sucesso.",
+				"Atividade apagada com sucesso."));
+	}
+	
+	public void definirListaDetalhes(ItemListaEstudante item){
+		this.listaSelecionada = item;
+		
+		if(listaSelecionada != null){
+			atividades = itemAtividadeDao.carregarAtividades(item.getLista());
+		}	
 	}
 
 	public List<Estudante> buscarEstudante(String nome) {
@@ -109,6 +144,22 @@ public class RelatorioListasPorAluno implements Serializable{
 
 	public void setSituacaoSelecionada(SituacaoEnum situacaoSelecionada) {
 		this.situacaoSelecionada = situacaoSelecionada;
+	}
+
+	public ItemListaEstudante getListaSelecionada() {
+		return listaSelecionada;
+	}
+
+	public void setListaSelecionada(ItemListaEstudante listaSelecionada) {
+		this.listaSelecionada = listaSelecionada;
+	}
+
+	public Set<ItemAtividade> getAtividades() {
+		return atividades;
+	}
+
+	public void setAtividades(Set<ItemAtividade> atividades) {
+		this.atividades = atividades;
 	}
 	
 }
