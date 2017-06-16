@@ -9,9 +9,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -32,8 +29,8 @@ import br.com.ufpi.util.ArquivoUtil;
  */
 @Named
 @ViewScoped
-public class SucessoCadastrarAtividadeBean implements Serializable{
-
+public class VisualizacaoAtividadeBean implements Serializable{
+	
 	/**
 	 * 
 	 */
@@ -50,16 +47,9 @@ public class SucessoCadastrarAtividadeBean implements Serializable{
 	@Inject
 	private ArquivoDao arquivoDao;
 	
-	public SucessoCadastrarAtividadeBean() {
+	public VisualizacaoAtividadeBean() {
 		super();
 		// TODO Auto-generated constructor stub
-	}
-	
-	@PostConstruct
-	public void init(){
-		FacesContext facesContext = FacesContext.getCurrentInstance();
-		facesContext.addMessage(null, new FacesMessage(
-				FacesMessage.SEVERITY_INFO, "Atividade cadastrada com sucesso.", null));
 	}
 	
 	public void buscarAtividade() {
@@ -105,5 +95,5 @@ public class SucessoCadastrarAtividadeBean implements Serializable{
 	public void setIdAtividade(String idAtividade) {
 		this.idAtividade = idAtividade;
 	}
-	
+
 }

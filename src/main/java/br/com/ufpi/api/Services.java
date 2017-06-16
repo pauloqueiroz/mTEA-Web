@@ -4,7 +4,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -25,10 +28,15 @@ import org.apache.commons.collections.CollectionUtils;
 import br.com.ufpi.dao.ArquivoDao;
 import br.com.ufpi.dao.AtividadeDao;
 import br.com.ufpi.dao.EstudanteDao;
+import br.com.ufpi.dao.ItemAtividadeDao;
+import br.com.ufpi.dao.ItemListaEstudanteDao;
 import br.com.ufpi.dao.TarefaDao;
+import br.com.ufpi.enuns.SituacaoEnum;
 import br.com.ufpi.model.Arquivo;
 import br.com.ufpi.model.Atividade;
 import br.com.ufpi.model.Estudante;
+import br.com.ufpi.model.ItemAtividade;
+import br.com.ufpi.model.ItemListaEstudante;
 import br.com.ufpi.model.Tarefa;
 import br.com.ufpi.util.ArquivoUtil;
 import br.com.ufpi.util.EstudanteConverter;
@@ -49,6 +57,12 @@ public class Services {
 	
 	@Inject
 	private TarefaDao tarefaDao;
+	
+	@Inject
+	private ItemListaEstudanteDao itemDao;
+	
+	@Inject
+	private ItemAtividadeDao itemAtividadeDao;
 
 	@GET
 	@Path("/student")
@@ -69,18 +83,31 @@ public class Services {
 		 */
 		Estudante estudante = estudanteDao.buscarPorId(id);
 		if (estudante != null) {
-			List<Atividade> atividadesDoEstudante = atividadeDao.carregarAtividadesDoEstudante(estudante);
-			if (!CollectionUtils.isEmpty(atividadesDoEstudante)) {
-				for (Atividade atividade : atividadesDoEstudante) {
-					List<Arquivo> arquivosDaAtividade = arquivoDao.carregarArquivosDaAtividade(atividade);
-					atividade.setImagens(arquivosDaAtividade);
+			ItemListaEstudante listaAtual = null;
+			List<SituacaoEnum> situacoes = Arrays.asList(SituacaoEnum.CADASTRADO,SituacaoEnum.ENVIADO);
+			List<ItemListaEstudante> listasDoAluno = itemDao.buscarListaAtual(estudante,situacoes);
+			List<Atividade> atividades = new ArrayList<>();
+			if(!CollectionUtils.isEmpty(listasDoAluno)){
+				listaAtual = listasDoAluno.get(0);
+				listaAtual.getLista();
+				Set<ItemAtividade> atividadesDaLista = itemAtividadeDao.carregarAtividades(listaAtual.getLista());
+				if (!CollectionUtils.isEmpty(atividadesDaLista)) {
+					for (ItemAtividade item : atividadesDaLista) {
+						Atividade atividade = item.getAtividade();
+						List<Arquivo> arquivosDaAtividade = arquivoDao.carregarArquivosDaAtividade(atividade);
+						atividade.setImagens(arquivosDaAtividade);
+						atividades.add(atividade);
+					}
 				}
 			}
-//			estudante.setAtividades(atividadesDoEstudante);
-			Student studentJson = EstudanteUtils.converterEstudante(estudante, arquivoDao);
+			Student studentJson = EstudanteUtils.converterEstudante(estudante, atividades, arquivoDao);
+			if(listaAtual != null){
+				listaAtual.setSituacao(SituacaoEnum.ENVIADO);
+				itemDao.atualizar(listaAtual);	
+			}
 			return Response.status(200).entity(studentJson).build();
 		}
-		return Response.status(404).entity("Estudante não encontrado").build();
+		return Response.status(404).entity("Estudante nï¿½o encontrado").build();
 	}
 
 	@GET
@@ -104,7 +131,7 @@ public class Services {
 			response.header("Content-Disposition", "attachment; filename=" + arquivo.getNomeArquivo());
 			return response.build();
 		}
-		return Response.status(404).entity("Reforço não encontrado").build();
+		return Response.status(404).entity("Reforï¿½o nï¿½o encontrado").build();
 	}
 
 	@GET
@@ -129,7 +156,7 @@ public class Services {
 			response.header("Content-Disposition", "attachment; filename=" + arquivo.getNomeArquivo());
 			return response.build();
 		}
-		return Response.status(404).entity("Imagem não encontrada").build();
+		return Response.status(404).entity("Imagem nï¿½o encontrada").build();
 	}
 
 	@GET
@@ -154,7 +181,7 @@ public class Services {
 			response.header("Content-Disposition", "attachment; filename=" + arquivo.getNomeArquivo());
 			return response.build();
 		}
-		return Response.status(404).entity("Imagem não encontrada").build();
+		return Response.status(404).entity("Imagem nï¿½o encontrada").build();
 	}
 	
 	
@@ -180,7 +207,7 @@ public class Services {
 			}
 		}
 		System.out.println("Task nao encontrada!");
-		return Response.status(404).entity("Estudante não encontrado").build();
+		return Response.status(404).entity("Estudante nï¿½o encontrado").build();
 	}
 
 	public TarefaDao getTarefaDao() {

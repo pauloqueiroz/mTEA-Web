@@ -133,6 +133,7 @@ public class AssociarListaAtividades implements Serializable{
 		for (ListaAtividade listaAtividade : listasSelecionadas) {
 			ItemListaEstudante item = new ItemListaEstudante();
 			item.setDataCriacao(new Date());
+			item.setDataAlteracao(new Date());
 			item.setEstudante(estudanteSelecionado);
 			item.setLista(listaAtividade);
 			item.setSituacao(SituacaoEnum.CADASTRADO);

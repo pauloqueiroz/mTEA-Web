@@ -2,6 +2,7 @@ package br.com.ufpi.dao;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -102,6 +103,36 @@ public class ItemListaEstudanteDao implements Serializable{
 		List<ItemListaEstudante> lista = query.getResultList();
 
 		return lista;
+	}
+	
+	public List<ItemListaEstudante> buscarListaAtual(Estudante estudante, List<SituacaoEnum> situacoes){
+		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+
+		CriteriaQuery<ItemListaEstudante> itemQuery = criteriaBuilder.createQuery(ItemListaEstudante.class);
+		Root<ItemListaEstudante> itemRoot = itemQuery.from(ItemListaEstudante.class);
+		
+		List<Predicate> predicates = new ArrayList<Predicate>();
+		if (estudante != null) {
+			Predicate estudantePredicate = criteriaBuilder.equal(itemRoot.<Estudante> get("estudante"),estudante);
+			predicates.add(estudantePredicate);
+		}
+		if(!CollectionUtils.isEmpty(situacoes)){
+			Predicate tipoSelecionadoPredicate = itemRoot.<SituacaoEnum> get("situacao").in(situacoes);
+			predicates.add(tipoSelecionadoPredicate);
+		}
+		
+		itemQuery.orderBy(criteriaBuilder.asc(itemRoot.<Date>get("dataCriacao")));
+		
+		if (!CollectionUtils.isEmpty(predicates))
+			itemQuery.where(predicates.toArray(new Predicate[] {}));
+		
+		TypedQuery<ItemListaEstudante> query = em.createQuery(itemQuery);
+		query.setMaxResults(1);
+		
+		List<ItemListaEstudante> lista = query.getResultList();
+		
+		return lista;
+		
 	}
 
 	public int contarListas(Estudante estudante, SituacaoEnum situacao) {

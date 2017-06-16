@@ -1,0 +1,79 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core" template="index.xhtml">
+
+	<ui:define name="centro">
+		<style>
+.companyHeaderGrid tr, .companyHeaderGrid td {
+	border: none !important;
+}
+
+.ui-growl {
+	left: 850px;
+	top: 93px;
+}
+</style>
+		<style>
+.semBorda tr, .semBorda td {
+	border: none !important;
+}
+</style>
+		<h:body>
+
+			<p:messages id="mensagem" showDetail="false" closable="true" />
+			<center>
+				<h:form id="formPrincipal">
+					<f:metadata>
+						<f:viewParam name="idAtividade"
+							value="#{visualizacaoAtividadeBean.idAtividade}" />
+						<f:event type="preRenderView"
+							listener="#{visualizacaoAtividadeBean.buscarAtividade}" />
+					</f:metadata>
+					<p:fieldset legend="Dados da Atividade">
+						<p:panelGrid id="panelDadosAtividade" header="Dados da atividade"
+							columns="2">
+							<p:outputLabel value="Nome da atividade" />
+							<p:outputLabel
+								value="#{visualizacaoAtividadeBean.atividade.nome}" />
+							<p:outputLabel value="Template" />
+							<p:outputLabel
+								value="#{visualizacaoAtividadeBean.atividade.template.toString()}" />
+							<p:outputLabel value="Link do reforço no youtube: " />
+							<p:outputLabel
+								value="#{visualizacaoAtividadeBean.atividade.reforco}"
+								id="inputReforco" />
+							<p:outputLabel value="Palavra"
+								rendered="#{visualizacaoAtividadeBean.atividade.palavra != null}" />
+							<p:outputLabel
+								value="#{visualizacaoAtividadeBean.atividade.palavra}"
+								rendered="#{visualizacaoAtividadeBean.atividade.palavra != null}"
+								required="#{visualizacaoAtividadeBean.atividade.palavra != null}" />
+						</p:panelGrid>
+						<br />
+						<p:dataTable var="arquivo" paginator="true" rows="10"
+							reflow="true" paginatorPosition="bottom" id="tabelaArquivos"
+							style="max-width:800px;"
+							value="#{visualizacaoAtividadeBean.atividade.imagens}"
+							rowIndexVar="rowIndex"
+							emptyMessage="Não foram encontrados registros">
+							<f:facet name="header">
+            						Imagens cadastradas
+        						</f:facet>
+							<p:column headerText="Imagem">
+								<p:commandLink value="#{arquivo.nomeArquivo}" ajax="false"
+									style="font-size:14px;color:blue;" target="_blank">
+									<p:fileDownload
+										value="#{visualizacaoAtividadeBean.downloadArquivo(arquivo)}" />
+								</p:commandLink>
+							</p:column>
+						</p:dataTable>
+						<br />
+						<br />
+					</p:fieldset>
+				</h:form>
+			</center>
+		</h:body>
+	</ui:define>
+</ui:composition>
