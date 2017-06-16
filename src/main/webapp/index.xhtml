@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html >
 <html xmlns="http://www.w3c.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
@@ -35,6 +35,22 @@
     background-color: #9ccc65;
     border-color: black;
 }
+
+.textoRodape {
+	text-align: left;
+	font-weight: bold;
+	float: right;
+	padding-top: 12px;z 
+}
+
+.imagemRodape{
+	float: right;
+	bottom:0;
+	height:125px;
+	left:0;
+	position:fixed;
+	width:100%;
+}
 </style>
 </h:head>
 <h:body>
@@ -47,14 +63,18 @@
 						url="index.xhtml" />
 
 					<p:submenu label="Alunos" icon="ui-icon-carat-1-s">
+
 						<p:menuitem value="Cadastrar Alunos" icon="ui-icon-plus" url="cadastrarAluno.xhtml"/>
 						<p:menuitem value="Listar Alunos" icon="ui-icon-bookmark" url="listarAluno.xhtml"/>
 						<p:menuitem value="Listas Por Aluno" icon="ui-icon-plus" url="relatorioListasPorAluno.xhtml"/>
+
 					</p:submenu>
-					
+
 					<p:submenu label="Atividades" icon="ui-icon-pencil">
-						<p:menuitem value="Cadastrar Atividades" icon="ui-icon-plus" url="cadastrarAtividade.xhtml"/>
-						<p:menuitem value="Listar Atividades" icon="ui-icon-plus" url="listarAtividade.xhtml"/>
+						<p:menuitem value="Cadastrar Atividades" icon="ui-icon-plus"
+							url="cadastrarAtividade.xhtml" />
+						<p:menuitem value="Listar Atividades" icon="ui-icon-plus"
+							url="listarAtividade.xhtml" />
 					</p:submenu>
 					
 					<p:submenu label="Listas de atividades" icon="ui-icon-pencil">
@@ -63,12 +83,11 @@
 						<p:menuitem value="Exercícios" icon="ui-icon-plus" url="associarListaAtividade.xhtml"/>
 						<p:menuitem value="Listas Por Aluno" icon="ui-icon-plus" url="relatorioListasPorAluno.xhtml"/>
 					</p:submenu>
-					
-					<p:submenu label="Execucoes de atividades" icon="ui-icon-pencil">
-						<p:menuitem value="Cadastro de execucao" icon="ui-icon-plus" url="cadastrarTarefa.xhtml"/>
-					</p:submenu>
-					
-					<p:menuitem value="Cadastrar usuÃ¡rios" icon="ui-icon-plus"
+
+					<p:menuitem value="Relatórios" icon="ui-icon-plus"
+						url="relatorioTarefas.xhtml" />
+
+					<p:menuitem value="Cadastrar usuários" icon="ui-icon-plus"
 						url="cadastrarUsuario.xhtml"
 						rendered="#{loginBean.usuarioLogado.admin}" />
 
@@ -85,9 +104,15 @@
 				Bem vindo
 			</ui:insert>
 		</p:layoutUnit>
-		<p:layoutUnit position="south" size="35"
-			style="text-align: right; padding-right: 40px; font-weight: bold">
-			<h:outputText value="&#169; Copyright 2017 - UFPI" />
+		<p:layoutUnit position="south" size="55">
+	<!--		<div class="imagemRodape"> 
+				<img src="resources/project-theme/images/rodape.jpg" alt="laço" height="45"/>
+			</div> -->
+			<p:graphicImage library="project-theme" name="images/rodape.jpg"
+				height="45" styleClass="imagemRodape" rendered="#{loginBean.paginaInicial}"/> 
+			<div class="textoRodape">
+				<h:outputText value="&#169; Copyright 2017 - UFPI" />
+			</div>
 		</p:layoutUnit>
 	</p:layout>
 </h:body>

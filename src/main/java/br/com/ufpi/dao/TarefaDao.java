@@ -11,6 +11,8 @@ import javax.persistence.TypedQuery;
 
 import org.apache.commons.collections.CollectionUtils;
 
+import br.com.ufpi.enuns.TemplateEnum;
+import br.com.ufpi.model.Estudante;
 import br.com.ufpi.model.Tarefa;
 import br.com.ufpi.util.TarefaGrafico;
 
@@ -38,15 +40,21 @@ public class TarefaDao implements Serializable{
 		em.merge(tarefa);
 	}
 	
-	public List<Tarefa> buscarTarefasPorEstudante(Long idEstudante, int firstResult,
+	public List<Tarefa> buscarTarefasPorEstudante(Estudante estudante, TemplateEnum template, int firstResult,
 			int numeroDeRegistros) {
 		String hql = "SELECT t FROM Tarefa t";
-		if(idEstudante != null)
-			hql += " where t.estudante.id = :idEstudante ";
+		if(estudante != null || template != null)
+			hql += " where ";
+		if(estudante != null)
+			hql += "t.estudante = :estudante ";
+		if(template != null)
+			hql += "and t.atividade.template = :template ";
 		TypedQuery<Tarefa> query = em.createQuery(hql,
 				Tarefa.class);
-		if(idEstudante != null)
-			query.setParameter("idEstudante", idEstudante);
+		if(estudante != null)
+			query.setParameter("estudante", estudante);
+		if(template != null)
+			query.setParameter("template", template);
 		query.setFirstResult(firstResult);
 		query.setMaxResults(numeroDeRegistros);
 		List<Tarefa> tarefasExecutadasPeloEstudante = query.getResultList();
@@ -57,15 +65,21 @@ public class TarefaDao implements Serializable{
 		return null;
 	}
 	
-	public List<TarefaGrafico> buscarTarefasPorEstudante(Long idEstudante) {
+	public List<TarefaGrafico> buscarTarefasPorEstudante(Estudante estudante, TemplateEnum template) {
 		String hql = "SELECT NEW br.com.ufpi.util.TarefaGrafico(t.acertos, t.erros, t.inicio) FROM Tarefa t";
-		if(idEstudante != null)
-			hql += " where t.estudante.id = :idEstudante";
+		if(estudante != null || template != null)
+			hql += " where ";
+		if(estudante != null)
+			hql += "t.estudante = :estudante ";
+		if(template != null)
+			hql += "and t.atividade.template = :template ";
 		hql += " order by t.inicio";
 		TypedQuery<TarefaGrafico> query = em.createQuery(hql,
 				TarefaGrafico.class);
-		if(idEstudante != null)
-			query.setParameter("idEstudante", idEstudante);
+		if(estudante != null)
+			query.setParameter("estudante", estudante);
+		if(template != null)
+			query.setParameter("template", template);
 		List<TarefaGrafico> tarefasExecutadasPeloEstudante = query.getResultList();
 
 		if (!CollectionUtils.isEmpty(tarefasExecutadasPeloEstudante)) {
@@ -74,13 +88,19 @@ public class TarefaDao implements Serializable{
 		return new ArrayList<>();
 	}
 	
-	public int contarDocumentosPorStatusSetorProcessual(Long idEstudante) {
+	public int contarTarefas(Estudante estudante, TemplateEnum template) {
 		String hql = "SELECT COUNT(t) FROM Tarefa t";
-		if(idEstudante != null)
-			hql += " where t.estudante.id = :idEstudante";
+		if(estudante != null || template != null)
+			hql += " where ";
+		if(estudante != null)
+			hql += "t.estudante = :estudante ";
+		if(template != null)
+			hql += "and t.atividade.template = :template ";
 		TypedQuery<Number> query = em.createQuery(hql,Number.class);
-		if(idEstudante != null)
-			query.setParameter("idEstudante", idEstudante);
+		if(estudante != null)
+			query.setParameter("estudante", estudante);
+		if(template != null)
+			query.setParameter("template", template);
 
 		return query.getSingleResult().intValue();
 	}

@@ -36,29 +36,6 @@
 }
 </style>
 
-		<script>			
-		function descricaoCancelamento(){
-			var flag = document.getElementById('descricao');
-			flag.style.display = "block";
-			limparTextArea();
-		}		 		
-
-</script>
-
-		<script>		
-		function ocultar(){
-			var flag = document.getElementById('descricao');
-			flag.style.display = "none";
-		}		
-						  		
-</script>
-
-		<script>
-		function limparTextArea(){
-			document.getElementById('desc').value = "";
-		}
-</script>
-
 		<script>
 		function detalhes(){
 			var informacao = document.getElementById('detalhes');
@@ -74,11 +51,42 @@
 					listener="#{relatorioTarefasAluno.pesquisar()}" />
 			</f:metadata>
 			<p:messages id="growl" showDetail="false" closable="true" />
-			<p:fieldset legend="Tarefas" toggleable="true" toggleSpeed="500">
+			<p:fieldset legend="Pesquisar atividades" toggleable="true"
+				toggleSpeed="500">
+				<p:panelGrid columns="2" styleClass="semBorda">
+					<p:outputLabel value="Pesquisar aluno pelo nome: "
+						for="autoCompleteAluno" style="font-size:14px; font-weight:bold"></p:outputLabel>
+					<p:autoComplete id="autoCompleteAluno"
+						value="#{relatorioTarefasAluno.estudanteSelecionado}"
+						completeMethod="#{relatorioTarefasAluno.buscarEstudante}"
+						converter="estudanteConverter" var="estudante" event="itemselect"
+						itemLabel="#{estudante.nome}" itemValue="#{estudante}"
+						minQueryLength="1" forceSelection="true" size="50"
+						style="font-size:14px">
+					</p:autoComplete>
+					<p:outputLabel for="comboTemplate" value="Selecione o template: " />
+					<p:selectOneMenu id="comboTemplate"
+						value="#{relatorioTarefasAluno.templateSelecionado}"
+						required="false">
+						<f:selectItem itemLabel="Selecione o template" itemValue="" />
+						<f:selectItems value="#{relatorioTarefasAluno.templates}" />
+					</p:selectOneMenu>
+				</p:panelGrid>
+				<p:panelGrid columns="3" cellpadding="10">
+					<p:commandButton value="Pesquisar " id="ajax" update="@form"
+						actionListener="#{relatorioTarefasAluno.pesquisar}"
+						styleClass="ui-priority-primary" ajax="false" />
 
+					<p:commandButton value="Limpar " id="ajax2" update="@form"
+						actionListener="#{relatorioTarefasAluno.limpar}"
+						styleClass="ui-priority-primary" ajax="false" />
+
+				</p:panelGrid>
+			</p:fieldset>
+			<p:fieldset legend="Tarefas" toggleable="true" toggleSpeed="500">
 				<p:dataTable var="tarefa" paginator="true" rows="5"
 					style="text-align: center" paginatorPosition="bottom" lazy="true"
-					id="tabelaTarefa" emptyMessage="O estudante não executou nenhuma tarefa."
+					id="tabelaTarefa" emptyMessage="Nenhuma tarefa encontrada."
 					value="#{relatorioTarefasAluno.tarefasDoEstudante}" rowKey="tarefa"
 					rendered="#{not empty relatorioTarefasAluno.tarefasDoEstudante}">
 
@@ -125,15 +133,18 @@
 			</p:fieldset>
 			<br />
 			<br />
-			<p:fieldset legend="Gráfico de acertos" toggleable="true" rendered="#{relatorioTarefasAluno.alunoExecutouTarefa}">
-				<p:chart type="line" model="#{relatorioTarefasAluno.graficoAcertos}" responsive="true"
-					widgetVar="chart" />
+			<p:fieldset legend="Gráfico de acertos" toggleable="true"
+				rendered="#{relatorioTarefasAluno.alunoExecutouTarefa}">
+				<p:chart type="line" model="#{relatorioTarefasAluno.graficoAcertos}"
+					responsive="true" widgetVar="chart" />
 			</p:fieldset>
 
 			<br />
 			<br />
-			<p:fieldset legend="Gráfico de erros" toggleable="true" rendered="#{relatorioTarefasAluno.alunoExecutouTarefa}">
-				<p:chart type="line" model="#{relatorioTarefasAluno.graficoErros}"  responsive="true"/>
+			<p:fieldset legend="Gráfico de erros" toggleable="true"
+				rendered="#{relatorioTarefasAluno.alunoExecutouTarefa}">
+				<p:chart type="line" model="#{relatorioTarefasAluno.graficoErros}"
+					responsive="true" />
 			</p:fieldset>
 
 		</h:form>
