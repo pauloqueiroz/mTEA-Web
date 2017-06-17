@@ -59,7 +59,7 @@
 						<p:panel header="Filtrar atividades" toggleable="true" closable="true"
 							toggleSpeed="500" collapsed="true" style="margin-bottom:20px">
 							<p:panelGrid columns="2" styleClass="semBorda">
-								<p:outputLabel value="Nome do estudante: " />
+								<p:outputLabel value="Nome da atividade: " />
 								<p:inputText value="#{cadastroListaAtividadeBean.nomeAtividade}"
 									size="70" />
 								<p:outputLabel for="comboTemplate"
@@ -75,11 +75,11 @@
 							</p:panelGrid>
 							<br />
 							<p:panelGrid columns="2" cellpadding="10">
-								<p:commandButton value="Pesquisar " id="ajax"
+								<p:commandButton value="Pesquisar " id="ajax" immediate="true"
 									update=":listaAtividadeForm:atividadesDisponiveisField"
 									actionListener="#{cadastroListaAtividadeBean.pesquisar}"
 									styleClass="ui-priority-primary" ajax="true" />
-								<p:commandButton value="Limpar" id="ajax2"
+								<p:commandButton value="Limpar" id="ajax2" immediate="true"
 									update=":listaAtividadeForm:atividadesDisponiveis"
 									actionListener="#{cadastroListaAtividadeBean.limparInformacoes}"
 									styleClass="ui-priority-primary" ajax="true" />
