@@ -164,5 +164,12 @@ public class ItemListaEstudanteDao implements Serializable{
 		em.remove(listaSelecionada);
 		
 	}
+	
+	public int quantidadeAtividadesLista(ItemListaEstudante item){
+		String hql = "SELECT COUNT(i) FROM ItemAtividade i where i.lista = :lista";
+		TypedQuery<Number> query = em.createQuery(hql,Number.class);
+		query.setParameter("lista", item.getLista());
+		return query.getSingleResult().intValue();
+	}
 
 }

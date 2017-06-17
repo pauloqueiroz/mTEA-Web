@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -195,19 +197,55 @@ public class Services {
 			Estudante estudante = estudanteDao.buscarPorId(task.getStudent_id());
 			if(estudante != null){
 				Atividade atividade = null;
-				if(task.getLesson_id() != null)
+				if(task.getLesson_id() != null){
 					atividade = atividadeDao.buscarPorId(task.getLesson_id());
+				}
 				task.setInicio(EstudanteConverter.parse(task.getStart()));
 				task.setFim(EstudanteConverter.parse(task.getEnd()));
 				Tarefa tarefa = new Tarefa(task.getInicio(), task.getFim(), task.getTouches(), task.getHits(),
 						task.getFaults(), task.getFinished(), task.getRating(), atividade, estudante);
+				ItemListaEstudante listaAtual = buscarListaAtual(estudante);
+				tarefa.setLista(listaAtual);
 				tarefaDao.adicionar(tarefa);
 				String result = "Task saved : " + tarefa.getId();
+				boolean isListaEncerrada = verificarListaEncerrada(listaAtual);
+				if(isListaEncerrada){
+					listaAtual.setDataExecucao(new Date());
+					listaAtual.setSituacao(SituacaoEnum.CONCLUIDO);
+					itemDao.atualizar(listaAtual);
+				}	
 				return Response.status(201).entity(result).build();
 			}
 		}
 		System.out.println("Task nao encontrada!");
 		return Response.status(404).entity("Estudante n�o encontrado").build();
+	}
+
+	private boolean verificarListaEncerrada(ItemListaEstudante listaAtual) {
+		int quantTarefasExecutadas = tarefaDao.contarTarefasPorLista(listaAtual);
+		int quantidadeAtividadesDaLista = itemDao.quantidadeAtividadesLista(listaAtual);
+		if(quantTarefasExecutadas >= quantidadeAtividadesDaLista){
+			return true;
+		}
+		return false;
+	}
+
+	private ItemListaEstudante buscarListaAtual(Estudante estudante) {
+		List<SituacaoEnum> situacoes = Arrays.asList(SituacaoEnum.ENVIADO);
+		List<ItemListaEstudante> listasDoAluno = itemDao.buscarListaAtual(estudante,situacoes);
+		if(!CollectionUtils.isEmpty(listasDoAluno)){
+			return listasDoAluno.get(0);
+		}
+		return null;
+		
+	}
+
+	@SuppressWarnings("unused")
+	private Set<Long> pegarIdsAtividades(Set<ItemAtividade> atividadesDaLista) {
+		Set<Long> idsAtividades = new HashSet<>();
+		for (ItemAtividade itemAtividade : atividadesDaLista) 
+			idsAtividades.add(itemAtividade.getAtividade().getId());
+		return idsAtividades;
 	}
 
 	public TarefaDao getTarefaDao() {

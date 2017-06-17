@@ -10,17 +10,17 @@ public enum SituacaoEnum {
 	
 	CADASTRADO{
 		public String toString(){
-			return "Cadastrado(a)";
+			return "Cadastrada";
 		}
 	},
 	ENVIADO{
 		public String toString(){
-			return "Enviado(a)";
+			return "Enviada";
 		}
 	},
 	CONCLUIDO{
 		public String toString(){
-			return "Concluído(a)";
+			return "Concluída";
 		}
 	}
 

@@ -44,6 +44,10 @@ public class Tarefa implements Serializable{
 	@JoinColumn(name="idEstudante")
 	private Estudante estudante;
 	
+	@ManyToOne
+	@JoinColumn(name="idLista")
+	private ItemListaEstudante lista;
+	
 	private transient String tarefaEncerrada;
 	
 	public Tarefa() {
@@ -156,7 +160,7 @@ public class Tarefa implements Serializable{
 		}else if(this.encerrada)
 			return "SIM";
 		else
-			return "NÃO";
+			return "Nï¿½O";
 	}
 
 	public void setTarefaEncerrada(String tarefaEncerrada) {
@@ -169,6 +173,14 @@ public class Tarefa implements Serializable{
 
 	public void setPontuacao(Integer pontuacao) {
 		this.pontuacao = pontuacao;
+	}
+
+	public ItemListaEstudante getLista() {
+		return lista;
+	}
+
+	public void setLista(ItemListaEstudante lista) {
+		this.lista = lista;
 	}
 
 }

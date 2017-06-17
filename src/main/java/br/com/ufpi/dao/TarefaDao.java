@@ -13,6 +13,7 @@ import org.apache.commons.collections.CollectionUtils;
 
 import br.com.ufpi.enuns.TemplateEnum;
 import br.com.ufpi.model.Estudante;
+import br.com.ufpi.model.ItemListaEstudante;
 import br.com.ufpi.model.Tarefa;
 import br.com.ufpi.util.TarefaGrafico;
 
@@ -105,6 +106,12 @@ public class TarefaDao implements Serializable{
 		return query.getSingleResult().intValue();
 	}
 
+	public int contarTarefasPorLista(ItemListaEstudante lista){
+		String hql = "SELECT COUNT(t) FROM Tarefa t WHERE t.lista = : lista";
+		TypedQuery<Number> query = em.createQuery(hql,Number.class);
+		query.setParameter("lista", lista);
+		return query.getSingleResult().intValue();
+	}
 
 	
 }
