@@ -63,26 +63,28 @@
 							toggleSpeed="500" collapsed="true" style="margin-bottom:20px">
 							<p:panelGrid columns="2" styleClass="semBorda">
 								<p:outputLabel value="Nome da lista: " />
-								<p:inputText
-									value="#{associarListaAtividades.nomeListaAtividade}" />
+								<p:inputText id="nomeListaInput"
+									value="#{associarListaAtividades.nomeListaAtividade}" immediate="true"/>
 								<p:outputLabel value="Descrição: " />
 								<p:inputTextarea value="#{associarListaAtividades.descricao}"
-									id="desc" cols="60" />
+									id="desc" cols="60" immediate="true"/>
 								<p:outputLabel value="Data de criação (início)" />
 								<p:calendar value="#{associarListaAtividades.dataInicio}"
-									pattern="dd/MM/yyyy" mask="true" />
-								<p:outputLabel value="Data de criação (fim)" />
+									pattern="dd/MM/yyyy" mask="true"  id="dataInicioInput" immediate="true"/>
+								<p:outputLabel value="Data de criação (fim)"/>
 								<p:calendar value="#{associarListaAtividades.dataFinal}"
-									pattern="dd/MM/yyyy" mask="true" />
+									pattern="dd/MM/yyyy" mask="true" id="dataFimInput" immediate="true"/>
 							</p:panelGrid>
 							<p:panelGrid columns="3" cellpadding="10">
-								<p:commandButton value="Pesquisar " id="ajax" update="@form"
+								<p:commandButton value="Pesquisar" id="ajax"
+									update=":listaAtividadeForm:listasDisponiveisField"
 									actionListener="#{associarListaAtividades.pesquisar()}"
-									styleClass="ui-priority-primary" ajax="false" immediate="true" />
+									styleClass="ui-priority-primary" ajax="true" immediate="true" />
 
-								<p:commandButton value="Limpar " id="ajax2" update="@form"
+								<p:commandButton value="Limpar Filtros" id="ajax2"
+									update=":listaAtividadeForm:listasDisponiveisField panelListasSelecionadas"
 									actionListener="#{associarListaAtividades.limparInformacoes()}"
-									styleClass="ui-priority-primary" ajax="false" immediate="true" />
+									styleClass="ui-priority-primary" ajax="true" immediate="true" />
 
 							</p:panelGrid>
 						</p:panel>
@@ -97,7 +99,7 @@
 									style="text-align: center" paginatorPosition="bottom"
 									lazy="true" value="#{associarListaAtividades.listas}"
 									rowKey="lista" sortMode="multiple">
-									<p:column style="width:20px" headerText="Drag">
+									<p:column style="width:20px" headerText="+">
 										<h:outputText id="dragIcon"
 											styleClass="ui-icon ui-icon-arrow-4" title="clique e arraste" />
 										<p:draggable for="dragIcon" revert="true" helper="clone" />
@@ -129,7 +131,7 @@
 								legend="Listas selecionadas"
 								style="margin-top:20px;margin-left:5%;">
 								<p:outputPanel id="dropArea">
-									<h:outputText value="Arraste as listas para cá"
+									<h:outputText value="Clique no botão adicionar ou arraste as listas para cá"
 										rendered="#{empty associarListaAtividades.listasSelecionadas}"
 										style="font-size:24px;" />
 									<p:dataTable id="listasSelecionadasTable" var="lista"

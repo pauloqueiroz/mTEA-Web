@@ -15,6 +15,7 @@ import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
@@ -23,6 +24,8 @@ import javax.inject.Named;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.primefaces.component.inputtext.InputText;
+import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.event.DragDropEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.LazyDataModel;
@@ -93,12 +96,33 @@ public class CadastroListaAtividadeBean implements Serializable {
 			public List<Atividade> load(int first, int pageSize, List<SortMeta> multiSortMeta,
 					Map<String, Object> filters) {
 				List<Atividade> listaAtividades = new ArrayList<>();
+				FacesContext facesContext = FacesContext.getCurrentInstance();
+				UIViewRoot uiViewRoot = facesContext.getViewRoot();
+				InputText nomeAtividadeInput = (InputText) uiViewRoot
+						.findComponent("listaAtividadeForm:nomeAtividadeInput");
+				if(nomeAtividadeInput != null && nomeAtividadeInput.getValue() != null){
+					nomeAtividade = (String) nomeAtividadeInput.getValue();
+				}
+				
+				SelectOneMenu comboTemplate = (SelectOneMenu) uiViewRoot
+						.findComponent("listaAtividadeForm:comboTemplate");
+				if(comboTemplate != null && comboTemplate.getValue() != null){
+					templateSelecionado = (TemplateEnum) comboTemplate.getValue();
+				}
+				
+				InputText inputPalavra = (InputText) uiViewRoot
+						.findComponent("listaAtividadeForm:inputPalavra");
+				if(inputPalavra != null && inputPalavra.getValue() != null){
+					palavra = (String) inputPalavra.getValue();
+				}
+				
+				System.out.println(nomeAtividade +"---"+templateSelecionado+"---"+palavra);
 
-				listaAtividades = atividadeDao.listarAtividades(getNomeAtividade(), getTemplateSelecionado(),
-						getPalavra(), idsAtividadesSelecionadas, first, pageSize, multiSortMeta);
+				listaAtividades = atividadeDao.listarAtividades(nomeAtividade, templateSelecionado,
+						palavra, idsAtividadesSelecionadas, first, pageSize, multiSortMeta);
 				listaAtividades.removeAll(atividadesSelecionadas);
 
-				int count = atividadeDao.contarAtividades(getNomeAtividade(), getTemplateSelecionado(), getPalavra(),
+				int count = atividadeDao.contarAtividades(nomeAtividade, templateSelecionado, palavra,
 						idsAtividadesSelecionadas);
 				this.setRowCount(count);
 
@@ -213,6 +237,22 @@ public class CadastroListaAtividadeBean implements Serializable {
 		nomeAtividade = "";
 		templateSelecionado = null;
 		palavra = "";
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		UIViewRoot uiViewRoot = facesContext.getViewRoot();
+		InputText nomeAtividadeInput = (InputText) uiViewRoot
+				.findComponent("listaAtividadeForm:nomeAtividadeInput");
+		nomeAtividadeInput.setSubmittedValue("");
+		nomeAtividadeInput.setValue("");
+
+		SelectOneMenu comboTemplate = (SelectOneMenu) uiViewRoot
+				.findComponent("listaAtividadeForm:comboTemplate");
+		comboTemplate.setSubmittedValue(null);
+		comboTemplate.setValue(null);
+		
+		InputText inputPalavra = (InputText) uiViewRoot
+				.findComponent("listaAtividadeForm:inputPalavra");
+		inputPalavra.setSubmittedValue("");
+		inputPalavra.setValue("");
 		pesquisar();
 	}
 

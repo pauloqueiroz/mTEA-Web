@@ -60,27 +60,27 @@
 							toggleSpeed="500" collapsed="true" style="margin-bottom:20px">
 							<p:panelGrid columns="2" styleClass="semBorda">
 								<p:outputLabel value="Nome da atividade: " />
-								<p:inputText value="#{cadastroListaAtividadeBean.nomeAtividade}"
-									size="70" />
+								<p:inputText id="nomeAtividadeInput" value="#{cadastroListaAtividadeBean.nomeAtividade}"
+									size="70" immediate="true"/>
 								<p:outputLabel for="comboTemplate"
 									value="Selecione o template: " />
 								<p:selectOneMenu id="comboTemplate"
 									value="#{cadastroListaAtividadeBean.templateSelecionado}"
 									required="false">
 									<f:selectItem itemLabel="Selecione o template" itemValue="" />
-									<f:selectItems value="#{cadastroListaAtividadeBean.templates}" />
+									<f:selectItems value="#{cadastroListaAtividadeBean.templates}"/>
 								</p:selectOneMenu>
 								<p:outputLabel value="Palavra: " />
-								<p:inputText value="#{cadastroListaAtividadeBean.palavra}" />
+								<p:inputText id="inputPalavra" value="#{cadastroListaAtividadeBean.palavra}" immediate="true"/>
 							</p:panelGrid>
 							<br />
 							<p:panelGrid columns="2" cellpadding="10">
-								<p:commandButton value="Pesquisar " id="ajax" immediate="true"
+								<p:commandButton value="Pesquisar" id="ajax" immediate="true"
 									update=":listaAtividadeForm:atividadesDisponiveisField"
 									actionListener="#{cadastroListaAtividadeBean.pesquisar}"
 									styleClass="ui-priority-primary" ajax="true" />
-								<p:commandButton value="Limpar" id="ajax2" immediate="true"
-									update=":listaAtividadeForm:atividadesDisponiveis"
+								<p:commandButton value="Limpar filtros" id="ajax2" immediate="true"
+									update=":listaAtividadeForm:atividadesDisponiveisField"
 									actionListener="#{cadastroListaAtividadeBean.limparInformacoes}"
 									styleClass="ui-priority-primary" ajax="true" />
 							</p:panelGrid>
@@ -96,7 +96,7 @@
 									style="text-align: center" paginatorPosition="bottom"
 									lazy="true" value="#{cadastroListaAtividadeBean.atividades}"
 									rowKey="atividade" sortMode="multiple">
-									<p:column style="width:20px" headerText="Arraste">
+									<p:column style="width:20px" headerText="+">
 										<h:outputText id="dragIcon"
 											styleClass="ui-icon ui-icon-arrow-4" title="clique e arraste" />
 										<p:draggable for="dragIcon" revert="true" helper="clone" />
@@ -131,7 +131,7 @@
 								legend="Atividades selecionadas"
 								style="margin-top:20px;margin-left:5%;">
 								<p:outputPanel id="dropArea">
-									<h:outputText value="Arraste as atividades para cá"
+									<h:outputText value="Clique no botão adicionar ou arraste as atividades para cá"
 										rendered="#{empty cadastroListaAtividadeBean.atividadesSelecionadas}"
 										style="font-size:24px;" />
 									<p:dataTable id="atividadesSelecionadasTable" var="atividade"

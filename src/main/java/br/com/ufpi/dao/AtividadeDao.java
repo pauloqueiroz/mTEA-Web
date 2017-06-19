@@ -124,7 +124,7 @@ public class AtividadeDao implements Serializable{
 		
 		List<Predicate> predicates = new ArrayList<Predicate>();
 		
-		if (!StringUtils.isEmpty(palavra)) {
+		if (!StringUtils.isEmpty(nomeAtividade)) {
 			Predicate palavraPredicate = criteriaBuilder.like(
 					criteriaBuilder.lower(atividadeRoot.<String> get("nome")), "%" + nomeAtividade.toLowerCase() + "%");
 			predicates.add(palavraPredicate);
@@ -170,7 +170,7 @@ public class AtividadeDao implements Serializable{
 		
 		List<Predicate> predicates = new ArrayList<Predicate>();
 		
-		if (!StringUtils.isEmpty(palavra)) {
+		if (!StringUtils.isEmpty(nomeAtividade)) {
 			Predicate palavraPredicate = criteriaBuilder.like(
 					criteriaBuilder.lower(atividadeRoot.<String> get("nome")), "%" + nomeAtividade.toLowerCase() + "%");
 			predicates.add(palavraPredicate);

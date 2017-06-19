@@ -11,6 +11,7 @@ import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
@@ -19,6 +20,9 @@ import javax.inject.Named;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.primefaces.component.calendar.Calendar;
+import org.primefaces.component.inputtext.InputText;
+import org.primefaces.component.inputtextarea.InputTextarea;
 import org.primefaces.event.DragDropEvent;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortMeta;
@@ -90,6 +94,35 @@ public class AssociarListaAtividades implements Serializable{
 			public List<ListaAtividade> load(int first, int pageSize, List<SortMeta> multiSortMeta,
 					Map<String, Object> filters) {
 				List<ListaAtividade> listas = new ArrayList<>();
+				
+				FacesContext facesContext = FacesContext.getCurrentInstance();
+				UIViewRoot uiViewRoot = facesContext.getViewRoot();
+				InputText nomeListaInput = (InputText) uiViewRoot
+						.findComponent("listaAtividadeForm:nomeListaInput");
+				if(nomeListaInput != null && nomeListaInput.getValue() != null){
+					nomeListaAtividade = (String) nomeListaInput.getValue();
+				}
+				
+				InputTextarea desc = (InputTextarea) uiViewRoot
+						.findComponent("listaAtividadeForm:desc");
+				
+				if(desc != null && desc.getValue() != null){
+					descricao = (String) desc.getValue();
+				}
+				
+				Calendar dataInicioInput = (Calendar) uiViewRoot
+						.findComponent("listaAtividadeForm:dataInicioInput");
+				if(dataInicioInput != null && dataInicioInput.getValue() != null){
+					String classe = dataInicioInput.getValue().getClass().getName();
+					System.out.println("data inicio:" +classe);
+					dataInicio = (Date) dataInicioInput.getValue();
+				}
+				
+				Calendar dataFimInput = (Calendar) uiViewRoot
+						.findComponent("listaAtividadeForm:dataFimInput");
+				if(dataFimInput != null && dataFimInput.getValue() != null){
+					dataFinal = (Date) dataFimInput.getValue();
+				}
 
 				listas = listaAtividadeDao.listar(nomeListaAtividade, descricao, dataInicio, dataFinal, idsListasSelecionadas, first, pageSize,
 						multiSortMeta);
@@ -158,6 +191,29 @@ public class AssociarListaAtividades implements Serializable{
 		descricao = "";
 		dataInicio = null;
 		dataFinal = null;
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		UIViewRoot uiViewRoot = facesContext.getViewRoot();
+		
+		InputText nomeListaInput = (InputText) uiViewRoot
+				.findComponent("listaAtividadeForm:nomeListaInput");
+		nomeListaInput.setSubmittedValue("");
+		nomeListaInput.setValue("");
+		
+		InputTextarea desc = (InputTextarea) uiViewRoot
+				.findComponent("listaAtividadeForm:desc");
+		desc.setSubmittedValue("");
+		desc.setValue("");
+		
+		Calendar dataInicioInput = (Calendar) uiViewRoot
+				.findComponent("listaAtividadeForm:dataInicioInput");
+		dataInicioInput.setSubmittedValue(null);
+		dataInicioInput.setValue(null);
+		
+		Calendar dataFimInput = (Calendar) uiViewRoot
+				.findComponent("listaAtividadeForm:dataFimInput");
+		dataFimInput.setSubmittedValue(null);
+		dataFimInput.setValue(null);
+		
 		pesquisar();
 	}
 	
