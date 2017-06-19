@@ -25,12 +25,18 @@
 			<p:messages id="mensagem" showDetail="false" closable="true" />
 			<center>
 				<h:form id="formPrincipal">
+					<div class="ui-message-warning">
+						<h1>Arraste as atividades na tabela para definir a ordem que as mesmas aparecerão no app.</h1>
+					</div>
+					<br />
+					<br />
 					<f:metadata>
 						<f:viewParam name="idListaAtividade"
 							value="#{edicaoListaAtividadeBean.idListaAtividade}" />
 						<f:event type="preRenderView"
 							listener="#{edicaoListaAtividadeBean.buscarListaAtividade()}" />
 					</f:metadata>
+					<h1>Dados da lista</h1>
 					<p:panelGrid id="panelDadosListaAtividade" header="Dados da lista"
 						columns="2">
 						<p:outputLabel for="nome" value="Nome da lista" />
