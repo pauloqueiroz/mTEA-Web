@@ -106,14 +106,14 @@ public class EdicaoAtividadeBean implements Serializable {
 				+ conteudoArquivos.size());
 		if (quantidadeArquivos > atividade.getTemplate().getQuantidadeMaximaArquivos()){
 			facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-					"O n˙mero m·ximo de arquivos permitidos para o template " + atividade.getTemplate().getDescricao()
-							+ " È de " + atividade.getTemplate().getQuantidadeMaximaArquivos() + ". Existem "
+					"O n√∫mero m√°ximo de arquivos permitidos para o template " + atividade.getTemplate().getDescricao()
+							+ " √© de " + atividade.getTemplate().getQuantidadeMaximaArquivos() + ". Existem "
 							+ quantidadeArquivos + " arquivos associados a atividade.",
 					null));
 			return;
 		}else if(atividade.getTemplate().getQuantidadeMaximaArquivos() > quantidadeArquivos){
 			facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-					"A quantidade de imagens para o template desta tarefa n„o pode ser "+quantidadeArquivos+".",
+					"A quantidade de imagens para o template desta tarefa n√£o pode ser "+quantidadeArquivos+".",
 					null));
 			return;
 		}
