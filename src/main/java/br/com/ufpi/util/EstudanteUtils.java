@@ -100,7 +100,7 @@ public class EstudanteUtils {
 
 		for (Atividade atividade : atividades) {
 			Lesson lesson = new Lesson(atividade.getId(), atividade.getPalavra(), atividade.getTemplate().ordinal(),
-					null, String.valueOf(estudante.getId()), null);
+					atividade.getReforco(), String.valueOf(estudante.getId()), null);
 
 			// Formar ou sobrepor palavras
 
