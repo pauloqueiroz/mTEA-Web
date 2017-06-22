@@ -41,7 +41,13 @@ import br.com.ufpi.model.Atividade;
 import br.com.ufpi.model.ItemAtividade;
 import br.com.ufpi.model.ListaAtividade;
 import br.com.ufpi.util.ArquivoUtil;
+import groovy.ui.SystemOutputInterceptor;
 
+/**
+ * 
+ * @author Paulo Sergio
+ *
+ */
 @Named
 @ViewScoped
 public class CadastroListaAtividadeBean implements Serializable {

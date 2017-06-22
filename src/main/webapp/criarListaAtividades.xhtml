@@ -66,7 +66,7 @@
 									value="Selecione o template: " />
 								<p:selectOneMenu id="comboTemplate"
 									value="#{cadastroListaAtividadeBean.templateSelecionado}"
-									required="false">
+									required="false" immediate="true">
 									<f:selectItem itemLabel="Selecione o template" itemValue="" />
 									<f:selectItems value="#{cadastroListaAtividadeBean.templates}"/>
 								</p:selectOneMenu>
