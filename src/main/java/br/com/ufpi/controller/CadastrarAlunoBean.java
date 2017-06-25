@@ -69,9 +69,9 @@ public class CadastrarAlunoBean implements Serializable{
 	private String validarAluno(Estudante estudante) {
 		int count = estudanteDao.contarEstudantes(estudante.getNome());
 		if(count > 0)
-			return "Já existe um aluno com o nome "+estudante.getNome()+" cadastrado.";
+			return "JÃ¡ existe um aluno com o nome "+estudante.getNome()+" cadastrado.";
 		if(estudante.getDataNascimento().after(new Date()))
-			return "A data de nascimento não pode ser futura.";
+			return "A data de nascimento nÃ£o pode ser futura.";
 		return null;
 	}
 

@@ -52,7 +52,7 @@ public class EstudanteDao implements Serializable {
 		try{
 			estudante = query.getSingleResult();
 		}catch(Exception e){
-			System.out.println("Estudante n„o encontrado.");
+			System.out.println("Estudante n√£o encontrado.");
 			e.printStackTrace();
 		}
 		return estudante; 

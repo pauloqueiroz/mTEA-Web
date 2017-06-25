@@ -17,9 +17,9 @@ public enum TemplateEnum {
 			return "Sobrepor Palavra";
 		}
 	},
-	JOGO_MEMORIA(2, 6, "Jogo de Memória"){
+	JOGO_MEMORIA(2, 6, "Jogo de MemÃ³ria"){
 		public String toString(){
-			return "Jogo de Memória";
+			return "Jogo de MemÃ³ria";
 		}
 	},
 	NOMEAR_FIGURA(1, 1, "Nomear Figura"){
@@ -27,9 +27,9 @@ public enum TemplateEnum {
 			return "Nomear Figura";
 		}
 	},
-	GENIOS(2, 6, "Gênios"){
+	GENIOS(2, 6, "GÃªnios"){
 		public String toString(){
-			return "Gênios";
+			return "GÃªnios";
 		}
 	};
 	

@@ -80,7 +80,7 @@ public class Services {
 			Student studentJson = EstudanteUtils.converterEstudante(estudante, arquivoDao);
 			return Response.status(200).entity(studentJson).build();
 		}
-		return Response.status(404).entity("Estudante n„o encontrado").build();
+		return Response.status(404).entity("Estudante n√£o encontrado").build();
 	}
 
 	@GET
@@ -104,7 +104,7 @@ public class Services {
 			response.header("Content-Disposition", "attachment; filename=" + arquivo.getNomeArquivo());
 			return response.build();
 		}
-		return Response.status(404).entity("ReforÁo n„o encontrado").build();
+		return Response.status(404).entity("Refor√ßo n√£o encontrado").build();
 	}
 
 	@GET
@@ -129,7 +129,7 @@ public class Services {
 			response.header("Content-Disposition", "attachment; filename=" + arquivo.getNomeArquivo());
 			return response.build();
 		}
-		return Response.status(404).entity("Imagem n„o encontrada").build();
+		return Response.status(404).entity("Imagem n√£o encontrada").build();
 	}
 
 	@GET
@@ -154,7 +154,7 @@ public class Services {
 			response.header("Content-Disposition", "attachment; filename=" + arquivo.getNomeArquivo());
 			return response.build();
 		}
-		return Response.status(404).entity("Imagem n„o encontrada").build();
+		return Response.status(404).entity("Imagem n√£o encontrada").build();
 	}
 	
 	
@@ -180,7 +180,7 @@ public class Services {
 			}
 		}
 		System.out.println("Task nao encontrada!");
-		return Response.status(404).entity("Estudante n„o encontrado").build();
+		return Response.status(404).entity("Estudante n√£o encontrado").build();
 	}
 
 	public TarefaDao getTarefaDao() {

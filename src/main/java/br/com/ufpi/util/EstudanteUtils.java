@@ -100,7 +100,7 @@ public class EstudanteUtils {
 			Lesson lesson = new Lesson(atividade.getId()
 					, atividade.getPalavra()
 					, atividade.getTemplate().ordinal()
-					, null
+					, atividade.getReforco()
 					, String.valueOf(atividade.getEstudante().getId())
 					, null);
 			/*

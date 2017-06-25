@@ -39,19 +39,19 @@ public class CadastrarUsuarioBean implements Serializable {
 	private String senha;
 
 	/**
-	 * MÈtodo que salva as informacoes do usuario cadastrado.
+	 * MÔøΩtodo que salva as informacoes do usuario cadastrado.
 	 */
 	public void salvar() {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		if (this.getUsuario().getLogin() == null) {
 			facesContext.addMessage(null, new FacesMessage(
-						FacesMessage.SEVERITY_ERROR, "Erro de validaÁ„o", "… necess·rio informar um username"));
+						FacesMessage.SEVERITY_ERROR, "Erro de valida√ß√£o", "√â necess√°rio informar um username"));
 			return;
 		}
 		Usuario usuario = usuarioEJB.buscaUsuarioPorUser(this.getUsuario()
 				.getLogin());
 		if (usuario != null) {
-			facesContext.addMessage(null, new FacesMessage("Erro de validaÁ„o", "J√° existe um usuario cadastrado com o username "
+			facesContext.addMessage(null, new FacesMessage("Erro de valida√ß√£o", "J√° existe um usuario cadastrado com o username "
 							+ this.getUsuario().getLogin()));
 		} else {
 			this.getUsuario().setAdmin(false);
@@ -59,7 +59,7 @@ public class CadastrarUsuarioBean implements Serializable {
 					Md5Utils.convertStringToMd5(senha));
 
 			usuarioEJB.adiciona(this.getUsuario());
-			facesContext.addMessage(null, new FacesMessage("OperaÁ„o realizada com sucesso!", "Usu·rio cadastrado com sucesso!"));
+			facesContext.addMessage(null, new FacesMessage("Opera√ß√£o realizada com sucesso!", "Usu√°rio cadastrado com sucesso!"));
 			limpar();
 		}
 

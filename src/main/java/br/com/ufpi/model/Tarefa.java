@@ -156,7 +156,7 @@ public class Tarefa implements Serializable{
 		}else if(this.encerrada)
 			return "SIM";
 		else
-			return "NÃO";
+			return "NÃƒO";
 	}
 
 	public void setTarefaEncerrada(String tarefaEncerrada) {
