@@ -16,6 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 import org.primefaces.model.chart.AxisType;
+import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.DateAxis;
 import org.primefaces.model.chart.LineChartModel;
 import org.primefaces.model.chart.LineChartSeries;
@@ -52,10 +53,16 @@ public class RelatorioTarefasAluno implements Serializable {
 	private LineChartModel graficoAcertos;
 
 	private LineChartModel graficoErros;
+	
+	private BarChartModel graficoAcertosBar;
+	
+	private BarChartModel graficoErrosBar;
 
 	private List<TarefaGrafico> tarefaGraficos;
 	
 	private TemplateEnum templateSelecionado;
+	
+	private boolean exibirGraficoBarra = false;
 
 	public RelatorioTarefasAluno() {
 		super();
@@ -76,36 +83,49 @@ public class RelatorioTarefasAluno implements Serializable {
 		if (estudanteSelecionado != null) {
 			System.out.println("idEstudante diferente de null");
 			tarefaGraficos = tarefaDao.buscarTarefasPorEstudante(estudanteSelecionado, templateSelecionado);
-			graficoAcertos = new LineChartModel();
-			graficoErros = new LineChartModel();
-			LineChartSeries serieAcertos = new LineChartSeries();
-			serieAcertos.setLabel("Acertos");
-			LineChartSeries serieErros = new LineChartSeries();
-			serieErros.setLabel("Erros");
-			for (TarefaGrafico tarefaGrafico : tarefaGraficos) {
-				serieAcertos.set(EstudanteUtils.getDataPadraoInternacional(tarefaGrafico.getInicio()),
-						tarefaGrafico.getAcertos());
-				serieErros.set(EstudanteUtils.getDataPadraoInternacional(tarefaGrafico.getInicio()),
-						tarefaGrafico.getErros());
-			}
-			Date ultimaData = null;
-			if (!CollectionUtils.isEmpty(tarefaGraficos))
-				ultimaData = tarefaGraficos.get(tarefaGraficos.size() - 1).getInicio();
-
-			ultimaData = ultimaData != null ? ultimaData : new Date();
-			ultimaData = EstudanteUtils.getDiaPosterior(ultimaData);
-
-			povoarGrafico(graficoAcertos, serieAcertos, ultimaData);
-			graficoAcertos.setTitle("Relat�rio de acertos");
-			graficoAcertos.getAxis(AxisType.Y).setLabel("Acertos");
-			Date dataFinal = EstudanteUtils.processarDataFinalGrafico(tarefaGraficos); 
-			graficoAcertos.getAxis(AxisType.X).setMax(EstudanteUtils.getDataPadraoInternacional(dataFinal));
-
-			povoarGrafico(graficoErros, serieErros, ultimaData);
-			graficoErros.setTitle("Relat�rio de erros");
-			graficoErros.getAxis(AxisType.Y).setLabel("Erros");
-			graficoErros.getAxis(AxisType.X).setMax(EstudanteUtils.getDataPadraoInternacional(dataFinal));
+			if(exibirGraficoBarra)
+				montarGraficoBarra();
+			else
+				montarGraficoLinha();
 		}
+	}
+
+	private void montarGraficoBarra() {
+		
+		
+	}
+
+	private void montarGraficoLinha() {
+		graficoAcertos = new LineChartModel();
+		graficoErros = new LineChartModel();
+		LineChartSeries serieAcertos = new LineChartSeries();
+		serieAcertos.setLabel("Acertos");
+		LineChartSeries serieErros = new LineChartSeries();
+		serieErros.setLabel("Erros");
+		for (TarefaGrafico tarefaGrafico : tarefaGraficos) {
+			serieAcertos.set(EstudanteUtils.getDataPadraoInternacional(tarefaGrafico.getInicio()),
+					tarefaGrafico.getAcertos());
+			serieErros.set(EstudanteUtils.getDataPadraoInternacional(tarefaGrafico.getInicio()),
+					tarefaGrafico.getErros());
+		}
+		Date ultimaData = null;
+		if (!CollectionUtils.isEmpty(tarefaGraficos))
+			ultimaData = tarefaGraficos.get(tarefaGraficos.size() - 1).getInicio();
+
+		ultimaData = ultimaData != null ? ultimaData : new Date();
+		ultimaData = EstudanteUtils.getDiaPosterior(ultimaData);
+
+		povoarGrafico(graficoAcertos, serieAcertos, ultimaData);
+		graficoAcertos.setTitle("Relat�rio de acertos");
+		graficoAcertos.getAxis(AxisType.Y).setLabel("Acertos");
+		Date dataFinal = EstudanteUtils.processarDataFinalGrafico(tarefaGraficos); 
+		graficoAcertos.getAxis(AxisType.X).setMax(EstudanteUtils.getDataPadraoInternacional(dataFinal));
+
+		povoarGrafico(graficoErros, serieErros, ultimaData);
+		graficoErros.setTitle("Relat�rio de erros");
+		graficoErros.getAxis(AxisType.Y).setLabel("Erros");
+		graficoErros.getAxis(AxisType.X).setMax(EstudanteUtils.getDataPadraoInternacional(dataFinal));
+		
 	}
 
 	private void povoarGrafico(LineChartModel graficoAcertos, LineChartSeries dadosGrafico, Date ultimaDataGrafico) {
@@ -226,6 +246,30 @@ public class RelatorioTarefasAluno implements Serializable {
 
 	public void setTemplateSelecionado(TemplateEnum templateSelecionado) {
 		this.templateSelecionado = templateSelecionado;
+	}
+
+	public BarChartModel getGraficoAcertosBar() {
+		return graficoAcertosBar;
+	}
+
+	public void setGraficoAcertosBar(BarChartModel graficoAcertosBar) {
+		this.graficoAcertosBar = graficoAcertosBar;
+	}
+
+	public BarChartModel getGraficoErrosBar() {
+		return graficoErrosBar;
+	}
+
+	public void setGraficoErrosBar(BarChartModel graficoErrosBar) {
+		this.graficoErrosBar = graficoErrosBar;
+	}
+
+	public boolean isExibirGraficoBarra() {
+		return exibirGraficoBarra;
+	}
+
+	public void setExibirGraficoBarra(boolean exibirGraficoBarra) {
+		this.exibirGraficoBarra = exibirGraficoBarra;
 	}
 
 }
