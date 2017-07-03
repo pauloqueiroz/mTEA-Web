@@ -17,6 +17,7 @@ import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
+import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.DateAxis;
 import org.primefaces.model.chart.LineChartModel;
 import org.primefaces.model.chart.LineChartSeries;
@@ -91,7 +92,15 @@ public class RelatorioTarefasAluno implements Serializable {
 	}
 
 	private void montarGraficoBarra() {
+		graficoAcertosBar = new BarChartModel();
 		
+		graficoErrosBar = new BarChartModel();
+		
+		ChartSeries acertos = new ChartSeries();
+		acertos.setLabel("Acertos");
+		
+		ChartSeries erros = new ChartSeries();
+		erros.setLabel("Erros");
 		
 	}
 
