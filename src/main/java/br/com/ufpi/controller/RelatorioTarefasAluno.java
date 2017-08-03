@@ -101,6 +101,12 @@ public class RelatorioTarefasAluno implements Serializable {
 		
 		ChartSeries erros = new ChartSeries();
 		erros.setLabel("Erros");
+		for (TarefaGrafico tarefaGrafico : tarefaGraficos) {
+			acertos.set(EstudanteUtils.getDataPadraoInternacional(tarefaGrafico.getInicio()),
+					tarefaGrafico.getAcertos());
+			erros.set(EstudanteUtils.getDataPadraoInternacional(tarefaGrafico.getInicio()),
+					tarefaGrafico.getErros());
+		}
 		
 	}
 
