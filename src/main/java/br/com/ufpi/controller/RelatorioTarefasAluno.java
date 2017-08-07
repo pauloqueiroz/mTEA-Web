@@ -182,6 +182,10 @@ public class RelatorioTarefasAluno implements Serializable {
 		
 	}
 	
+	public void doNothing() {
+		System.out.println("=)");
+	}
+	
 	private boolean isParametroInformado(){
 		return (!StringUtils.isEmpty(idEstudante)) || estudanteSelecionado != null || templateSelecionado != null;
 	}

@@ -46,10 +46,12 @@ public class Filtro implements Filter {
 			chain.doFilter(request, response);
 		else {
 			if (usuarioDaSessao != null) {
-				if (requestDoLogin) {
+				if (requestDoLogin || (!paginaAcessada.contains(".xhtml"))) {
+					System.out.println("requestDoLogin");
 					HttpServletResponse httpResponse = (HttpServletResponse) response;
 					httpResponse.sendRedirect("index.xhtml");
 				} else {
+					System.out.println("not login");
 					chain.doFilter(request, response);
 				}
 			} else {
