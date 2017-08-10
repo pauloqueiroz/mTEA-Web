@@ -46,11 +46,15 @@ public class Filtro implements Filter {
 			chain.doFilter(request, response);
 		else {
 			if (usuarioDaSessao != null) {
+				HttpServletResponse httpResponse = (HttpServletResponse) response;
 				if (requestDoLogin) {
-					HttpServletResponse httpResponse = (HttpServletResponse) response;
 					httpResponse.sendRedirect("index.xhtml");
 				} else {
-					chain.doFilter(request, response);
+					if(paginaAcessada.contains("cadastrarUsuario.xhtml") && !usuarioDaSessao.isAdmin()) {
+						httpResponse.sendRedirect("index.xhtml");
+					}else {
+						chain.doFilter(request, response);
+					}
 				}
 			} else {
 				if (!requestDoLogin && !paginaAcessada.contains("javax.faces.resource")) {

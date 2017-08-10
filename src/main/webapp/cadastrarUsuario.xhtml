@@ -33,25 +33,28 @@
 
 							<p:outputLabel for="nome" value="Nome Completo do Usuário" />
 							<p:inputText id="nome" value="#{cadastrarUsuarioBean.usuario.nome}"
-								required="true" />
+								required="true" size="50"/>
 
 							<p:outputLabel for="email" value="E-mail" />
 							<p:inputText id="email" value="#{cadastrarUsuarioBean.usuario.email}"
-								required="true" />
+								required="true" size="25"/>
 
 							<p:outputLabel for="userName" value="User name" />
 							<p:inputText id="userName"
-								value="#{cadastrarUsuarioBean.usuario.login}" required="true" />
+								value="#{cadastrarUsuarioBean.usuario.login}" required="true" size="25"/>
 
 							<h:outputLabel for="pwd1" value="Senha: *" />
 							<p:password id="pwd1" value="#{cadastrarUsuarioBean.usuario.senha}"
 								match="pwd2" label="Senha 1" required="true"
-								validatorMessage="As Senhas fornecidas não são iguais!" />
+								validatorMessage="As Senhas fornecidas não são iguais!" size="25"/>
 
 							<h:outputLabel for="pwd2" value="Digite a senha novamente: *" />
 							<p:password id="pwd2" value="#{cadastrarUsuarioBean.senha}"
-								label="Senha 2" required="true" />
+								label="Senha 2" required="true" size="25"/>
+							<h:outputLabel for="adminCheck" value="Tem permissão para inserir outros usuários?" />
+							<p:selectBooleanCheckbox id="adminCheck" value="#{cadastrarUsuarioBean.usuario.admin}" />	
 						</h:panelGrid>
+						<br />
 						<p:commandButton update="panelDadosUsuario :mensagem"
 							value="Cadastrar" action="#{cadastrarUsuarioBean.salvar()}" />
 						<p:commandButton value="Cancelar" title="Cancelar"

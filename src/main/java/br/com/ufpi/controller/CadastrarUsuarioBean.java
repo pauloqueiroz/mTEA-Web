@@ -54,12 +54,11 @@ public class CadastrarUsuarioBean implements Serializable {
 			facesContext.addMessage(null, new FacesMessage("Erro de validação", "Já existe um usuario cadastrado com o username "
 							+ this.getUsuario().getLogin()));
 		} else {
-			this.getUsuario().setAdmin(false);
 			this.getUsuario().setSenha(
 					Md5Utils.convertStringToMd5(senha));
 
 			usuarioEJB.adiciona(this.getUsuario());
-			facesContext.addMessage(null, new FacesMessage("Operação realizada com sucesso!", "Usuário cadastrado com sucesso!"));
+			facesContext.addMessage(null, new FacesMessage("Usuário cadastrado com sucesso!", "Usuário cadastrado com sucesso!"));
 			limpar();
 		}
 
