@@ -24,14 +24,6 @@
 	width: 100% !important;
 }
 </style>
-		<script type="text/javascript">
-		    function handleDrop(event, ui) {
-		        var droppedAtividade = ui.draggable;
-		 
-		        droppedAtividade.fadeOut('fast');
-		    }
-		</script>
-
 		<h:form id="listaAtividadeForm">
 			<p:wizard id="listaAtividadeWizard" nextLabel="Próximo"
 				backLabel="Voltar">
@@ -96,12 +88,6 @@
 									style="text-align: center" paginatorPosition="bottom"
 									lazy="true" value="#{cadastroListaAtividadeBean.atividades}"
 									rowKey="atividade" sortMode="multiple">
-									<p:column style="width:20px" headerText="+">
-										<h:outputText id="dragIcon"
-											styleClass="ui-icon ui-icon-arrow-4" title="clique e arraste" />
-										<p:draggable for="dragIcon" revert="true" helper="clone" />
-									</p:column>
-
 									<p:column headerText="Nome da atividade"
 										sortBy="#{atividade.nome}">
 										<p:outputLabel value="#{atividade.nome}" />
@@ -131,7 +117,7 @@
 								legend="Atividades selecionadas"
 								style="margin-top:20px;margin-left:5%;">
 								<p:outputPanel id="dropArea">
-									<h:outputText value="Clique no botão adicionar ou arraste as atividades para cá a partir do ícone da primeira coluna"
+									<h:outputText value="Adicione as atividades da lista ao lado clicando no botão adicionar"
 										rendered="#{empty cadastroListaAtividadeBean.atividadesSelecionadas}"
 										style="font-size:24px;" />
 									<p:dataTable id="atividadesSelecionadasTable" var="atividade"
@@ -160,13 +146,6 @@
 									</p:dataTable>
 								</p:outputPanel>
 							</p:fieldset>
-
-							<p:droppable for="atividadesSelecionadas" tolerance="touch"
-								id="droppableAtividades" activeStyleClass="ui-state-highlight"
-								datasource="atividadesDisponiveis" onDrop="handleDrop">
-								<p:ajax listener="#{cadastroListaAtividadeBean.onAtividadeDrop}"
-									update="dropArea atividadesDisponiveis" />
-							</p:droppable>
 						</h:panelGrid>
 						<br />
 						<center>
