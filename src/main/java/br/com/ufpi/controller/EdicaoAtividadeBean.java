@@ -61,7 +61,7 @@ public class EdicaoAtividadeBean implements Serializable {
 		if (idAtividade != null){
 			atividade = atividadeDao.carregarAtividadeComArquivos(Long.parseLong(idAtividade));
 			List<Arquivo> arquivos = arquivoDao.carregarArquivosDaAtividade(atividade);
-			atividade.setImagens(arquivos);
+			atividade.setArquivos(arquivos);
 		}
 		
 	}
@@ -98,11 +98,11 @@ public class EdicaoAtividadeBean implements Serializable {
 	public void editar() {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		List<Arquivo> arquivosSelecionados = new ArrayList<>();
-		for (Arquivo arquivo : atividade.getImagens()) {
+		for (Arquivo arquivo : atividade.getArquivos()) {
 			if (arquivo.isDeletar())
 				arquivosSelecionados.add(arquivo);
 		}
-		int quantidadeArquivos = (atividade.getImagens().size() - arquivosSelecionados.size()
+		int quantidadeArquivos = (atividade.getArquivos().size() - arquivosSelecionados.size()
 				+ conteudoArquivos.size());
 		if (quantidadeArquivos > atividade.getTemplate().getQuantidadeMaximaArquivos()){
 			facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
@@ -121,7 +121,7 @@ public class EdicaoAtividadeBean implements Serializable {
 		atividadeDao.atualizar(atividade);
 		for (Arquivo arquivo : arquivosSelecionados){
 			arquivoDao.delete(arquivo);
-			atividade.getImagens().remove(arquivo);
+			atividade.getArquivos().remove(arquivo);
 		}
 		salvarArquivosNovos();
 		buscarAtividade();
@@ -143,7 +143,7 @@ public class EdicaoAtividadeBean implements Serializable {
 			try {
 				byte[] bytes = IOUtils.toByteArray(stream);
 				arquivo.setBytesArquivo(bytes);;
-				atividade.getImagens().add(arquivo);
+				atividade.getArquivos().add(arquivo);
 				arquivo.setAtividade(atividade);
 				int numeroArquivo = arquivoDao.contarArquivos();
 				arquivo.setNomeArquivo(String.valueOf(numeroArquivo)+".jpg");

@@ -18,6 +18,7 @@ import javax.inject.Named;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.UploadedFile;
 
 import br.com.ufpi.dao.ArquivoDao;
 import br.com.ufpi.dao.AtividadeDao;
@@ -59,6 +60,8 @@ public class CadastroAtividadeBean implements Serializable {
 	private boolean templateUpload = false;
 	
 	private boolean templatePalavra = false;
+	
+	private UploadedFile audio;
 
 	@PostConstruct
 	public void init(){
@@ -101,7 +104,7 @@ public class CadastroAtividadeBean implements Serializable {
 				arquivo.setNomeArquivo(nomesArquivos.get(indiceNomeArquivo));
 				indiceNomeArquivo++;
 				this.listaArquivos.add(arquivo);
-				getAtividade().setImagens(this.listaArquivos);
+				getAtividade().setArquivos(this.listaArquivos);
 				arquivo.setAtividade(getAtividade());
 				arquivoDao.adicionar(arquivo);
 			} catch (IOException e) {
@@ -165,13 +168,16 @@ public class CadastroAtividadeBean implements Serializable {
 			return "É necessário informar o template.";
 		TemplateEnum templateSelecionado = atividade.getTemplate();
 		if(conteudoArquivos!= null && conteudoArquivos.size() > templateSelecionado.getQuantidadeMaximaArquivos())
-			return "A quantidade máxima de imagens para o template " + templateSelecionado.getDescricao() + " � "
+			return "A quantidade máxima de imagens para o template " + templateSelecionado.getDescricao() + " É "
 					+ templateSelecionado.getQuantidadeMaximaArquivos() + ". Você fez upload de "
 					+ conteudoArquivos.size();
 		if(templateSelecionado.getQuantidadeMinimaArquivos() > 0){
 			if(conteudoArquivos == null || (conteudoArquivos != null && conteudoArquivos.size() < templateSelecionado.getQuantidadeMinimaArquivos()))
-				return "A quantidade m�nima de imagens para o template " + templateSelecionado.getDescricao() + " � "
+				return "A quantidade mínima de imagens para o template " + templateSelecionado.getDescricao() + " É "
 				+ templateSelecionado.getQuantidadeMaximaArquivos() + ".";
+		}
+		if(templateSelecionado.ordinal() > 4 && audio == null) {
+			return "É necessário informar o áudio do template.";
 		}
 		return null;
 	}
@@ -254,6 +260,14 @@ public class CadastroAtividadeBean implements Serializable {
 
 	public void setNomeAtividade(String nomeAtividade) {
 		this.nomeAtividade = nomeAtividade;
+	}
+
+	public UploadedFile getAudio() {
+		return audio;
+	}
+
+	public void setAudio(UploadedFile audio) {
+		this.audio = audio;
 	}
 
 }

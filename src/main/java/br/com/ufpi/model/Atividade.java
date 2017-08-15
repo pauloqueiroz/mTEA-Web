@@ -40,7 +40,7 @@ public class Atividade implements Serializable {
 	private String palavra;
 
 	@OneToMany(mappedBy = "atividade", cascade = { CascadeType.MERGE, CascadeType.REMOVE })
-	private List<Arquivo> imagens;
+	private List<Arquivo> arquivos;
 
 	@OneToMany(mappedBy = "atividade", cascade = CascadeType.REMOVE)
 	private List<Tarefa> tarefas;
@@ -88,14 +88,6 @@ public class Atividade implements Serializable {
 
 	public void setPalavra(String palavra) {
 		this.palavra = palavra;
-	}
-
-	public List<Arquivo> getImagens() {
-		return imagens;
-	}
-
-	public void setImagens(List<Arquivo> imagens) {
-		this.imagens = imagens;
 	}
 
 	public String getTemplateToString() {
@@ -148,6 +140,14 @@ public class Atividade implements Serializable {
 
 	public void setListas(Set<ListaAtividade> listas) {
 		this.listas = listas;
+	}
+
+	public List<Arquivo> getArquivos() {
+		return arquivos;
+	}
+
+	public void setArquivos(List<Arquivo> arquivos) {
+		this.arquivos = arquivos;
 	}
 
 }

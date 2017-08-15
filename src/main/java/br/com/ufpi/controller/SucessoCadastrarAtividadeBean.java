@@ -67,7 +67,7 @@ public class SucessoCadastrarAtividadeBean implements Serializable{
 		if (idAtividade != null){
 			atividade = atividadeDao.carregarAtividadeComArquivos(Long.parseLong(idAtividade));
 			List<Arquivo> arquivos = arquivoDao.carregarArquivosDaAtividade(atividade);
-			atividade.setImagens(arquivos);
+			atividade.setArquivos(arquivos);
 		}
 		
 	}

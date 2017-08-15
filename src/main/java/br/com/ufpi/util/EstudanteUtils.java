@@ -108,7 +108,7 @@ public class EstudanteUtils {
 				String idImagem = arquivoDao.buscarIdImagem(atividade);
 				lesson.setImage(idImagem);
 			} else {
-				List<Answer> answers = converterAnswers(atividade.getImagens());
+				List<Answer> answers = converterAnswers(atividade.getArquivos());
 				lesson.setAnsewers(answers);
 			}
 			tarefas.add(lesson);

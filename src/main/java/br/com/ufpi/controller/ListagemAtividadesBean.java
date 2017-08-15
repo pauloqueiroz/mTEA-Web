@@ -106,9 +106,9 @@ public class ListagemAtividadesBean implements Serializable{
 		atividade = atividadeDao.carregarAtividadeComArquivos(atividade.getId());
 		if(atividade != null){
 			List<Arquivo> arquivos = arquivoDao.carregarArquivosDaAtividade(atividade);
-			atividade.setImagens(arquivos);
+			atividade.setArquivos(arquivos);
 			atividadeSelecionada = atividade;
-			imagens = atividade.getImagens();
+			imagens = atividade.getArquivos();
 		}	
 	}
 	
@@ -177,12 +177,12 @@ public class ListagemAtividadesBean implements Serializable{
 	}
 
 
-	public List<Arquivo> getImagens() {
+	public List<Arquivo> getArquivos() {
 		return imagens;
 	}
 
 
-	public void setImagens(List<Arquivo> imagens) {
+	public void setArquivos(List<Arquivo> imagens) {
 		this.imagens = imagens;
 	}
 

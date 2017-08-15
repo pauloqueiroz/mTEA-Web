@@ -41,7 +41,6 @@ import br.com.ufpi.model.Atividade;
 import br.com.ufpi.model.ItemAtividade;
 import br.com.ufpi.model.ListaAtividade;
 import br.com.ufpi.util.ArquivoUtil;
-import groovy.ui.SystemOutputInterceptor;
 
 /**
  * 
@@ -150,9 +149,9 @@ public class CadastroListaAtividadeBean implements Serializable {
 		atividade = atividadeDao.carregarAtividadeComArquivos(atividade.getId());
 		if (atividade != null) {
 			List<Arquivo> arquivos = arquivoDao.carregarArquivosDaAtividade(atividade);
-			atividade.setImagens(arquivos);
+			atividade.setArquivos(arquivos);
 			atividadeSelecionada = atividade;
-			imagens = atividade.getImagens();
+			imagens = atividade.getArquivos();
 		}
 	}
 
@@ -266,11 +265,11 @@ public class CadastroListaAtividadeBean implements Serializable {
 		return TemplateEnum.values();
 	}
 
-	public List<Arquivo> getImagens() {
+	public List<Arquivo> getArquivos() {
 		return imagens;
 	}
 
-	public void setImagens(List<Arquivo> imagens) {
+	public void setArquivos(List<Arquivo> imagens) {
 		this.imagens = imagens;
 	}
 

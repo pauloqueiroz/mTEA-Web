@@ -97,7 +97,7 @@ public class Services {
 					for (ItemAtividade item : atividadesDaLista) {
 						Atividade atividade = item.getAtividade();
 						List<Arquivo> arquivosDaAtividade = arquivoDao.carregarArquivosDaAtividade(atividade);
-						atividade.setImagens(arquivosDaAtividade);
+						atividade.setArquivos(arquivosDaAtividade);
 						atividades.add(atividade);
 					}
 				}
@@ -109,7 +109,7 @@ public class Services {
 			}
 			return Response.status(200).entity(studentJson).build();
 		}
-		return Response.status(404).entity("Estudante n�o encontrado").build();
+		return Response.status(404).entity("Estudante não encontrado").build();
 	}
 
 	@GET
