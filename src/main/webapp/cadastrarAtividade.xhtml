@@ -68,18 +68,18 @@
 						<p:fileUpload id="uploadImagens"
 							fileUploadListener="#{cadastroAtividadeBean.salvarUploads}"
 							mode="advanced" dragDropSupport="false" multiple="true"
-							rendered="#{adastroAtividadeBean.templateSelecionado != null & !cadastroAtividadeBean.templateSelecionado.templateAudio}"
+							rendered="#{cadastroAtividadeBean.templateTemImagens}"
 							auto="true"
 							fileLimitMessage="A quantidade máxima de imagens permitida é de #{cadastroAtividadeBean.templateSelecionado.quantidadeMaximaArquivos}"
 							fileLimit="#{cadastroAtividadeBean.templateSelecionado.quantidadeMaximaArquivos}"
 							allowTypes="/(\.|\/)(gif|jpe?g|png)$/" label="Upload de imagem" />
 
 						<p:outputLabel for="uploadAudio" value="Upload do áudio"
-							rendered="#{adastroAtividadeBean.templateSelecionado != null & cadastroAtividadeBean.templateSelecionado.templateAudio}" />
-						<p:fileUpload id="uploadAudio" value="#{fileUploadView.file}"
+							rendered="#{cadastroAtividadeBean.templateAudio}" />
+						<p:fileUpload id="uploadAudio" value="#{cadastroAtividadeBean.audio}"
 							mode="simple" skinSimple="true" allowTypes="/(\.|\/)(mp3|mp4|wav)$/"
-							rendered="#{adastroAtividadeBean.templateSelecionado != null & cadastroAtividadeBean.templateSelecionado.templateAudio}"
-							required="#{adastroAtividadeBean.templateSelecionado != null & cadastroAtividadeBean.templateSelecionado.templateAudio}"
+							rendered="#{cadastroAtividadeBean.templateAudio}"
+							required="#{cadastroAtividadeBean.templateAudio}"
 							requiredMessage="É necessário realizar o upload do arquivo de áudio para o template selecionado" />
 
 					</p:panel>

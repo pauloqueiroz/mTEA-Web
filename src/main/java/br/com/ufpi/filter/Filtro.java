@@ -51,7 +51,6 @@ public class Filtro implements Filter {
 					HttpServletResponse httpResponse = (HttpServletResponse) response;
 					httpResponse.sendRedirect("index.xhtml");
 				} else {
-					System.out.println("not login");
 					chain.doFilter(request, response);
 				}
 			} else {

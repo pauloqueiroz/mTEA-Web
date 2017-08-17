@@ -57,9 +57,11 @@ public class CadastroAtividadeBean implements Serializable {
 	
 	private List<String> nomesArquivos;
 	
-	private boolean templateUpload = false;
+	private boolean templateTemImagens = false;
 	
 	private boolean templatePalavra = false;
+	
+	private boolean templateAudio = false;
 	
 	private UploadedFile audio;
 
@@ -89,11 +91,18 @@ public class CadastroAtividadeBean implements Serializable {
 	/**
 	 * Metodo que armazena os arquivos carregados em um lista para serem
 	 * adicionados posteriormente na atividade.
+	 * @throws IOException 
 	 */
-	public void salvarArquivos() {
+	public void salvarArquivos() throws IOException {
 		
 		listaArquivos.clear();
 		int indiceNomeArquivo = 0;
+		if(templateAudio && audio != null) {
+			String nomeAudio = audio.getFileName();
+			InputStream inputstreamAudio = audio.getInputstream();
+			nomesArquivos.add(nomeAudio);
+			conteudoArquivos.add(inputstreamAudio);
+		}
 		for (InputStream stream : conteudoArquivos) {
 		
 			Arquivo arquivo = new Arquivo();
@@ -108,34 +117,32 @@ public class CadastroAtividadeBean implements Serializable {
 				arquivo.setAtividade(getAtividade());
 				arquivoDao.adicionar(arquivo);
 			} catch (IOException e) {
-				System.out.println("Erro ao salvar imagens.");
+				System.out.println("Erro ao salvar arquivos.");
 				e.printStackTrace();
 			}
 		}
 	}
 
 	public void atualizarFlags() {
-		if (templateSelecionado.equals(TemplateEnum.JOGO_MEMORIA)
-				|| templateSelecionado.equals(TemplateEnum.NOMEAR_FIGURA)
-				|| templateSelecionado.equals(TemplateEnum.GENIOS))
-			templateUpload = true;
-		else
-			templateUpload = false;
+		if (templateSelecionado.ordinal() < 5) {
+			templateTemImagens = true;
+			templateAudio = false;
+		} else {
+			templateTemImagens = false;
+			templateAudio = true;
+		}
 		if (templateSelecionado.equals(TemplateEnum.FORMAR_PALAVRA)
 				|| templateSelecionado.equals(TemplateEnum.NOMEAR_FIGURA)
-				|| templateSelecionado.equals(TemplateEnum.SOBREPOR_PALAVRA))
+				|| templateSelecionado.equals(TemplateEnum.SOBREPOR_PALAVRA)) {
 			templatePalavra = true;
-		else
+		} else {
 			templatePalavra = false;
-		System.out.println(String.valueOf(templateUpload +""+templatePalavra));
+		}
 	}
 	
 	public void salvar() throws IOException{
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		ExternalContext ec = facesContext.getExternalContext();
-		System.out.println("lista size: " +listaArquivos.size());
-		System.out.println("palavra: "+palavra);
-		System.out.println(templateSelecionado.toString());
 		getAtividade().setPalavra(palavra);
 		if(!StringUtils.isEmpty(nomeAtividade))
 			atividade.setNome(nomeAtividade);
@@ -176,7 +183,7 @@ public class CadastroAtividadeBean implements Serializable {
 				return "A quantidade mínima de imagens para o template " + templateSelecionado.getDescricao() + " É "
 				+ templateSelecionado.getQuantidadeMaximaArquivos() + ".";
 		}
-		if(templateSelecionado.ordinal() > 4 && audio == null) {
+		if(templateAudio && audio == null) {
 			return "É necessário informar o áudio do template.";
 		}
 		return null;
@@ -206,12 +213,12 @@ public class CadastroAtividadeBean implements Serializable {
 		this.templateSelecionado = templateSelecionado;
 	}
 
-	public boolean isTemplateUpload() {
-		return templateUpload;
+	public boolean isTemplateTemImagens() {
+		return templateTemImagens;
 	}
 
-	public void setTemplateUpload(boolean templateUpload) {
-		this.templateUpload = templateUpload;
+	public void setTemplateTemImagens(boolean templateTemImagens) {
+		this.templateTemImagens = templateTemImagens;
 	}
 
 	public String getPalavra() {
@@ -268,6 +275,14 @@ public class CadastroAtividadeBean implements Serializable {
 
 	public void setAudio(UploadedFile audio) {
 		this.audio = audio;
+	}
+
+	public boolean isTemplateAudio() {
+		return templateAudio;
+	}
+
+	public void setTemplateAudio(boolean templateAudio) {
+		this.templateAudio = templateAudio;
 	}
 
 }
