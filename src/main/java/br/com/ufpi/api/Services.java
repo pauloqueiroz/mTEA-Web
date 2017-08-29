@@ -133,7 +133,31 @@ public class Services {
 			response.header("Content-Disposition", "attachment; filename=" + arquivo.getNomeArquivo());
 			return response.build();
 		}
-		return Response.status(404).entity("Refor�o n�o encontrado").build();
+		return Response.status(404).entity("Reforço não encontrado").build();
+	}
+	
+	@GET
+	@Path("/audios/{id}")
+	@Produces(MediaType.APPLICATION_OCTET_STREAM)
+	public Response getAudio(@Context HttpServletRequest request, @PathParam("id") Long id) {
+
+		if (id != null && !id.equals(0l)) {
+			Arquivo arquivo = arquivoDao.buscarPorId(id);
+			try {
+				FileOutputStream file = new FileOutputStream(ArquivoUtil.getDiretorio() + arquivo.getNomeArquivo());
+				file.write(arquivo.getBytesArquivo());
+				file.close();
+			} catch (IOException e) {
+				System.out.println("Erro ao criar arquivo");
+				e.printStackTrace();
+			}
+
+			File file = new File(ArquivoUtil.getDiretorio() + arquivo.getNomeArquivo());
+			ResponseBuilder response = Response.ok((Object) file);
+			response.header("Content-Disposition", "attachment; filename=" + arquivo.getNomeArquivo());
+			return response.build();
+		}
+		return Response.status(404).entity("Reforço não encontrado").build();
 	}
 
 	@GET
