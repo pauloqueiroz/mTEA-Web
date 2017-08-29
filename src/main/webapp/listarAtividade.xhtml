@@ -166,15 +166,15 @@
 							value="#{listagemAtividadesBean.atividadeSelecionada.palavra}" />
 
 					</p:panelGrid>
-					<p:dataTable var="imagem" paginator="true" rows="5" style="width: 400"
-						paginatorPosition="bottom" id="tabelaImagens"
+					<p:dataTable var="arquivo" paginator="true" rows="5" style="width: 400"
+						paginatorPosition="bottom" id="tabelaArquivos"
 						value="#{listagemAtividadesBean.arquivos}" rowIndexVar="rowIndex"
 						emptyMessage="Não foram encontrados registros">
 						<p:column>
-							<p:commandLink value="Imagem #{rowIndex+1}" ajax="false"
+							<p:commandLink value="#{arquivo.nomeArquivo}" ajax="false"
 								style="font-size:14px;color:blue;" target="_blank">
 								<p:fileDownload
-									value="#{listagemAtividadesBean.downloadImagem(imagem)}" />
+									value="#{listagemAtividadesBean.downloadArquivo(arquivo)}" />
 							</p:commandLink>
 						</p:column>
 					</p:dataTable>

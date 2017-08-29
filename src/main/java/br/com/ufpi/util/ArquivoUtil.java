@@ -89,7 +89,8 @@ public class ArquivoUtil {
 	}
 	
 	public static String getExtensaoArquivo(String nomeArquivo){
-		String[] nomeSplit = nomeArquivo.split(".");
+		String[] nomeSplit = nomeArquivo.split("\\.");
+		System.out.println("size: " +nomeSplit.length);
 		return nomeSplit[nomeSplit.length - 1];
 	}
 
@@ -98,6 +99,13 @@ public class ArquivoUtil {
 		String nomeArquivoSemCaminho = nomeSplit[nomeSplit.length - 1];
 		String nomeArquivoSemExtensao = nomeArquivoSemCaminho.split(".")[0]; 
 		return nomeArquivoSemExtensao;
+	}
+	
+	public static void main(String[] args) {
+		String[] split = "10 - New Rules.mp3".split("\\.");
+		for (String string : split) {
+			System.out.println(string);
+		}
 	}
 
 }

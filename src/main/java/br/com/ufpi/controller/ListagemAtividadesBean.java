@@ -5,9 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -120,24 +118,26 @@ public class ListagemAtividadesBean implements Serializable{
 				"Atividade apagada com sucesso."));
 	}
 	
-	public StreamedContent downloadImagem(Arquivo imagem) throws IOException {
-		SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyyhhmmss");
-		Date d = new Date();
-
-		String parteNomeArquivo = sdf.format(d);
+	public StreamedContent downloadArquivo(Arquivo arq) throws IOException {
+//		SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyyhhmmss");
+//		Date d = new Date();
+//
+//		String parteNomeArquivo = sdf.format(d);
 
 		String dirTmp = ArquivoUtil.getDiretorio();
+		String nomeArquivo = arq.getNomeArquivo();
 
-		FileOutputStream file = new FileOutputStream(dirTmp + "imagem_" + parteNomeArquivo + ".jpg");
-		file.write(imagem.getBytesArquivo());
+		FileOutputStream file = new FileOutputStream(dirTmp + nomeArquivo);
+		file.write(arq.getBytesArquivo());
 		file.close();
+		
+		String extensaoArquivo = ArquivoUtil.getExtensaoArquivo(arq.getNomeArquivo());
 
 		DefaultStreamedContent arquivo = new DefaultStreamedContent(
-				new FileInputStream(new File(dirTmp + "imagem_" + parteNomeArquivo + ".jpg")), "application/jpg",
-				"imagem_" + parteNomeArquivo + ".jpg");
+				new FileInputStream(new File(dirTmp + nomeArquivo)), "application/"+extensaoArquivo, nomeArquivo);
 		return arquivo;
 	}
-
+	
 	public LazyDataModel<Atividade> getAtividades() {
 		return atividades;
 	}
