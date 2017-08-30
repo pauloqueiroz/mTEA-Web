@@ -137,10 +137,10 @@ public class Services {
 	}
 	
 	@GET
-	@Path("/audios/{id}")
+	@Path("/audio/{id}")
 	@Produces(MediaType.APPLICATION_OCTET_STREAM)
 	public Response getAudio(@Context HttpServletRequest request, @PathParam("id") Long id) {
-
+		System.out.println("audio id: "+ id);
 		if (id != null && !id.equals(0l)) {
 			Arquivo arquivo = arquivoDao.buscarPorId(id);
 			try {
