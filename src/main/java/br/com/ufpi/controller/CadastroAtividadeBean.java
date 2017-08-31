@@ -128,12 +128,18 @@ public class CadastroAtividadeBean implements Serializable {
 			templateTemImagens = true;
 			templateAudio = false;
 		} else {
-			templateTemImagens = false;
 			templateAudio = true;
+			if(templateSelecionado.equals(TemplateEnum.COPIA_POR_COMPOSICAO)) {				
+				templateTemImagens = false;
+			}else {
+				templateTemImagens = true;
+			}
 		}
 		if (templateSelecionado.equals(TemplateEnum.FORMAR_PALAVRA)
 				|| templateSelecionado.equals(TemplateEnum.NOMEAR_FIGURA)
-				|| templateSelecionado.equals(TemplateEnum.SOBREPOR_PALAVRA)) {
+				|| templateSelecionado.equals(TemplateEnum.SOBREPOR_PALAVRA)
+				|| templateSelecionado.equals(TemplateEnum.COPIA_POR_COMPOSICAO)
+				|| templateSelecionado.equals(TemplateEnum.DITADO_MUDO)) {
 			templatePalavra = true;
 		} else {
 			templatePalavra = false;
