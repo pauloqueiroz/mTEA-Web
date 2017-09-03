@@ -150,12 +150,12 @@ public class CadastroAtividadeBean implements Serializable {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		ExternalContext ec = facesContext.getExternalContext();
 		getAtividade().setPalavra(palavra);
+		atividade.setDataCriacao(new Date());
 		if(!StringUtils.isEmpty(nomeAtividade))
 			atividade.setNome(nomeAtividade);
 		else
 			atividade.setNome(criarNome(atividade, templateSelecionado, palavra, templatePalavra));
 		getAtividade().setTemplate(templateSelecionado);
-		atividade.setDataCriacao(new Date());
 		String validacoes = validarAtividade(atividade);
 		if(!StringUtils.isEmpty(validacoes)){
 			facesContext.addMessage(null, new FacesMessage(
@@ -201,6 +201,23 @@ public class CadastroAtividadeBean implements Serializable {
 		nomesArquivos.clear();
 		conteudoArquivos.clear();
 		palavra = "";
+	}
+	
+	public void removerArquivo(String nome) {
+		int indiceArquivo = 0;
+		for (int i = 0; i < nomesArquivos.size(); i++) {
+			if(nome.equals(nomesArquivos.get(i))){
+				indiceArquivo = i;
+				nomesArquivos.remove(i);
+				break;
+			}	
+		}
+		try {
+			conteudoArquivos.remove(indiceArquivo);
+		}catch(Exception e) {
+			System.out.println("Indice nao encontrado");
+			e.printStackTrace();
+		}
 	}
 
 	public AtividadeDao getAtividadeDao() {
@@ -289,6 +306,14 @@ public class CadastroAtividadeBean implements Serializable {
 
 	public void setTemplateAudio(boolean templateAudio) {
 		this.templateAudio = templateAudio;
+	}
+
+	public List<String> getNomesArquivos() {
+		return nomesArquivos;
+	}
+
+	public void setNomesArquivos(List<String> nomesArquivos) {
+		this.nomesArquivos = nomesArquivos;
 	}
 
 }

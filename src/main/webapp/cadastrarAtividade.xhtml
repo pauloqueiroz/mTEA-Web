@@ -28,7 +28,7 @@
 
 			<center>
 				<h:form id="formPrincipal" enctype="multipart/form-data">
-					<p:outputLabel value="Nome da atividade: " for="inputNomeAtividade"/>
+					<p:outputLabel value="Nome da atividade: " for="inputNomeAtividade" />
 					<p:inputText id="inputNomeAtividade"
 						value="#{cadastroAtividadeBean.nomeAtividade}" />
 					<br />
@@ -45,7 +45,7 @@
 					<br />
 					<br />
 					<p:outputLabel value="Link do reforço no youtube: "
-						for="inputReforco"/>
+						for="inputReforco" />
 					<p:inputText value="#{cadastroAtividadeBean.atividade.reforco}"
 						id="inputReforco">
 					</p:inputText>
@@ -69,15 +69,32 @@
 							fileUploadListener="#{cadastroAtividadeBean.salvarUploads}"
 							mode="advanced" dragDropSupport="false" multiple="true"
 							rendered="#{cadastroAtividadeBean.templateTemImagens}"
-							auto="true"
+							auto="true" update="@form:#{p:component('nomesArquivos')}"
 							fileLimitMessage="A quantidade máxima de imagens permitida é de #{cadastroAtividadeBean.templateSelecionado.quantidadeMaximaArquivos}"
 							fileLimit="#{cadastroAtividadeBean.templateSelecionado.quantidadeMaximaArquivos}"
 							allowTypes="/(\.|\/)(gif|jpe?g|png)$/" label="Upload de imagem" />
-
+						<br />
+						<br />
+						<p:dataTable value="#{cadastroAtividadeBean.nomesArquivos}" style="max-width: 60%;"
+							var="nome" rendered="#{cadastroAtividadeBean.templateTemImagens}"
+							id="nomesArquivos" emptyMessage="nenhum arquivo selecionado"
+							rowIndexVar="rowIndex">
+							<p:column headerText="Imagem">
+								<p:outputLabel value="#{nome}" />
+							</p:column>
+							<p:column headerText="Opções">
+								<p:commandButton value="Excluir" id="buttonExcluir"
+									update=":#{p:component('nomesArquivos')}" styleClass="btn"
+									actionListener="#{cadastroAtividadeBean.removerArquivo(nome)}" />
+							</p:column>
+						</p:dataTable>
+						<br />
+						<br />
 						<p:outputLabel for="uploadAudio" value="Upload do áudio"
 							rendered="#{cadastroAtividadeBean.templateAudio}" />
-						<p:fileUpload id="uploadAudio" value="#{cadastroAtividadeBean.audio}"
-							mode="simple" skinSimple="true" allowTypes="/(\.|\/)(mp3|mp4|wav)$/"
+						<p:fileUpload id="uploadAudio"
+							value="#{cadastroAtividadeBean.audio}" mode="simple"
+							skinSimple="true" allowTypes="/(\.|\/)(mp3|mp4|wav)$/"
 							rendered="#{cadastroAtividadeBean.templateAudio}"
 							required="#{cadastroAtividadeBean.templateAudio}"
 							requiredMessage="É necessário realizar o upload do arquivo de áudio para o template selecionado" />
