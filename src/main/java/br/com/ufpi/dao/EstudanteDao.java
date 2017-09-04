@@ -18,6 +18,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
 
+import br.com.ufpi.enuns.SituacaoEnum;
 import br.com.ufpi.model.Estudante;
 
 /**
@@ -40,8 +41,8 @@ public class EstudanteDao implements Serializable {
 		em.persist(aluno);
 	}
 
-	public void atualizar(Estudante aluno) {
-		em.merge(aluno);
+	public Estudante atualizar(Estudante aluno) {
+		return em.merge(aluno);
 	}
 	
 	public Estudante buscarPorId(Long id){
@@ -119,7 +120,8 @@ public class EstudanteDao implements Serializable {
 	}
 
 	public List<Estudante> buscarEstudante(String nome) {
-		TypedQuery<Estudante> query = em.createQuery("Select e from Estudante e where upper(e.nome) like:nome", Estudante.class);
+		TypedQuery<Estudante> query = em.createQuery("Select e from Estudante e where e.situacao = :situacaoAluno AND upper(e.nome) like:nome", Estudante.class);
+		query.setParameter("situacaoAluno", SituacaoEnum.ATIVO);
 		query.setParameter("nome", "%"+nome.toUpperCase()+"%");
 		List<Estudante> estudantes = query.getResultList();
 		return estudantes;
@@ -137,6 +139,11 @@ public class EstudanteDao implements Serializable {
 		
 		Long count = query.getSingleResult();
 		return count.intValue();
+	}
+	
+	public void remove(Estudante estudante) {
+		estudante = em.merge(estudante);
+		em.remove(estudante);
 	}
 
 }

@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -14,7 +16,11 @@ import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortMeta;
 
 import br.com.ufpi.dao.EstudanteDao;
+import br.com.ufpi.dao.ItemListaEstudanteDao;
+import br.com.ufpi.enuns.SituacaoEnum;
 import br.com.ufpi.model.Estudante;
+import br.com.ufpi.model.ItemListaAtividade;
+import br.com.ufpi.model.ItemListaEstudante;
 
 @Named
 @ViewScoped
@@ -31,6 +37,11 @@ public class ListarAlunoBean implements Serializable{
 	private LazyDataModel<Estudante> estudantes;
 	
 	private String nomeEstudante;
+	
+	private Estudante estudanteSelecionado;
+	
+	@Inject
+	private ItemListaEstudanteDao itemListaEstudanteDao;
 
 	public ListarAlunoBean() {
 		super();
@@ -73,6 +84,55 @@ public class ListarAlunoBean implements Serializable{
 		nomeEstudante = "";
 		pesquisar();
 	}
+	
+	public void definirEstudante(Estudante estudante) {
+		if(estudante != null) {
+			estudanteSelecionado = estudante;
+		}
+	}
+	
+	public void inativar() {
+		if(estudanteSelecionado != null) {
+			estudanteSelecionado.setSituacao(SituacaoEnum.INATIVO);
+			atualizarEstudante();
+		}
+	}
+	
+	public void ativar() {
+		if(estudanteSelecionado != null) {
+			estudanteSelecionado.setSituacao(SituacaoEnum.ATIVO);
+			atualizarEstudante();
+		}
+	}
+	
+	public void excluir() {
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		if(estudanteSelecionado != null) {
+			estudanteSelecionado = estudanteDao.atualizar(estudanteSelecionado);
+			for(ItemListaEstudante item: itemListaEstudanteDao.buscar(estudanteSelecionado)) {
+				System.out.println("deletar item lista estudante");
+				itemListaEstudanteDao.delete(item);
+			}
+			estudanteDao.remove(estudanteSelecionado);
+			facesContext.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_INFO, "Aluno apagado com sucesso.",
+					null));
+		}
+	}
+	
+	public void atualizarEstudante() {
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		if(estudanteSelecionado != null) {
+			estudanteDao.atualizar(estudanteSelecionado);
+			facesContext.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_INFO, "Operação realizada com sucesso.",
+					null));
+		}else {
+			facesContext.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_ERROR, "Selecione o aluno.",
+					null));
+		}
+	}
 
 	public EstudanteDao getEstudanteDao() {
 		return estudanteDao;
@@ -96,6 +156,14 @@ public class ListarAlunoBean implements Serializable{
 
 	public void setNomeEstudante(String nomeEstudante) {
 		this.nomeEstudante = nomeEstudante;
+	}
+
+	public Estudante getEstudanteSelecionado() {
+		return estudanteSelecionado;
+	}
+
+	public void setEstudanteSelecionado(Estudante estudanteSelecionado) {
+		this.estudanteSelecionado = estudanteSelecionado;
 	}
 	
 	

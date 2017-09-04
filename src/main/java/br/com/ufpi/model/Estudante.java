@@ -7,7 +7,10 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,6 +19,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.ColumnDefault;
+
+import br.com.ufpi.enuns.SituacaoEnum;
 
 @Entity
 public class Estudante implements Serializable{
@@ -34,13 +41,17 @@ public class Estudante implements Serializable{
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataNascimento;
 	
+	@Enumerated(EnumType.STRING)
+	@Column(columnDefinition="character varying(255) default 'ATIVO'")
+	private SituacaoEnum situacao;
+	
 	@OneToOne(mappedBy="estudante")
 	private Arquivo arquivo;
 	
-	@OneToMany(mappedBy="estudante")
+	@OneToMany(mappedBy="estudante", cascade=CascadeType.REMOVE, orphanRemoval=true)
 	private List<Tarefa> tarefas;
 	
-	@OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL, orphanRemoval=true)
 	private Set<ItemListaEstudante> listas = new HashSet<>();
 
 	public Estudante() {
@@ -94,6 +105,14 @@ public class Estudante implements Serializable{
 
 	public void setListas(Set<ItemListaEstudante> listas) {
 		this.listas = listas;
+	}
+
+	public SituacaoEnum getSituacao() {
+		return situacao;
+	}
+
+	public void setSituacao(SituacaoEnum situacao) {
+		this.situacao = situacao;
 	}
 
 }

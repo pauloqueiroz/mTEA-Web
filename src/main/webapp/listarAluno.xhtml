@@ -65,7 +65,7 @@
 			informacao.style.display = "block";
 		}
 </script>
-
+		<p:messages id="growl" showDetail="false" closable="true" />
 		<h:form id="formPesquisar">
 			<p:fieldset legend="Pesquisar estudantes" toggleable="true"
 				toggleSpeed="500">
@@ -82,48 +82,121 @@
 					<h:commandButton value="Limpar " id="ajax2" update="@form"
 						actionListener="#{listarAlunoBean.limparInformacoes}"
 						styleClass="ui-priority-primary" />
-						
+
 				</h:panelGrid>
 			</p:fieldset>
 
 		</h:form>
-
-		<p></p>
-		<p:messages id="growl" showDetail="false" closable="true" />
 		<h:form id="formTabelaEstudantes" enctype="multipart/form-data">
 			<p:fieldset legend="Alunos" toggleable="true" toggleSpeed="500">
 
 				<p:dataTable var="estudante" paginator="true" rows="5"
 					style="text-align: center" paginatorPosition="bottom" lazy="true"
-					id="tabelaEstudantes" emptyMessage="Nenhum aluno encontrado." 
-					value="#{listarAlunoBean.estudantes}"
-					rowKey="estudante" sortMode="multiple">
+					id="tabelaEstudantes" widgetVar="tabelaEstudantes"
+					emptyMessage="Nenhum aluno encontrado."
+					value="#{listarAlunoBean.estudantes}" rowKey="estudante"
+					sortMode="multiple">
 
 					<f:facet name="header">
 						Alunos
 					</f:facet>
 
-					<p:column headerText="Nome"
-						sortBy="#{estudante.nome}">
+					<p:column headerText="Nome" sortBy="#{estudante.nome}">
 						<h:outputText value="#{estudante.nome}" />
 					</p:column>
 
 					<p:column headerText="Data de nascimento"
 						sortBy="#{estudante.dataNascimento}">
-						<h:outputText value="#{estudante.dataNascimento}" >
+						<h:outputText value="#{estudante.dataNascimento}">
 							<f:convertDateTime pattern="dd/MM/yyyy HH:mm"
-									timeZone="GMT-03:00" />
+								timeZone="GMT-03:00" />
 						</h:outputText>
+					</p:column>
+					<p:column headerText="Situação" sortBy="#{estudante.situacao}">
+						<h:outputText value="#{estudante.situacao.toString()}" />
 					</p:column>
 
 					<p:column headerText="Ações">
-						<p:link	value="Ver relatório de tarefas"
-								outcome="relatorioTarefas.xhtml?idEstudante=#{estudante.id}"
-								includeViewParams="false" target="_blank"/>
+						<p:panelGrid columns="3" styleClass="semBorda">
+							<p:commandButton id="botaoInativar"
+								actionListener="#{listarAlunoBean.definirEstudante(estudante)}"
+								oncomplete="PF('confirmarInativar').show();"
+								update=":#{p:component('confirmarInativar')}" value="Inativar" />
+							<p:commandButton id="botaoAtivar"
+								actionListener="#{listarAlunoBean.definirEstudante(estudante)}"
+								oncomplete="PF('confirmarAtivar').show();"
+								update=":#{p:component('confirmarAtivar')}" value="Ativar" />
+							<p:commandButton id="botaoExcluir"
+								actionListener="#{listarAlunoBean.definirEstudante(estudante)}"
+								oncomplete="PF('confirmarExcluir').show();"
+								update=":#{p:component('confirmarExcluir')}" value="Excluir" />
+						</p:panelGrid>
+						<p:link value="Ver relatório de tarefas"
+							outcome="relatorioTarefas.xhtml?idEstudante=#{estudante.id}"
+							includeViewParams="false" target="_blank" />
 					</p:column>
 				</p:dataTable>
 
 			</p:fieldset>
 		</h:form>
+		<p:dialog id="confirmarInativar" header="Mensagem"
+			widgetVar="confirmarInativar" resizable="false" height="100"
+			closeOnEscape="true" showHeader="true" responsive="true"
+			draggable="true">
+			<p:outputPanel style="text-align:center">
+				<h:outputText value="Tem certeza que deseja inativar o aluno?"
+					style="font-weight: bold; color:gray" />
+			</p:outputPanel>
+			<br />
+			<br />
+			<h:form>
+				<center>
+					<p:commandButton value="Sim"
+						actionListener="#{listarAlunoBean.inativar()}"
+						update=":#{p:component('tabelaEstudantes')} :confirmarInativar :growl" />
+
+					<p:commandButton value="Cancelar" update=":confirmarInativar " />
+				</center>
+			</h:form>
+		</p:dialog>
+		<p:dialog id="confirmarAtivar" header="Mensagem"
+			widgetVar="confirmarAtivar" resizable="false" height="100"
+			closeOnEscape="true" showHeader="true" responsive="true"
+			draggable="true">
+			<p:outputPanel style="text-align:center">
+				<h:outputText value="Tem certeza que deseja ativar o aluno?"
+					style="font-weight: bold; color:gray" />
+			</p:outputPanel>
+			<br />
+			<br />
+			<h:form>
+				<center>
+					<p:commandButton value="Sim"
+						actionListener="#{listarAlunoBean.ativar()}"
+						update=":#{p:component('tabelaEstudantes')} :confirmarAtivar :growl" />
+					<p:commandButton value="Cancelar" update=":confirmarAtivar " />
+				</center>
+			</h:form>
+		</p:dialog>
+		<p:dialog id="confirmarExcluir" header="Mensagem"
+			widgetVar="confirmarExcluir" resizable="false" height="100"
+			closeOnEscape="true" showHeader="true" responsive="true"
+			draggable="true">
+			<p:outputPanel style="text-align:center">
+				<h:outputText
+					value="Essa operação não pode ser desfeita. Tem certeza que deseja excluir o aluno?"
+					style="font-weight: bold; color:gray" />
+			</p:outputPanel>
+			<br />
+			<br />
+			<h:form>
+				<center>
+					<p:commandButton value="Sim"
+						actionListener="#{listarAlunoBean.excluir()}"
+						update=":#{p:component('tabelaEstudantes')} :confirmarExcluir :growl" />
+					<p:commandButton value="Cancelar" update=":confirmarExcluir " />
+				</center>
+			</h:form>
+		</p:dialog>
 	</ui:define>
 </ui:composition>

@@ -22,6 +22,20 @@ public enum SituacaoEnum {
 		public String toString(){
 			return "Concluída";
 		}
+	},
+	ATIVO{
+		@Override
+		public String toString() {
+			// TODO Auto-generated method stub
+			return "Ativo";
+		}
+	},
+	INATIVO{
+		@Override
+		public String toString() {
+			// TODO Auto-generated method stub
+			return "Inativo";
+		}
 	}
-
+		
 }
