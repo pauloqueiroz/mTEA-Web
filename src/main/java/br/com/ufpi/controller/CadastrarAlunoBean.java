@@ -21,6 +21,7 @@ import org.primefaces.model.UploadedFile;
 
 import br.com.ufpi.dao.ArquivoDao;
 import br.com.ufpi.dao.EstudanteDao;
+import br.com.ufpi.enuns.SituacaoEnum;
 import br.com.ufpi.model.Arquivo;
 import br.com.ufpi.model.Estudante;
 
@@ -61,6 +62,7 @@ public class CadastrarAlunoBean implements Serializable{
 					null));
 			return;
 		}
+		estudante.setSituacao(SituacaoEnum.ATIVO);
 		estudanteDao.adicionar(estudante);
 		facesContext.addMessage(null, new FacesMessage("Aluno cadastrado com sucesso.", null));
 		adicionarArquivo();

@@ -120,10 +120,12 @@
 						<p:panelGrid columns="3" styleClass="semBorda">
 							<p:commandButton id="botaoInativar"
 								actionListener="#{listarAlunoBean.definirEstudante(estudante)}"
+								rendered="#{estudante.situacao.toString() != 'Inativo'}"
 								oncomplete="PF('confirmarInativar').show();"
 								update=":#{p:component('confirmarInativar')}" value="Inativar" />
 							<p:commandButton id="botaoAtivar"
 								actionListener="#{listarAlunoBean.definirEstudante(estudante)}"
+								rendered="#{estudante.situacao.toString() != 'Ativo'}"
 								oncomplete="PF('confirmarAtivar').show();"
 								update=":#{p:component('confirmarAtivar')}" value="Ativar" />
 							<p:commandButton id="botaoExcluir"
