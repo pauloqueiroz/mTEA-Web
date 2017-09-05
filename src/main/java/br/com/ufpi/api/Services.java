@@ -182,7 +182,8 @@ public class Services {
 			response.header("Content-Disposition", "attachment; filename=" + arquivo.getNomeArquivo());
 			return response.build();
 		}
-		return Response.status(404).entity("Imagem n�o encontrada").build();
+
+		return Response.status(404).entity("Imagem não encontrada").build();
 	}
 
 	@GET
@@ -207,7 +208,8 @@ public class Services {
 			response.header("Content-Disposition", "attachment; filename=" + arquivo.getNomeArquivo());
 			return response.build();
 		}
-		return Response.status(404).entity("Imagem n�o encontrada").build();
+
+		return Response.status(404).entity("Imagem não encontrada").build();
 	}
 	
 	
@@ -242,7 +244,8 @@ public class Services {
 			}
 		}
 		System.out.println("Task nao encontrada!");
-		return Response.status(404).entity("Estudante n�o encontrado").build();
+		
+		return Response.status(404).entity("Estudante não encontrado").build();
 	}
 
 	private boolean verificarListaEncerrada(ItemListaEstudante listaAtual) {
