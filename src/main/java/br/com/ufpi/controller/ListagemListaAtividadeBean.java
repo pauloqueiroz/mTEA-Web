@@ -8,10 +8,8 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
@@ -54,7 +52,7 @@ public class ListagemListaAtividadeBean implements Serializable {
 
 	private Date dataFinal;
 
-	private Set<ItemAtividade> atividades;
+	private List<ItemAtividade> atividades;
 
 	@Inject
 	private ListaAtividadeDao listaAtividadeDao;
@@ -66,7 +64,7 @@ public class ListagemListaAtividadeBean implements Serializable {
 
 	@PostConstruct
 	public void postConstructor() {
-		atividades = new HashSet<>();
+		atividades = new ArrayList<>();
 		pesquisar();
 	}
 
@@ -110,9 +108,8 @@ public class ListagemListaAtividadeBean implements Serializable {
 	public void definirListaDetalhes(ListaAtividade atividade) {
 		this.setListaSelecionada(atividade);
 		if (atividade != null) {
-			Set<ItemAtividade> arquivos = itemAtividadeDao.carregarAtividades(atividade);
-			atividade.setAtividades(arquivos);
-			setAtividades(atividade.getAtividades());
+			atividades = itemAtividadeDao.buscarAtividades(atividade);
+			
 		}
 	}
 
@@ -206,11 +203,11 @@ public class ListagemListaAtividadeBean implements Serializable {
 		this.listaSelecionada = listaSelecionada;
 	}
 
-	public Set<ItemAtividade> getAtividades() {
+	public List<ItemAtividade> getAtividades() {
 		return atividades;
 	}
 
-	public void setAtividades(Set<ItemAtividade> atividades) {
+	public void setAtividades(List<ItemAtividade> atividades) {
 		this.atividades = atividades;
 	}
 

@@ -77,5 +77,9 @@ public class ItemAtividade implements Serializable{
 	public void setDeletar(boolean deletar) {
 		this.deletar = deletar;
 	}
+	
+	public String getOrdemFormatada() {
+		return (this.ordem+1)+"º";
+	}
 
 }

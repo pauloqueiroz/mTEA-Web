@@ -9,7 +9,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
@@ -52,13 +51,13 @@ public class EdicaoListaAtividadeBean implements Serializable{
 	
 	private ListaAtividade lista;
 	
-	private Set<ItemAtividade> atividades;
+	private List<ItemAtividade> atividades;
 	
 	public void buscarListaAtividade() throws IOException {
 		System.out.println("lista atividade id" +getIdListaAtividade());
 		if (getIdListaAtividade() != null){
 			lista = listaAtividadeDao.buscarPorId(Long.parseLong(getIdListaAtividade()));
-			atividades = itemAtividadeDao.carregarAtividades(lista);
+			atividades = itemAtividadeDao.buscarAtividades(lista);
 //			lista.setAtividades(atividades);
 		}else{
 			FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -90,7 +89,7 @@ public class EdicaoListaAtividadeBean implements Serializable{
 		}
 		int ordem = 0;
 		for (ItemAtividade itemAtividade : atividades) {
-			System.out.println(itemAtividade.getOrdem());
+			System.out.println(itemAtividade.getAtividade().getNome()+" - "+itemAtividade.getOrdem());
 			itemAtividade.setOrdem(ordem);
 			itemAtividadeDao.atualizar(itemAtividade);
 			ordem++;
@@ -149,14 +148,12 @@ public class EdicaoListaAtividadeBean implements Serializable{
 		this.idListaAtividade = idListaAtividade;
 	}
 
-	public Set<ItemAtividade> getAtividades() {
+	public List<ItemAtividade> getAtividades() {
 		return atividades;
 	}
 
-	public void setAtividades(Set<ItemAtividade> atividades) {
+	public void setAtividades(List<ItemAtividade> atividades) {
 		this.atividades = atividades;
-	}	
-
-	
+	}
 
 }

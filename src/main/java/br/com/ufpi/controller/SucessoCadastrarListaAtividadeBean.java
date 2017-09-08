@@ -6,8 +6,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -50,8 +51,11 @@ public class SucessoCadastrarListaAtividadeBean implements Serializable{
 	
 	private ListaAtividade lista;
 	
+	private List<ItemAtividade> atividades;
+	
 	@PostConstruct
 	public void init(){
+		atividades = new ArrayList<>();
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		facesContext.addMessage(null, new FacesMessage(
 				FacesMessage.SEVERITY_INFO, "Sucesso ao realizar operação.", null));
@@ -61,8 +65,8 @@ public class SucessoCadastrarListaAtividadeBean implements Serializable{
 		System.out.println("lista atividade id" +getIdListaAtividade());
 		if (getIdListaAtividade() != null){
 			lista = listaAtividadeDao.buscarPorId(Long.parseLong(getIdListaAtividade()));
-			Set<ItemAtividade> atividades = itemAtividadeDao.carregarAtividades(lista);
-			lista.setAtividades(atividades);
+			atividades = itemAtividadeDao.buscarAtividades(lista);
+			
 		}
 		
 	}
@@ -115,6 +119,14 @@ public class SucessoCadastrarListaAtividadeBean implements Serializable{
 
 	public void setIdListaAtividade(String idListaAtividade) {
 		this.idListaAtividade = idListaAtividade;
+	}
+
+	public List<ItemAtividade> getAtividades() {
+		return atividades;
+	}
+
+	public void setAtividades(List<ItemAtividade> atividades) {
+		this.atividades = atividades;
 	}	
 
 }

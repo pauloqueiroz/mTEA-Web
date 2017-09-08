@@ -43,16 +43,16 @@
 							<p:outputLabel value="Data de criação: " />
 							<p:outputLabel
 								value="#{sucessoCadastrarListaAtividadeBean.lista.dataCriacao}"
-								id="inputDataCriacao" >
-							<f:convertDateTime pattern="dd/MM/yyyy HH:mm"
-								timeZone="GMT-03:00" />
+								id="inputDataCriacao">
+								<f:convertDateTime pattern="dd/MM/yyyy HH:mm"
+									timeZone="GMT-03:00" />
 							</p:outputLabel>
 						</p:panelGrid>
 						<br />
 						<p:dataTable var="item" paginator="true" rows="10" reflow="true"
 							paginatorPosition="bottom" id="tabelaArquivos"
-							style="max-width:800px;"
-							value="#{sucessoCadastrarListaAtividadeBean.lista.atividades}"
+							style="max-width:800px;" sortBy="#{item.ordem}"
+							value="#{sucessoCadastrarListaAtividadeBean.atividades}"
 							rowIndexVar="rowIndex"
 							emptyMessage="Não foram encontrados registros">
 							<f:facet name="header">
@@ -68,6 +68,10 @@
 							<p:column headerText="Palavra">
 								<p:outputLabel value="#{item.atividade.palavra}" />
 							</p:column>
+							<p:column headerText="Ordem" sortBy="#{item.ordem}">
+								<p:outputLabel value="#{item.ordemFormatada}"/>
+							</p:column>
+							
 						</p:dataTable>
 						<br />
 						<br />

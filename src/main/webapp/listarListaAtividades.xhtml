@@ -173,7 +173,7 @@
 					</p:panelGrid>
 					<p:dataTable var="item" paginator="true" rows="5"
 						style="width: 400" paginatorPosition="bottom"
-						id="tabelaAtividades"
+						id="tabelaAtividades" sortBy="#{item.ordem}"
 						value="#{listagemListaAtividadeBean.atividades}"
 						rowIndexVar="rowIndex"
 						emptyMessage="Não foram encontrados registros">
@@ -185,6 +185,9 @@
 						</p:column>
 						<p:column headerText="Palavra">
 							<p:outputLabel value="#{item.atividade.palavra}" />
+						</p:column>
+						<p:column headerText="Ordem" sortBy="#{item.ordem}">
+							<p:outputLabel value="#{item.ordemFormatada}"/>
 						</p:column>
 					</p:dataTable>
 				</center>
