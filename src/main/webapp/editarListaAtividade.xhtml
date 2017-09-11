@@ -35,10 +35,11 @@
 	function setarOrdemNova(){
 		var table = jQuery('#formPrincipal\\:tabelaAtividades').find('table');
 		var trs = jQuery(table).find('tr');
-		var ordem = 0;
+		var ordem = -1;
 		for(i=0; i&lt;trs.length; i++){
 		        var tds = jQuery(trs[i]).find('td');
 		        var input = jQuery(tds[3]).find('input');
+		        console.log('Ordem: '+ordem);
 				jQuery(input).val(ordem);
 				ordem++;
 		}
