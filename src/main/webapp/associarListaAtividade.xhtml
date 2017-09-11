@@ -99,12 +99,6 @@
 									style="text-align: center" paginatorPosition="bottom"
 									lazy="true" value="#{associarListaAtividades.listas}"
 									rowKey="lista" sortMode="multiple">
-									<p:column style="width:20px" headerText="+">
-										<h:outputText id="dragIcon"
-											styleClass="ui-icon ui-icon-arrow-4" title="clique e arraste" />
-										<p:draggable for="dragIcon" revert="true" helper="clone" />
-									</p:column>
-
 									<p:column headerText="Nome da lista" sortBy="#{lista.nome}">
 										<p:outputLabel value="#{lista.nome}" />
 									</p:column>
@@ -131,7 +125,7 @@
 								legend="Listas selecionadas"
 								style="margin-top:20px;margin-left:5%;">
 								<p:outputPanel id="dropArea">
-									<h:outputText value="Clique no botão adicionar ou arraste as listas para cá a partir do ícone da primeira coluna"
+									<h:outputText value="Clique no botão adicionar para selecionar as listas que se deseja que o aluno execute"
 										rendered="#{empty associarListaAtividades.listasSelecionadas}"
 										style="font-size:24px;" />
 									<p:dataTable id="listasSelecionadasTable" var="lista"
@@ -163,13 +157,7 @@
 									</p:dataTable>
 								</p:outputPanel>
 							</p:fieldset>
-
-							<p:droppable for="listasSelecionadas" tolerance="touch"
-								id="droppableListas" activeStyleClass="ui-state-highlight"
-								datasource="listasDisponiveis" onDrop="handleDrop">
-								<p:ajax listener="#{associarListaAtividades.onListaDrop}"
-									update="dropArea listasDisponiveis" />
-							</p:droppable>
+							
 						</h:panelGrid>
 						<br />
 						<center>

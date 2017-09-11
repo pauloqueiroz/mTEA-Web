@@ -92,9 +92,10 @@ public class Services {
 			if(!CollectionUtils.isEmpty(listasDoAluno)){
 				listaAtual = listasDoAluno.get(0);
 				listaAtual.getLista();
-				Set<ItemAtividade> atividadesDaLista = itemAtividadeDao.carregarAtividades(listaAtual.getLista());
+				List<ItemAtividade> atividadesDaLista = itemAtividadeDao.buscarAtividades(listaAtual.getLista());
 				if (!CollectionUtils.isEmpty(atividadesDaLista)) {
 					for (ItemAtividade item : atividadesDaLista) {
+						System.out.println("Ordem "+item.getAtividade().getNome() +" - "+item.getOrdem());
 						Atividade atividade = item.getAtividade();
 						List<Arquivo> arquivosDaAtividade = arquivoDao.carregarArquivosDaAtividade(atividade);
 						atividade.setArquivos(arquivosDaAtividade);
