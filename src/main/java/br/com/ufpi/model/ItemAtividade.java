@@ -33,6 +33,8 @@ public class ItemAtividade implements Serializable{
 	private Atividade atividade;
 	
 	private transient boolean deletar;
+	
+	private transient int ordemEdicao;
 
 	public ItemAtividade() {
 	
@@ -80,6 +82,14 @@ public class ItemAtividade implements Serializable{
 	
 	public String getOrdemFormatada() {
 		return (this.ordem+1)+"º";
+	}
+
+	public int getOrdemEdicao() {
+		return ordemEdicao;
+	}
+
+	public void setOrdemEdicao(int ordemEdicao) {
+		this.ordemEdicao = ordemEdicao;
 	}
 
 }

@@ -87,12 +87,9 @@ public class EdicaoListaAtividadeBean implements Serializable{
 			itemAtividadeDao.deletar(atividade);
 			atividades.remove(atividade);
 		}
-		int ordem = 0;
 		for (ItemAtividade itemAtividade : atividades) {
 			System.out.println(itemAtividade.getAtividade().getNome()+" - "+itemAtividade.getOrdem());
-			itemAtividade.setOrdem(ordem);
 			itemAtividadeDao.atualizar(itemAtividade);
-			ordem++;
 		}
 		ExternalContext ec = facesContext.getExternalContext();
 		ec.redirect("sucessoCadastrarListaAtividade.xhtml?idListaAtividade="+lista.getId());

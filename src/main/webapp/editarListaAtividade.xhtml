@@ -20,13 +20,39 @@
 	border: none !important;
 }
 </style>
+<script type="text/javascript">
+	jQuery(document).ready(function(){
+		var table = jQuery('#formPrincipal\\:tabelaAtividades').find('table');
+		var trs = jQuery(table).find('tr');
+		var ths = jQuery(table).find('th');
+		jQuery(ths[3]).hide();
+		for(i=0; i&lt;trs.length; i++){
+			var tds = jQuery(trs[i]).find('td');
+			jQuery(tds[3]).hide();
+		}
+	});
+
+	function setarOrdemNova(){
+		var table = jQuery('#formPrincipal\\:tabelaAtividades').find('table');
+		var trs = jQuery(table).find('tr');
+		var ordem = 0;
+		for(i=0; i&lt;trs.length; i++){
+		        var tds = jQuery(trs[i]).find('td');
+		        var input = jQuery(tds[3]).find('input');
+				jQuery(input).val(ordem);
+				ordem++;
+		}
+	}
+
+</script>
 		<h:body>
 
 			<p:messages id="mensagem" showDetail="false" closable="true" />
 			<center>
 				<h:form id="formPrincipal">
 					<div class="ui-message-warning">
-						<h1>Arraste as atividades na tabela para definir a ordem que as mesmas aparecerão no app.</h1>
+						<h1>Arraste as atividades na tabela para definir a ordem que
+							as mesmas aparecerão no app.</h1>
 					</div>
 					<br />
 					<br />
@@ -53,7 +79,7 @@
 					<p:dataTable var="item" reflow="true" id="tabelaAtividades"
 						style="max-width:800px;" draggableRows="true"
 						value="#{edicaoListaAtividadeBean.atividades}"
-						rowIndexVar="rowIndex" sortBy="#{item.ordem}"
+						rowIndexVar="rowIndex" sortBy="#{item.ordem}" rowKey="#{item.id}"
 						emptyMessage="Não foram encontrados registros">
 						<f:facet name="header">
             						Atividades
@@ -67,12 +93,15 @@
 						<p:column headerText="Palavra">
 							<p:outputLabel value="#{item.atividade.palavra}" />
 						</p:column>
+						<p:column headerText="Ordem" sortBy="#{item.ordem}">
+							<p:inputText value="#{item.ordem}" />
+						</p:column>
 						<p:column headerText="selecione para remover" width="100">
 							<p:selectBooleanCheckbox value="#{item.deletar}" />
 						</p:column>
 					</p:dataTable>
 					<p:panelGrid id="panelButtons" columns="2">
-						<p:commandButton value="Editar"
+						<p:commandButton value="Editar" onclick="setarOrdemNova()"
 							action="#{edicaoListaAtividadeBean.editar()}" ajax="false" />
 						<p:commandButton value="Cancelar" ajax="false"
 							action="listarListaAtividades.xhtml?faces-redirect=true" />
