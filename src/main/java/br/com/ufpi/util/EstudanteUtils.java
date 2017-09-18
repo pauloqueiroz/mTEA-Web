@@ -120,7 +120,8 @@ public class EstudanteUtils {
 	private static List<Answer> converterAnswers(List<Arquivo> imagens) {
 		List<Answer> answers = new ArrayList<>();
 		for (Arquivo imagem : imagens) {
-			Answer answer = new Answer(imagem.getId(), String.valueOf(imagem.getId()), imagem.getAtividade().getId());
+			String tipoArquivo = imagem.getTipoArquivo() != null ? imagem.getTipoArquivo().getDescricao() : "";
+			Answer answer = new Answer(imagem.getId(), String.valueOf(imagem.getId()), tipoArquivo, imagem.getAtividade().getId());
 			answers.add(answer);
 		}
 		return answers;
