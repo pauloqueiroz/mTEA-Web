@@ -138,7 +138,7 @@
 			<br />
 			<br />
 			<p:fieldset legend="Gráfico de acertos" toggleable="true"
-				rendered="#{relatorioTarefasAluno.alunoExecutouTarefa}">
+				rendered="#{relatorioTarefasAluno.exibeGraficoLinha}">
 				<p:chart type="line" model="#{relatorioTarefasAluno.graficoAcertos}"
 					responsive="true" widgetVar="chart" />
 			</p:fieldset>
@@ -146,17 +146,18 @@
 			<br />
 			<br />
 			<p:fieldset legend="Gráfico de erros" toggleable="true"
-				rendered="#{relatorioTarefasAluno.alunoExecutouTarefa}">
+				rendered="#{relatorioTarefasAluno.exibeGraficoLinha}">
 				<p:chart type="line" model="#{relatorioTarefasAluno.graficoErros}"
 					responsive="true" />
 			</p:fieldset>
-			
+			<br />
+			<br />
 			<p:fieldset id="barAcertos" legend="Gráfico de acertos" toggleable="true"
-				rendered="#{relatorioTarefasAluno.alunoExecutouTarefa}">
+				rendered="#{relatorioTarefasAluno.exibeGraficoBarra}">
 				<p:chart type="bar" model="#{relatorioTarefasAluno.graficoAcertosBar}" style="height:300px"/>
 			</p:fieldset>
 			<p:fieldset id="barErros" legend="Gráfico de erros" toggleable="true"
-				rendered="#{relatorioTarefasAluno.alunoExecutouTarefa}">
+				rendered="#{relatorioTarefasAluno.exibeGraficoBarra}">
 				<p:chart type="bar" model="#{relatorioTarefasAluno.graficoErrosBar}" style="height:300px"/>
 			</p:fieldset>
 			

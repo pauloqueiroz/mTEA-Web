@@ -15,6 +15,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
+import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
@@ -102,12 +103,29 @@ public class RelatorioTarefasAluno implements Serializable {
 		ChartSeries erros = new ChartSeries();
 		erros.setLabel("Erros");
 		for (TarefaGrafico tarefaGrafico : tarefaGraficos) {
+			System.out.println("Inicio: "+tarefaGrafico.getInicio() +" - Acertos: " +tarefaGrafico.getAcertos());
 			acertos.set(EstudanteUtils.getDataPadraoInternacional(tarefaGrafico.getInicio()),
 					tarefaGrafico.getAcertos());
 			erros.set(EstudanteUtils.getDataPadraoInternacional(tarefaGrafico.getInicio()),
 					tarefaGrafico.getErros());
 		}
+//		System.out.println("Acertos: ");
 		
+		graficoAcertosBar.addSeries(acertos);
+		graficoAcertosBar.setTitle("Gráfico de Acertos");
+        Axis xAxis = graficoAcertosBar.getAxis(AxisType.X);
+        xAxis.setLabel("Data");
+         
+        Axis yAxis = graficoAcertosBar.getAxis(AxisType.Y);
+        yAxis.setLabel("Acertos");
+        
+        graficoErrosBar.addSeries(acertos);
+        graficoErrosBar.setTitle("Gráfico de Erros");
+        Axis xAxisErros = graficoErrosBar.getAxis(AxisType.X);
+        xAxisErros.setLabel("Data");
+         
+        Axis yAxisErros = graficoErrosBar.getAxis(AxisType.Y);
+        yAxisErros.setLabel("Erros");
 	}
 
 	private void montarGraficoLinha() {
@@ -131,13 +149,13 @@ public class RelatorioTarefasAluno implements Serializable {
 		ultimaData = EstudanteUtils.getDiaPosterior(ultimaData);
 
 		povoarGrafico(graficoAcertos, serieAcertos, ultimaData);
-		graficoAcertos.setTitle("Relat�rio de acertos");
+		graficoAcertos.setTitle("Relatório de acertos");
 		graficoAcertos.getAxis(AxisType.Y).setLabel("Acertos");
 		Date dataFinal = EstudanteUtils.processarDataFinalGrafico(tarefaGraficos); 
 		graficoAcertos.getAxis(AxisType.X).setMax(EstudanteUtils.getDataPadraoInternacional(dataFinal));
 
 		povoarGrafico(graficoErros, serieErros, ultimaData);
-		graficoErros.setTitle("Relat�rio de erros");
+		graficoErros.setTitle("Relatório de erros");
 		graficoErros.getAxis(AxisType.Y).setLabel("Erros");
 		graficoErros.getAxis(AxisType.X).setMax(EstudanteUtils.getDataPadraoInternacional(dataFinal));
 		
@@ -201,6 +219,20 @@ public class RelatorioTarefasAluno implements Serializable {
 		tarefaGraficos = new ArrayList<>();
 		
 		pesquisar();
+	}
+	
+	public boolean isExibeGraficoLinha() {
+		if(!this.exibirGraficoBarra && !CollectionUtils.isEmpty(tarefaGraficos)) {
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean isExibeGraficoBarra() {
+		if(this.exibirGraficoBarra && !CollectionUtils.isEmpty(tarefaGraficos)) {
+			return true;
+		}
+		return false;
 	}
 	
 	public TemplateEnum[] getTemplates() {
