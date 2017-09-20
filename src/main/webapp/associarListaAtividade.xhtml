@@ -24,14 +24,6 @@
 	width: 100% !important;
 }
 </style>
-		<script type="text/javascript">
-		    function handleDrop(event, ui) {
-		        var droppedAtividade = ui.draggable;
-		 
-		        droppedAtividade.fadeOut('fast');
-		    }
-		</script>
-
 		<h:form id="listaAtividadeForm">
 			<p:wizard id="listaAtividadeWizard" nextLabel="Próximo"
 				backLabel="Voltar">
@@ -131,14 +123,7 @@
 									<p:dataTable id="listasSelecionadasTable" var="lista"
 										value="#{associarListaAtividades.listasSelecionadas}"
 										rendered="#{not empty associarListaAtividades.listasSelecionadas}">
-
-										<p:column style="width:20px" headerText="Drag">
-											<h:outputText id="dragIcon"
-												styleClass="ui-icon ui-icon-arrow-4"
-												title="clique e arraste" />
-											<p:draggable for="dragIcon" revert="true" helper="clone" />
-										</p:column>
-
+										
 										<p:column headerText="Nome da lista" sortBy="#{lista.nome}">
 											<p:outputLabel value="#{lista.nome}" />
 										</p:column>

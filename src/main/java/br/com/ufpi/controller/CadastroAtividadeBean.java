@@ -23,6 +23,7 @@ import org.primefaces.model.UploadedFile;
 import br.com.ufpi.dao.ArquivoDao;
 import br.com.ufpi.dao.AtividadeDao;
 import br.com.ufpi.enuns.TemplateEnum;
+import br.com.ufpi.enuns.TipoArquivoEnum;
 import br.com.ufpi.model.Arquivo;
 import br.com.ufpi.model.Atividade;
 import br.com.ufpi.util.EstudanteUtils;
@@ -57,6 +58,8 @@ public class CadastroAtividadeBean implements Serializable {
 	
 	private List<String> nomesArquivos;
 	
+	private List<TipoArquivoEnum> tiposArquivo;
+	
 	private boolean templateTemImagens = false;
 	
 	private boolean templatePalavra = false;
@@ -70,6 +73,7 @@ public class CadastroAtividadeBean implements Serializable {
 		listaArquivos = new ArrayList<>();
 		conteudoArquivos = new ArrayList<>();
 		nomesArquivos = new ArrayList<>();
+		tiposArquivo = new ArrayList<>();
 	}
 
 	public TemplateEnum[] getTemplates() {
@@ -81,6 +85,7 @@ public class CadastroAtividadeBean implements Serializable {
 			try {
 				conteudoArquivos.add(event.getFile().getInputstream());
 				nomesArquivos.add(event.getFile().getFileName());
+				tiposArquivo.add(TipoArquivoEnum.IMAGEM);
 			} catch (IOException e) {
 				System.out.println("Erro ao salvar arquivo");
 				e.printStackTrace();
@@ -102,6 +107,7 @@ public class CadastroAtividadeBean implements Serializable {
 			InputStream inputstreamAudio = audio.getInputstream();
 			nomesArquivos.add(nomeAudio);
 			conteudoArquivos.add(inputstreamAudio);
+			tiposArquivo.add(TipoArquivoEnum.AUDIO);
 		}
 		for (InputStream stream : conteudoArquivos) {
 		
@@ -111,6 +117,7 @@ public class CadastroAtividadeBean implements Serializable {
 				byte[] bytes = IOUtils.toByteArray(stream);
 				arquivo.setBytesArquivo(bytes);
 				arquivo.setNomeArquivo(nomesArquivos.get(indiceNomeArquivo));
+				arquivo.setTipoArquivo(tiposArquivo.get(indiceNomeArquivo));
 				indiceNomeArquivo++;
 				this.listaArquivos.add(arquivo);
 				getAtividade().setArquivos(this.listaArquivos);
@@ -314,6 +321,14 @@ public class CadastroAtividadeBean implements Serializable {
 
 	public void setNomesArquivos(List<String> nomesArquivos) {
 		this.nomesArquivos = nomesArquivos;
+	}
+
+	public List<TipoArquivoEnum> getTiposArquivo() {
+		return tiposArquivo;
+	}
+
+	public void setTiposArquivo(List<TipoArquivoEnum> tiposArquivo) {
+		this.tiposArquivo = tiposArquivo;
 	}
 
 }
