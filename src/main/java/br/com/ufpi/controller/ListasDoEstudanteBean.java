@@ -2,6 +2,7 @@ package br.com.ufpi.controller;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
@@ -13,6 +14,8 @@ import javax.inject.Named;
 
 import br.com.ufpi.dao.EstudanteDao;
 import br.com.ufpi.dao.ItemListaEstudanteDao;
+import br.com.ufpi.model.Arquivo;
+import br.com.ufpi.model.Atividade;
 import br.com.ufpi.model.Estudante;
 import br.com.ufpi.model.ItemListaEstudante;
 
@@ -43,6 +46,8 @@ public class ListasDoEstudanteBean implements Serializable{
 	
 	private Set<ItemListaEstudante> listas = new HashSet<>();
 	
+	private ItemListaEstudante listaSelecionada;
+	
 	@PostConstruct
 	public void init(){
 		FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -56,6 +61,17 @@ public class ListasDoEstudanteBean implements Serializable{
 		if (idEstudante != null){
 			estudante = estudanteDao.buscarPorId(Long.parseLong(idEstudante));
 			listas = itemListaEstudanteDao.buscar(estudante);
+		}
+	}
+	
+	public void definirLista(ItemListaEstudante listaSelecionada) {
+		this.listaSelecionada = listaSelecionada;
+	}
+	
+	public void repetirLista() {
+		if(listaSelecionada != null) {
+			listaSelecionada.setRepetir(true);
+			itemListaEstudanteDao.atualizar(listaSelecionada);
 		}
 	}
 
@@ -96,6 +112,16 @@ public class ListasDoEstudanteBean implements Serializable{
 
 	public void setEstudante(Estudante estudante) {
 		this.estudante = estudante;
+	}
+
+
+	public ItemListaEstudante getListaSelecionada() {
+		return listaSelecionada;
+	}
+
+
+	public void setListaSelecionada(ItemListaEstudante listaSelecionada) {
+		this.listaSelecionada = listaSelecionada;
 	}
 
 }

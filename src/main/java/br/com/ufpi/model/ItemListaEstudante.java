@@ -3,6 +3,7 @@ package br.com.ufpi.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -51,6 +52,9 @@ public class ItemListaEstudante implements Serializable{
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataAlteracao;
+	
+	@Column(columnDefinition="boolean default false")
+	private boolean repetir;
 
 	public ItemListaEstudante() {
 		super();
@@ -116,6 +120,14 @@ public class ItemListaEstudante implements Serializable{
 		boolean naoEnviado = this.situacao.equals(SituacaoEnum.CADASTRADO);
 		System.out.println("Pode ser excluido:" +naoEnviado);
 		return naoEnviado?true:false;
+	}
+
+	public boolean isRepetir() {
+		return repetir;
+	}
+
+	public void setRepetir(boolean repetir) {
+		this.repetir = repetir;
 	}
 	
 }
