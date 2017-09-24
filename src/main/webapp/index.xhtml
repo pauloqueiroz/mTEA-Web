@@ -62,33 +62,33 @@
 					<p:menuitem value="Pagina Inicial" icon="ui-icon-home"
 						url="index.xhtml" />
 
-					<p:submenu label="Alunos" icon="ui-icon-carat-1-s">
+					<p:submenu label="Alunos">
 
 						<p:menuitem value="Cadastrar Alunos" icon="ui-icon-plus" url="cadastrarAluno.xhtml"/>
-						<p:menuitem value="Listar Alunos" icon="ui-icon-bookmark" url="listarAluno.xhtml"/>
-						<p:menuitem value="Exercícios" icon="ui-icon-plus" url="associarListaAtividade.xhtml"/>
-						<p:menuitem value="Listas Por Aluno" icon="ui-icon-plus" url="relatorioListasPorAluno.xhtml"/>
+						<p:menuitem value="Listar Alunos" icon="ui-icon-search" url="listarAluno.xhtml"/>
+						<p:menuitem value="Atribuir Listas" icon="ui-icon-arrowthick-2-e-w" url="associarListaAtividade.xhtml"/>
+						<p:menuitem value="Listas Por Aluno" icon="ui-icon-search" url="relatorioListasPorAluno.xhtml"/>
 
 					</p:submenu>
 
-					<p:submenu label="Atividades" icon="ui-icon-pencil">
+					<p:submenu label="Atividades">
 						<p:menuitem value="Cadastrar Atividades" icon="ui-icon-plus"
 							url="cadastrarAtividade.xhtml" />
-						<p:menuitem value="Listar Atividades" icon="ui-icon-plus"
+						<p:menuitem value="Listar Atividades" icon="ui-icon-search"
 							url="listarAtividade.xhtml" />
 					</p:submenu>
 					
-					<p:submenu label="Listas de atividades" icon="ui-icon-pencil">
+					<p:submenu label="Listas de Atividades">
 						<p:menuitem value="Criar Lista" icon="ui-icon-plus" url="criarListaAtividades.xhtml"/>
-						<p:menuitem value="Ver Listas" icon="ui-icon-plus" url="listarListaAtividades.xhtml"/>
-						<p:menuitem value="Exercícios" icon="ui-icon-plus" url="associarListaAtividade.xhtml"/>
-						<p:menuitem value="Listas Por Aluno" icon="ui-icon-plus" url="relatorioListasPorAluno.xhtml"/>
+						<p:menuitem value="Ver Listas" icon="ui-icon-search" url="listarListaAtividades.xhtml"/>
+						<p:menuitem value="Atribuir Listas" icon="ui-icon-arrowthick-2-e-w" url="associarListaAtividade.xhtml"/>
+						<p:menuitem value="Listas Por Aluno" icon="ui-icon-search" url="relatorioListasPorAluno.xhtml"/>
 					</p:submenu>
 
-					<p:menuitem value="Relatórios" icon="ui-icon-plus"
+					<p:menuitem value="Relatórios" icon="ui-icon-calculator"
 						url="relatorioTarefas.xhtml" />
 
-					<p:menuitem value="Cadastrar usuários" icon="ui-icon-plus"
+					<p:menuitem value="Cadastrar Usuários" icon="ui-icon-plus"
 						url="cadastrarUsuario.xhtml"
 						rendered="#{loginBean.usuarioLogado.admin}" />
 

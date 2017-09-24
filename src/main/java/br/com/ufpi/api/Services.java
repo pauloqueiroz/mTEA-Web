@@ -141,7 +141,6 @@ public class Services {
 	@Path("/audio/{id}")
 	@Produces(MediaType.APPLICATION_OCTET_STREAM)
 	public Response getAudio(@Context HttpServletRequest request, @PathParam("id") Long id) {
-		System.out.println("audio id: "+ id);
 		if (id != null && !id.equals(0l)) {
 			Arquivo arquivo = arquivoDao.buscarPorId(id);
 			try {
@@ -219,8 +218,6 @@ public class Services {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createTaskInJSON(Task task) throws ParseException {
 		if(task != null && task.getStudent_id() != null){
-			System.out.println("Start: "+task.getStart());
-			System.out.println("End: "+task.getEnd());
 			Estudante estudante = estudanteDao.buscarPorId(task.getStudent_id());
 			if(estudante != null){
 				Atividade atividade = null;
