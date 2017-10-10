@@ -23,9 +23,11 @@ import org.primefaces.model.StreamedContent;
 
 import br.com.ufpi.dao.ArquivoDao;
 import br.com.ufpi.dao.AtividadeDao;
+import br.com.ufpi.dao.ItemAtividadeDao;
 import br.com.ufpi.enuns.TemplateEnum;
 import br.com.ufpi.model.Arquivo;
 import br.com.ufpi.model.Atividade;
+import br.com.ufpi.model.ItemAtividade;
 import br.com.ufpi.util.ArquivoUtil;
 
 @Named
@@ -54,6 +56,9 @@ public class ListagemAtividadesBean implements Serializable{
 	private Atividade atividadeSelecionada;
 	
 	private List<Arquivo> imagens;
+	
+	@Inject
+	private ItemAtividadeDao itemAtividadeDao;
 	
 	@PostConstruct
 	public void postConstructor() {
@@ -111,6 +116,11 @@ public class ListagemAtividadesBean implements Serializable{
 	}
 	
 	public void excluir(){
+		List<ItemAtividade> itens = itemAtividadeDao.buscarAtividades(atividadeSelecionada);
+		System.out.println("itens atividade"+ itens.size());
+		for (ItemAtividade itemAtividade : itens) {
+			itemAtividadeDao.deletar(itemAtividade);
+		}
 		atividadeDao.delete(atividadeSelecionada);
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		facesContext.addMessage(null, new FacesMessage(
@@ -204,6 +214,16 @@ public class ListagemAtividadesBean implements Serializable{
 
 	public void setNomeAtividade(String nomeAtividade) {
 		this.nomeAtividade = nomeAtividade;
+	}
+
+
+	public ItemAtividadeDao getItemAtividadeDao() {
+		return itemAtividadeDao;
+	}
+
+
+	public void setItemAtividadeDao(ItemAtividadeDao itemAtividadeDao) {
+		this.itemAtividadeDao = itemAtividadeDao;
 	}
 
 }

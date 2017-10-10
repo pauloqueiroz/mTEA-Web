@@ -12,6 +12,7 @@ import javax.persistence.TypedQuery;
 
 import org.apache.commons.collections.CollectionUtils;
 
+import br.com.ufpi.model.Atividade;
 import br.com.ufpi.model.ItemAtividade;
 import br.com.ufpi.model.ListaAtividade;
 
@@ -61,6 +62,17 @@ public class ItemAtividadeDao implements Serializable {
 		atividade = em.merge(atividade);
 		em.remove(atividade);
 		
+	}
+
+	public List<ItemAtividade> buscarAtividades(Atividade atividade) {
+		String hql = "Select i from ItemAtividade i where i.atividade = :atividade";
+		TypedQuery<ItemAtividade> query = em.createQuery(hql, ItemAtividade.class);
+		query.setParameter("atividade", atividade);
+		List<ItemAtividade> list = query.getResultList();
+		if(!CollectionUtils.isEmpty(list)) {
+			return list;
+		}
+			return null;
 	}
 
 }
