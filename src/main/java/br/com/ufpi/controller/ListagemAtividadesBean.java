@@ -120,6 +120,7 @@ public class ListagemAtividadesBean implements Serializable{
 		System.out.println("itens atividade"+ itens.size());
 		for (ItemAtividade itemAtividade : itens) {
 			itemAtividadeDao.deletar(itemAtividade);
+			System.out.println("flush");
 		}
 		atividadeDao.delete(atividadeSelecionada);
 		FacesContext facesContext = FacesContext.getCurrentInstance();

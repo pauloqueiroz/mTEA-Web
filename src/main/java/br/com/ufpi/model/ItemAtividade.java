@@ -7,7 +7,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 /**
  * 
  * @author Paulo Sergio
@@ -29,7 +31,8 @@ public class ItemAtividade implements Serializable{
 	@ManyToOne
 	private ListaAtividade lista;
     
-	@ManyToOne(fetch=FetchType.EAGER)
+	@OneToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="atividade_id")
 	private Atividade atividade;
 	
 	private transient boolean deletar;

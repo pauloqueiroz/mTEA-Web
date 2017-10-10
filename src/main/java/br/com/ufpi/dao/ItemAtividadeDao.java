@@ -7,6 +7,7 @@ import java.util.Set;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.FlushModeType;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
@@ -59,9 +60,11 @@ public class ItemAtividadeDao implements Serializable {
 	}
 
 	public void deletar(ItemAtividade atividade) {
+		em.setFlushMode(FlushModeType.COMMIT);
+		atividade.setAtividade(null);
 		atividade = em.merge(atividade);
 		em.remove(atividade);
-		
+		em.flush();
 	}
 
 	public List<ItemAtividade> buscarAtividades(Atividade atividade) {
