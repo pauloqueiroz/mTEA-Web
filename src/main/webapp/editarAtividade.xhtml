@@ -43,17 +43,23 @@
 						<p:inputText value="#{edicaoAtividadeBean.atividade.palavra}"
 							rendered="#{edicaoAtividadeBean.atividade.palavra != null}"
 							required="#{edicaoAtividadeBean.atividade.palavra != null}" />
+						<p:outputLabel value="Áudio" rendered="#{edicaoAtividadeBean.atividade.possuiAudio()}"/>
+						<p:commandLink value="#{edicaoAtividadeBean.audioExistente.nomeArquivo}" ajax="false"
+								style="font-size:14px;color:blue;" target="_blank">
+							<p:fileDownload 
+									value="#{edicaoAtividadeBean.downloadArquivo(edicaoAtividadeBean.audioExistente)}" />
+						</p:commandLink>
 					</p:panelGrid>
 					<br />
 					<br />
 					<p:dataTable var="arquivo" paginator="true" rows="10" reflow="true"
 						paginatorPosition="bottom" id="tabelaArquivos"
 						style="max-width:800px;"
-						value="#{edicaoAtividadeBean.atividade.arquivos}"
+						value="#{edicaoAtividadeBean.imagens}"
 						rowIndexVar="rowIndex"
 						emptyMessage="Não foram encontrados registros">
 						<f:facet name="header">
-            						Arquivos da atividade
+            						Imagens da atividade
         						</f:facet>
 						<p:column headerText="Arquivo">
 							<p:commandLink value="#{arquivo.nomeArquivo}" ajax="false"

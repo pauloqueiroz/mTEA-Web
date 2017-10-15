@@ -149,5 +149,12 @@ public class Atividade implements Serializable {
 	public void setArquivos(List<Arquivo> arquivos) {
 		this.arquivos = arquivos;
 	}
+	
+	public boolean possuiAudio() {
+		if(this.template.equals(TemplateEnum.COPIA_POR_COMPOSICAO) || this.template.equals(TemplateEnum.DITADO_MUDO)) {
+			return true;
+		}
+		return false;
+	}
 
 }

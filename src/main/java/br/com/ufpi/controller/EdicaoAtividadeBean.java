@@ -6,7 +6,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,9 +21,11 @@ import org.apache.commons.io.IOUtils;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
+import org.primefaces.model.UploadedFile;
 
 import br.com.ufpi.dao.ArquivoDao;
 import br.com.ufpi.dao.AtividadeDao;
+import br.com.ufpi.enuns.TipoArquivoEnum;
 import br.com.ufpi.model.Arquivo;
 import br.com.ufpi.model.Atividade;
 import br.com.ufpi.util.ArquivoUtil;
@@ -50,37 +51,56 @@ public class EdicaoAtividadeBean implements Serializable {
 	
 	@Inject
 	private ArquivoDao arquivoDao;
+	
+	private List<Arquivo> imagens;
+	
+	private Arquivo audioExistente;
+	
+	private UploadedFile audioNovo;
 
 	@PostConstruct
 	public void init() {
 		conteudoArquivos = new ArrayList<>();
+		imagens = new ArrayList<>();
 	}
 
 	public void buscarAtividade() {
-		System.out.println("atividade id" +idAtividade);
 		if (idAtividade != null){
 			atividade = atividadeDao.carregarAtividadeComArquivos(Long.parseLong(idAtividade));
 			List<Arquivo> arquivos = arquivoDao.carregarArquivosDaAtividade(atividade);
+			if(atividade.possuiAudio()) {
+				for (Arquivo arquivo : arquivos) {
+					if(arquivo.getTipoArquivo().equals(TipoArquivoEnum.AUDIO)) {
+						audioExistente = arquivo;
+					}else {
+						imagens.add(arquivo);
+					}
+				}
+			}else {
+				imagens = arquivos;
+			}
 			atividade.setArquivos(arquivos);
 		}
 		
 	}
 
-	public StreamedContent downloadArquivo(Arquivo imagem) throws IOException {
-		SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyyhhmmss");
-		Date d = new Date();
-
-		String parteNomeArquivo = sdf.format(d);
+	public StreamedContent downloadArquivo(Arquivo arq) throws IOException {
+//		SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyyhhmmss");
+//		Date d = new Date();
+//
+//		String parteNomeArquivo = sdf.format(d);
 
 		String dirTmp = ArquivoUtil.getDiretorio();
+		String nomeArquivo = arq.getNomeArquivo();
 
-		FileOutputStream file = new FileOutputStream(dirTmp + "imagem_" + parteNomeArquivo + ".jpg");
-		file.write(imagem.getBytesArquivo());
+		FileOutputStream file = new FileOutputStream(dirTmp + nomeArquivo);
+		file.write(arq.getBytesArquivo());
 		file.close();
+		
+		String extensaoArquivo = ArquivoUtil.getExtensaoArquivo(arq.getNomeArquivo());
 
 		DefaultStreamedContent arquivo = new DefaultStreamedContent(
-				new FileInputStream(new File(dirTmp + "imagem_" + parteNomeArquivo + ".jpg")), "application/jpg",
-				"imagem_" + parteNomeArquivo + ".jpg");
+				new FileInputStream(new File(dirTmp + nomeArquivo)), "application/"+extensaoArquivo, nomeArquivo);
 		return arquivo;
 	}
 
@@ -98,11 +118,11 @@ public class EdicaoAtividadeBean implements Serializable {
 	public void editar() {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		List<Arquivo> arquivosSelecionados = new ArrayList<>();
-		for (Arquivo arquivo : atividade.getArquivos()) {
+		for (Arquivo arquivo : imagens) {
 			if (arquivo.isDeletar())
 				arquivosSelecionados.add(arquivo);
 		}
-		int quantidadeArquivos = (atividade.getArquivos().size() - arquivosSelecionados.size()
+		int quantidadeArquivos = (imagens.size() - arquivosSelecionados.size()
 				+ conteudoArquivos.size());
 		if (quantidadeArquivos > atividade.getTemplate().getQuantidadeMaximaArquivos()){
 			facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
@@ -173,6 +193,30 @@ public class EdicaoAtividadeBean implements Serializable {
 
 	public void setIdAtividade(String idAtividade) {
 		this.idAtividade = idAtividade;
+	}
+
+	public List<Arquivo> getImagens() {
+		return imagens;
+	}
+
+	public void setImagens(List<Arquivo> imagens) {
+		this.imagens = imagens;
+	}
+
+	public Arquivo getAudioExistente() {
+		return audioExistente;
+	}
+
+	public void setAudioExistente(Arquivo audioExistente) {
+		this.audioExistente = audioExistente;
+	}
+
+	public UploadedFile getAudioNovo() {
+		return audioNovo;
+	}
+
+	public void setAudioNovo(UploadedFile audioNovo) {
+		this.audioNovo = audioNovo;
 	}
 
 }
