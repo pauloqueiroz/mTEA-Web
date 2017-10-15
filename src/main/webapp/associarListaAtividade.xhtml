@@ -105,7 +105,7 @@
 										</p:outputLabel>
 									</p:column>
 									<p:column headerText="Ações">
-										<p:commandButton icon="ui-icon-plus" id="botaoAdicionar"
+										<p:commandButton value="Atribuir" id="botaoAdicionar"
 											actionListener="#{associarListaAtividades.adicionar(lista)}"
 											update=":listaAtividadeForm:dropArea :listaAtividadeForm:listasSelecionadas :listaAtividadeForm:listasDisponiveis"
 											title="Adicionar lista" />
@@ -117,7 +117,7 @@
 								legend="Listas selecionadas"
 								style="margin-top:20px;margin-left:5%;">
 								<p:outputPanel id="dropArea">
-									<h:outputText value="Clique no botão adicionar para selecionar as listas que se deseja que o aluno execute"
+									<h:outputText value="Clique no botão Atribuir para selecionar as listas que desejas que o aluno realize"
 										rendered="#{empty associarListaAtividades.listasSelecionadas}"
 										style="font-size:24px;" />
 									<p:dataTable id="listasSelecionadasTable" var="lista"
@@ -132,7 +132,7 @@
 										</p:column>
 
 										<p:column headerText="Ações">
-											<p:commandButton icon="ui-icon-close" id="botaoRemover"
+											<p:commandButton value="Remover" id="botaoRemover"
 												style="margin-right: 10px"
 												actionListener="#{associarListaAtividades.remover(lista)}"
 												update=":listaAtividadeForm:dropArea :listaAtividadeForm:listasSelecionadas :listaAtividadeForm:listasDisponiveis"

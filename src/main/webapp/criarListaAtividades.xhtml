@@ -105,7 +105,7 @@
 											style="margin-right: 10px" icon="ui-icon-search"
 											update=":#{p:component('detalhesAtividade')}"
 											title="Ver detalhes da atividade" />
-										<p:commandButton icon="ui-icon-plus" id="botaoAdicionar"
+										<p:commandButton id="botaoAdicionar" value="Adicionar"
 											actionListener="#{cadastroListaAtividadeBean.adicionar(atividade)}"
 											update=":listaAtividadeForm:dropArea :listaAtividadeForm:atividadesSelecionadas :listaAtividadeForm:atividadesDisponiveis"
 											title="Adicionar atividade" />
@@ -117,7 +117,7 @@
 								legend="Atividades selecionadas"
 								style="margin-top:20px;margin-left:5%;">
 								<p:outputPanel id="dropArea">
-									<h:outputText value="Adicione as atividades da lista ao lado clicando no botão adicionar"
+									<h:outputText value="Adicione as atividades da lista ao lado clicando no botão Adicionar"
 										rendered="#{empty cadastroListaAtividadeBean.atividadesSelecionadas}"
 										style="font-size:24px;" />
 									<p:dataTable id="atividadesSelecionadasTable" var="atividade"
@@ -136,7 +136,8 @@
 										</p:column>
 
 										<p:column headerText="Ações">
-											<p:commandButton icon="ui-icon-close" id="botaoRemover"
+											<p:commandButton 
+												id="botaoRemover" value="Remover"
 												style="margin-right: 10px"
 												actionListener="#{cadastroListaAtividadeBean.remover(atividade)}"
 												update=":listaAtividadeForm:dropArea :listaAtividadeForm:atividadesSelecionadas :listaAtividadeForm:atividadesDisponiveis"
