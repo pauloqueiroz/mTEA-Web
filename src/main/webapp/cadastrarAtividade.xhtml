@@ -28,8 +28,8 @@
 
 			<center>
 				<h:form id="formPrincipal" enctype="multipart/form-data">
-					<p:outputLabel value="Nome da atividade: " for="inputNomeAtividade" />
-					<p:inputText id="inputNomeAtividade"
+					<p:outputLabel value="Nome da atividade: " for="inputNomeAtividade" style="padding-left:18%"/>
+					<p:inputText id="inputNomeAtividade" style="width:35%"
 						value="#{cadastroAtividadeBean.nomeAtividade}" />
 					<br />
 					<br />
@@ -83,7 +83,7 @@
 							</p:column>
 							<p:column headerText="Opções">
 								<p:commandButton value="Excluir" id="buttonExcluir"
-									update=":#{p:component('nomesArquivos')}" styleClass="btn"
+									update=":#{p:component('nomesArquivos')} :formPrincipal:uploadImagens" styleClass="btn"
 									actionListener="#{cadastroAtividadeBean.removerArquivo(nome)}" />
 							</p:column>
 						</p:dataTable>
