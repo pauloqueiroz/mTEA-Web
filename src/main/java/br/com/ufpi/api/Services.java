@@ -248,7 +248,9 @@ public class Services {
 
 	private boolean verificarListaEncerrada(ItemListaEstudante listaAtual) {
 		int quantTarefasExecutadas = tarefaDao.contarTarefasPorLista(listaAtual);
+		System.out.println("tarefas executadas: "+quantTarefasExecutadas);
 		int quantidadeAtividadesDaLista = itemDao.quantidadeAtividadesLista(listaAtual);
+		System.out.println("atividades da lista: "+quantidadeAtividadesDaLista);
 		if(quantTarefasExecutadas >= quantidadeAtividadesDaLista){
 			return true;
 		}

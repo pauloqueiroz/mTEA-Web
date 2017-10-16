@@ -7,12 +7,15 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.faces.component.UIViewRoot;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.primefaces.component.autocomplete.AutoComplete;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 import org.primefaces.model.chart.Axis;
@@ -184,8 +187,14 @@ public class RelatorioTarefasAluno implements Serializable {
 					Map<String, Object> filters) {
 				List<Tarefa> listaDocumento = null;
 				if (isParametroInformado()) {
-					if (!StringUtils.isEmpty(idEstudante) && isParametroBuscaNaoInformado())
+					if (!StringUtils.isEmpty(idEstudante) && isParametroBuscaNaoInformado()) {
 						estudanteSelecionado = estudanteDao.buscarPorId(Long.parseLong(idEstudante));
+						FacesContext facesContext = FacesContext.getCurrentInstance();
+						UIViewRoot uiViewRoot = facesContext.getViewRoot();
+						AutoComplete autoComplete = (AutoComplete) uiViewRoot
+								.findComponent("formTabelaTarefas:autoCompleteAluno");
+						autoComplete.setSubmittedValue(estudanteSelecionado.getNome());
+					}
 					listaDocumento = tarefaDao.buscarTarefasPorEstudante(estudanteSelecionado, templateSelecionado,
 							first, pageSize);
 

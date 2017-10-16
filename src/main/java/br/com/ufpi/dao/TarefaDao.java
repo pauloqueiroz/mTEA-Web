@@ -107,7 +107,7 @@ public class TarefaDao implements Serializable{
 	}
 
 	public int contarTarefasPorLista(ItemListaEstudante lista){
-		String hql = "SELECT COUNT(t) FROM Tarefa t WHERE t.lista = : lista";
+		String hql = "SELECT COUNT(t) FROM Tarefa t WHERE t.lista = :lista";
 		TypedQuery<Number> query = em.createQuery(hql,Number.class);
 		query.setParameter("lista", lista);
 		return query.getSingleResult().intValue();
