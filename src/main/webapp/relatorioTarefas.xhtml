@@ -47,16 +47,18 @@
 			<f:metadata>
 				<f:viewParam name="idEstudante"
 					value="#{relatorioTarefasAluno.idEstudante}" />
-				<f:event type="preRenderView"
+				<f:viewParam name="exibirFiltroAluno"
+					value="#{relatorioTarefasAluno.exibirFiltroAluno}" />
+				<f:event type="preRenderView" 
 					listener="#{relatorioTarefasAluno.pesquisar()}" />
 			</f:metadata>
 			<p:messages id="growl" showDetail="false" closable="true" />
 			<p:fieldset legend="Pesquisar atividades" toggleable="true"
 				toggleSpeed="500">
-				<p:panelGrid columns="2" styleClass="semBorda">
-					<p:outputLabel value="Pesquisar aluno pelo nome: "
+				<p:panelGrid columns="2" styleClass="semBorda" id="panelFiltros">
+					<p:outputLabel value="Pesquisar aluno pelo nome: " rendered="#{relatorioTarefasAluno.exibirFiltroAluno}"
 						for="autoCompleteAluno" style="font-size:14px; font-weight:bold"></p:outputLabel>
-					<p:autoComplete id="autoCompleteAluno"
+					<p:autoComplete id="autoCompleteAluno" rendered="#{relatorioTarefasAluno.exibirFiltroAluno}"
 						value="#{relatorioTarefasAluno.estudanteSelecionado}"
 						completeMethod="#{relatorioTarefasAluno.buscarEstudante}"
 						converter="estudanteConverter" var="estudante" event="itemselect"

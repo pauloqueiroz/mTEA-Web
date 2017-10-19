@@ -7,15 +7,12 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.faces.component.UIViewRoot;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.primefaces.component.autocomplete.AutoComplete;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 import org.primefaces.model.chart.Axis;
@@ -68,6 +65,8 @@ public class RelatorioTarefasAluno implements Serializable {
 	private TemplateEnum templateSelecionado;
 	
 	private boolean exibirGraficoBarra = false;
+	
+	private boolean exibirFiltroAluno;
 
 	public RelatorioTarefasAluno() {
 		super();
@@ -75,8 +74,13 @@ public class RelatorioTarefasAluno implements Serializable {
 
 	@PostConstruct
 	public void init() {
+		System.out.println("init");
 		tarefaGraficos = new ArrayList<>();
-		if(StringUtils.isEmpty(idEstudante)){
+		if(estudanteSelecionado == null) {
+			exibirFiltroAluno = true;
+		}
+		
+		if(!StringUtils.isEmpty(idEstudante)){
 			
 			pesquisar();
 
@@ -84,9 +88,7 @@ public class RelatorioTarefasAluno implements Serializable {
 	}
 
 	private void createDateModel() {
-		System.out.println("++++++++++++CreateDateModel+++++++++++++++++++++");
 		if (estudanteSelecionado != null) {
-			System.out.println("idEstudante diferente de null");
 			tarefaGraficos = tarefaDao.buscarTarefasPorEstudante(estudanteSelecionado, templateSelecionado);
 			if(exibirGraficoBarra)
 				montarGraficoBarra();
@@ -106,7 +108,6 @@ public class RelatorioTarefasAluno implements Serializable {
 		ChartSeries erros = new ChartSeries();
 		erros.setLabel("Erros");
 		for (TarefaGrafico tarefaGrafico : tarefaGraficos) {
-			System.out.println("Inicio: "+tarefaGrafico.getInicio() +" - Acertos: " +tarefaGrafico.getAcertos());
 			acertos.set(EstudanteUtils.getDataPadraoInternacional(tarefaGrafico.getInicio()),
 					tarefaGrafico.getAcertos());
 			erros.set(EstudanteUtils.getDataPadraoInternacional(tarefaGrafico.getInicio()),
@@ -189,18 +190,14 @@ public class RelatorioTarefasAluno implements Serializable {
 				if (isParametroInformado()) {
 					if (!StringUtils.isEmpty(idEstudante) && isParametroBuscaNaoInformado()) {
 						estudanteSelecionado = estudanteDao.buscarPorId(Long.parseLong(idEstudante));
-						FacesContext facesContext = FacesContext.getCurrentInstance();
-						UIViewRoot uiViewRoot = facesContext.getViewRoot();
-						AutoComplete autoComplete = (AutoComplete) uiViewRoot
-								.findComponent("formTabelaTarefas:autoCompleteAluno");
-						autoComplete.setSubmittedValue(estudanteSelecionado.getNome());
 					}
 					listaDocumento = tarefaDao.buscarTarefasPorEstudante(estudanteSelecionado, templateSelecionado,
 							first, pageSize);
 
 					this.setRowCount(tarefaDao.contarTarefas(estudanteSelecionado, templateSelecionado));
-				} else
+				} else {
 					this.setRowCount(0);
+				}
 				createDateModel();
 				return listaDocumento;
 			}
@@ -330,6 +327,14 @@ public class RelatorioTarefasAluno implements Serializable {
 
 	public void setExibirGraficoBarra(boolean exibirGraficoBarra) {
 		this.exibirGraficoBarra = exibirGraficoBarra;
+	}
+
+	public boolean isExibirFiltroAluno() {
+		return exibirFiltroAluno;
+	}
+
+	public void setExibirFiltroAluno(boolean exibirFiltroAluno) {
+		this.exibirFiltroAluno = exibirFiltroAluno;
 	}
 
 }
