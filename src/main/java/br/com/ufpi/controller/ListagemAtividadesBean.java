@@ -16,6 +16,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortMeta;
@@ -117,12 +118,18 @@ public class ListagemAtividadesBean implements Serializable{
 	
 	public void excluir(){
 		List<ItemAtividade> itens = itemAtividadeDao.buscarAtividades(atividadeSelecionada);
-		System.out.println("itens atividade"+ itens.size());
-		for (ItemAtividade itemAtividade : itens) {
-			itemAtividadeDao.deletar(itemAtividade);
-			System.out.println("flush");
+		if(!CollectionUtils.isEmpty(itens)) {
+			for (ItemAtividade itemAtividade : itens) {
+				itemAtividade.setAtividade(null);
+				itemAtividadeDao.deletar(itemAtividade);
+			}
 		}
 		atividadeDao.delete(atividadeSelecionada);
+//		if(!CollectionUtils.isEmpty(itens)) {
+//			for (ItemAtividade itemAtividade : itens) {
+//				itemAtividadeDao.deletar(itemAtividade);
+//			}
+//		}
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		facesContext.addMessage(null, new FacesMessage(
 				FacesMessage.SEVERITY_INFO, "Atividade apagada com sucesso.",

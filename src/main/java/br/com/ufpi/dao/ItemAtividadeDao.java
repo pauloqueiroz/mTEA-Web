@@ -7,8 +7,8 @@ import java.util.Set;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.FlushModeType;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -39,6 +39,7 @@ public class ItemAtividadeDao implements Serializable {
 
 	public void atualizar(ItemAtividade itemAtividade) {
 		em.merge(itemAtividade);
+		em.flush();
 	}
 	
 	public Set<ItemAtividade> carregarAtividades(ListaAtividade lista){
@@ -60,11 +61,15 @@ public class ItemAtividadeDao implements Serializable {
 	}
 
 	public void deletar(ItemAtividade atividade) {
-		em.setFlushMode(FlushModeType.COMMIT);
-		atividade.setAtividade(null);
-		atividade = em.merge(atividade);
-		em.remove(atividade);
-		em.flush();
+		Query query = em.createNativeQuery("DELETE FROM listaatividade_itematividade WHERE atividades_id = :idAtividadeExcluida");
+		query.setParameter("idAtividadeExcluida", atividade.getId());
+		query.executeUpdate();
+		if (em.contains(atividade)) {
+	        em.remove(atividade);
+	    } else {
+	        ItemAtividade ee = em.getReference(atividade.getClass(), atividade.getId());
+	        em.remove(ee);
+	    }
 	}
 
 	public List<ItemAtividade> buscarAtividades(Atividade atividade) {
