@@ -22,6 +22,7 @@ import br.com.ufpi.enuns.TemplateEnum;
  * 
  * @author Paulo Sergio
  *
+ *	Classe que representa uma atividade a ser executada pelo aluno.
  */
 @Entity
 public class Atividade implements Serializable {

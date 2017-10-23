@@ -10,21 +10,27 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.StreamedContent;
 
 import br.com.ufpi.dao.ItemAtividadeDao;
+import br.com.ufpi.dao.ItemListaEstudanteDao;
 import br.com.ufpi.dao.ListaAtividadeDao;
 import br.com.ufpi.model.Arquivo;
 import br.com.ufpi.model.ItemAtividade;
+import br.com.ufpi.model.ItemListaEstudante;
 import br.com.ufpi.model.ListaAtividade;
 import br.com.ufpi.util.ArquivoUtil;
 
@@ -59,6 +65,9 @@ public class ListagemListaAtividadeBean implements Serializable {
 
 	@Inject
 	private ItemAtividadeDao itemAtividadeDao;
+	
+	@Inject
+	private ItemListaEstudanteDao itemListaEstudanteDao;
 
 	private ListaAtividade listaSelecionada;
 
@@ -113,13 +122,20 @@ public class ListagemListaAtividadeBean implements Serializable {
 		}
 	}
 
-	// public void excluir(){
-	// atividadeDao.delete(atividadeSelecionada);
-	// FacesContext facesContext = FacesContext.getCurrentInstance();
-	// facesContext.addMessage(null, new FacesMessage(
-	// FacesMessage.SEVERITY_INFO, "Atividade apagada com sucesso.",
-	// "Atividade apagada com sucesso."));
-	// }
+	 public void excluir(){
+		 Set<ItemListaEstudante> listasAssociadas = itemListaEstudanteDao.buscar(listaSelecionada);
+		 if(!CollectionUtils.isEmpty(listasAssociadas)) {
+			 for (ItemListaEstudante itemListaEstudante : listasAssociadas) {
+				itemListaEstudanteDao.delete(itemListaEstudante);
+			}
+		 }
+		 
+		 listaAtividadeDao.delete(listaSelecionada);
+		 FacesContext facesContext = FacesContext.getCurrentInstance();
+		 facesContext.addMessage(null, new FacesMessage(
+		 FacesMessage.SEVERITY_INFO, "Lista apagada com sucesso.",
+		 "Lista apagada com sucesso."));
+	 }
 
 	public StreamedContent downloadImagem(Arquivo imagem) throws IOException {
 		SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyyhhmmss");

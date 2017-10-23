@@ -23,6 +23,7 @@ import org.primefaces.model.SortOrder;
 import br.com.ufpi.enuns.SituacaoEnum;
 import br.com.ufpi.model.Estudante;
 import br.com.ufpi.model.ItemListaEstudante;
+import br.com.ufpi.model.ListaAtividade;
 
 /**
  * 
@@ -170,6 +171,13 @@ public class ItemListaEstudanteDao implements Serializable{
 		TypedQuery<Number> query = em.createQuery(hql,Number.class);
 		query.setParameter("lista", item.getLista());
 		return query.getSingleResult().intValue();
+	}
+	
+	public Set<ItemListaEstudante> buscar(ListaAtividade lista) {
+		String hql = "Select i from ItemListaEstudante i where i.lista = :lista";
+		TypedQuery<ItemListaEstudante> query = em.createQuery(hql, ItemListaEstudante.class);
+		query.setParameter("lista", lista);
+		return new HashSet<>(query.getResultList());
 	}
 
 }

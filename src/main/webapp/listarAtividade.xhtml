@@ -128,7 +128,7 @@
 							style="margin-right: 10px" icon="ui-icon-search"
 							update=":#{p:component('detalhesAtividade')}"
 							title="Ver detalhes da atividade" />
-						<p:commandButton icon="ui-icon-circle-close" id="botaoDeletar"
+						<p:commandButton id="botaoDeletar" value="Excluir"
 									actionListener="#{listagemAtividadesBean.definirAtividadeDetalhes(atividade)}"
 									oncomplete="PF('confirmarExclusao').show();"
 									update=":#{p:component('confirmarExclusao')}"

@@ -218,4 +218,14 @@ public class ListaAtividadeDao implements Serializable {
  
         return query.getSingleResult().intValue();
 	}
+
+	public void delete(ListaAtividade listaSelecionada) {
+		if (em.contains(listaSelecionada)) {
+	        em.remove(listaSelecionada);
+	    } else {
+	    	ListaAtividade lista = em.getReference(listaSelecionada.getClass(), listaSelecionada.getId());
+	        em.remove(lista);
+	    }
+		
+	}
 }
