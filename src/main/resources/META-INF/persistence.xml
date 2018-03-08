@@ -7,7 +7,7 @@
 
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
-		<jta-data-source>java:jboss/projeto_autista2</jta-data-source>
+		<jta-data-source>java:jboss/projeto_autista</jta-data-source>
 
 		<properties>
 			<property name="hibernate.archive.autodetection" value="class" />

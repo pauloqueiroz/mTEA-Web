@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
 		 http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
 	version="3.1">
-	<display-name>projeto-autista-lista-atividades</display-name>
+	<display-name>mtea</display-name>
 
 	<welcome-file-list>
 		<welcome-file>login.xhtml</welcome-file>
@@ -54,10 +54,10 @@
 		<param-value>0</param-value>
 	</context-param>
 
-	<context-param>
-		<param-name>javax.faces.FACELETS_RESOURCE_RESOLVER</param-name>
-		<param-value>br.com.ufpi.util.FileSystemResolver</param-value>
-	</context-param>
+<!-- 	<context-param> -->
+<!-- 		<param-name>javax.faces.FACELETS_RESOURCE_RESOLVER</param-name> -->
+<!-- 		<param-value>br.com.ufpi.util.FileSystemResolver</param-value> -->
+<!-- 	</context-param> -->
 
 	<context-param>
 		<param-name>primefaces.THEME</param-name>
