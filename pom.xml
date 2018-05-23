@@ -5,10 +5,10 @@
 	<artifactId>ProjetoAutista</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>mtea</name>
+	<name>mtea-old</name>
 
 	<build>
-		<finalName>mtea</finalName>
+		<finalName>mtea-old</finalName>
 		<plugins>
 
 			<!-- plugin para modificar a versão do java no projeto e configurar a 
