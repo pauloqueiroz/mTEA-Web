@@ -50,6 +50,8 @@
 								value="#{sucessoCadastrarAtividadeBean.atividade.palavra}"
 								rendered="#{sucessoCadastrarAtividadeBean.atividade.palavra != null}"
 								required="#{sucessoCadastrarAtividadeBean.atividade.palavra != null}" />
+							<p:outputLabel value="Autor" style="font-weight: bold" />
+							<p:outputLabel value="#{sucessoCadastrarAtividadeBean.atividade.usuarioCriador.nome}" />
 						</p:panelGrid>
 						<br />
 						<p:dataTable var="arquivo" paginator="true" rows="10"

@@ -34,6 +34,8 @@ import br.com.ufpi.enuns.SituacaoEnum;
 import br.com.ufpi.model.Estudante;
 import br.com.ufpi.model.ItemListaEstudante;
 import br.com.ufpi.model.ListaAtividade;
+import br.com.ufpi.model.Usuario;
+import br.com.ufpi.util.UsuarioUtils;
 
 /**
  * 
@@ -123,11 +125,11 @@ public class AssociarListaAtividades implements Serializable{
 				if(dataFimInput != null && dataFimInput.getValue() != null){
 					dataFinal = (Date) dataFimInput.getValue();
 				}
-
-				listas = listaAtividadeDao.listar(nomeListaAtividade, descricao, dataInicio, dataFinal, idsListasSelecionadas, first, pageSize,
+				Usuario usuario = UsuarioUtils.getUsuarioLogado();
+				listas = listaAtividadeDao.listar(nomeListaAtividade, descricao, usuario, dataInicio, dataFinal, idsListasSelecionadas, first, pageSize,
 						multiSortMeta);
 
-				this.setRowCount(listaAtividadeDao.contar(nomeListaAtividade, descricao, dataInicio, dataFinal, idsListasSelecionadas));
+				this.setRowCount(listaAtividadeDao.contar(nomeListaAtividade, descricao, usuario, dataInicio, dataFinal, idsListasSelecionadas));
 
 				return listas;
 			}

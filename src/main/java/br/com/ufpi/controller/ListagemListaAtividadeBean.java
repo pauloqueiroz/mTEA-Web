@@ -32,7 +32,9 @@ import br.com.ufpi.model.Arquivo;
 import br.com.ufpi.model.ItemAtividade;
 import br.com.ufpi.model.ItemListaEstudante;
 import br.com.ufpi.model.ListaAtividade;
+import br.com.ufpi.model.Usuario;
 import br.com.ufpi.util.ArquivoUtil;
+import br.com.ufpi.util.UsuarioUtils;
 
 /**
  * 
@@ -86,11 +88,11 @@ public class ListagemListaAtividadeBean implements Serializable {
 			public List<ListaAtividade> load(int first, int pageSize, List<SortMeta> multiSortMeta,
 					Map<String, Object> filters) {
 				List<ListaAtividade> listas = new ArrayList<>();
-
-				listas = listaAtividadeDao.listar(nomeListaAtividade, descricao, dataInicio, dataFinal, null, first, pageSize,
+				Usuario usuario = UsuarioUtils.getUsuarioLogado();
+				listas = listaAtividadeDao.listar(nomeListaAtividade, descricao, usuario, dataInicio, dataFinal, null, first, pageSize,
 						multiSortMeta);
 
-				this.setRowCount(listaAtividadeDao.contar(nomeListaAtividade, descricao, dataInicio, dataFinal, null));
+				this.setRowCount(listaAtividadeDao.contar(nomeListaAtividade, descricao, usuario, dataInicio, dataFinal, null));
 
 				return listas;
 			}

@@ -26,7 +26,9 @@ import br.com.ufpi.enuns.TemplateEnum;
 import br.com.ufpi.enuns.TipoArquivoEnum;
 import br.com.ufpi.model.Arquivo;
 import br.com.ufpi.model.Atividade;
+import br.com.ufpi.model.Usuario;
 import br.com.ufpi.util.EstudanteUtils;
+import br.com.ufpi.util.UsuarioUtils;
 
 @Named
 @ViewScoped
@@ -156,13 +158,13 @@ public class CadastroAtividadeBean implements Serializable {
 	public void salvar() throws IOException{
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		ExternalContext ec = facesContext.getExternalContext();
-		getAtividade().setPalavra(palavra);
+		atividade.setPalavra(palavra);
 		atividade.setDataCriacao(new Date());
 		if(!StringUtils.isEmpty(nomeAtividade))
 			atividade.setNome(nomeAtividade);
 		else
 			atividade.setNome(criarNome(atividade, templateSelecionado, palavra, templatePalavra));
-		getAtividade().setTemplate(templateSelecionado);
+		atividade.setTemplate(templateSelecionado);
 		String validacoes = validarAtividade(atividade);
 		if(!StringUtils.isEmpty(validacoes)){
 			facesContext.addMessage(null, new FacesMessage(
@@ -170,7 +172,9 @@ public class CadastroAtividadeBean implements Serializable {
 					null));
 			return;
 		}
-		atividadeDao.adicionar(getAtividade());
+		Usuario usuario = UsuarioUtils.getUsuarioLogado();
+		atividade.setUsuarioCriador(usuario);
+		atividadeDao.adicionar(atividade);
 		salvarArquivos();
 		ec.redirect("sucessoCadastrarAtividade.xhtml?idAtividade="+atividade.getId());
 	}

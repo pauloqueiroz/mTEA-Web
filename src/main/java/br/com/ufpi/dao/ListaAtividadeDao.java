@@ -21,6 +21,7 @@ import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
 
 import br.com.ufpi.model.ListaAtividade;
+import br.com.ufpi.model.Usuario;
 import br.com.ufpi.util.EstudanteUtils;
 
 /**
@@ -44,10 +45,11 @@ public class ListaAtividadeDao implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public int buscarListaPorNome(String nome) {
-		String hql = "Select count(l.id) from ListaAtividade l where l.nome = :nome";
+	public int buscarListaPorNome(String nome, Usuario usuario) {
+		String hql = "Select count(l.id) from ListaAtividade l where l.nome = :nome and l.usuarioCriador = :usuario";
 		TypedQuery<Long> query = em.createQuery(hql, Long.class);
 		query.setParameter("nome", nome);
+		query.setParameter("usuario", usuario);
 		return query.getSingleResult().intValue();
 	}
 
@@ -74,7 +76,7 @@ public class ListaAtividadeDao implements Serializable {
 		return listaAtividade.get(0);
 	}
 
-	public List<ListaAtividade> listar(String nomeListaAtividade, String descricao, Date dataInicial, Date dataFinal,
+	public List<ListaAtividade> listar(String nomeListaAtividade, String descricao, Usuario usuario, Date dataInicial, Date dataFinal,
 			Set<Long> idsListasSelecionadas, int first, int pageSize, List<SortMeta> multiSortMeta) {
 
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
@@ -114,6 +116,12 @@ public class ListaAtividadeDao implements Serializable {
 			Predicate descricaoPredicate = criteriaBuilder.like(
 					criteriaBuilder.lower(listaRoot.<String> get("descricao")), "%" + descricao.toLowerCase() + "%");
 			predicates.add(descricaoPredicate);
+		}
+		
+		if(usuario != null) {
+			Predicate usuarioPredicate = criteriaBuilder.equal(listaRoot.<Usuario> get("usuarioCriador"),
+					usuario);
+			predicates.add(usuarioPredicate);
 		}
 
 		Date dataF = null, dataI = null;
@@ -163,7 +171,7 @@ public class ListaAtividadeDao implements Serializable {
 
 	}
 
-	public int contar(String nomeListaAtividade, String descricao, Date dataInicial, Date dataFinal, Set<Long> idsListasSelecionadas) {
+	public int contar(String nomeListaAtividade, String descricao, Usuario usuario, Date dataInicial, Date dataFinal, Set<Long> idsListasSelecionadas) {
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
         CriteriaQuery<Long> countQuery = criteriaBuilder.createQuery(Long.class);
         Root<ListaAtividade> listaRoot = countQuery.from(ListaAtividade.class);
@@ -180,6 +188,12 @@ public class ListaAtividadeDao implements Serializable {
 			Predicate descricaoPredicate = criteriaBuilder.like(
 					criteriaBuilder.lower(listaRoot.<String> get("descricao")), "%" + descricao.toLowerCase() + "%");
 			predicates.add(descricaoPredicate);
+		}
+		
+		if(usuario != null) {
+			Predicate usuarioPredicate = criteriaBuilder.equal(listaRoot.<Usuario> get("usuarioCriador"),
+					usuario);
+			predicates.add(usuarioPredicate);
 		}
 
 		Date dataF = null, dataI = null;

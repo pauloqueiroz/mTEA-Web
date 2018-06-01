@@ -47,6 +47,8 @@
 								<f:convertDateTime pattern="dd/MM/yyyy HH:mm"
 									timeZone="GMT-03:00" />
 							</p:outputLabel>
+							<p:outputLabel value="Autor"/>
+							<p:outputLabel value="#{sucessoCadastrarListaAtividadeBean.lista.usuarioCriador.nome}" />							
 						</p:panelGrid>
 						<br />
 						<p:dataTable var="item" paginator="true" rows="10" reflow="true"

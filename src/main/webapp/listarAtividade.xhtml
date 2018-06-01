@@ -164,6 +164,9 @@
 						<p:outputLabel value="Palavra" style="font-weight: bold" />
 						<p:outputLabel
 							value="#{listagemAtividadesBean.atividadeSelecionada.palavra}" />
+						<p:outputLabel value="Autor" style="font-weight: bold" />
+						<p:outputLabel
+							value="#{listagemAtividadesBean.atividadeSelecionada.usuarioCriador.nome}" />
 
 					</p:panelGrid>
 					<p:dataTable var="arquivo" paginator="true" rows="5" style="width: 400"

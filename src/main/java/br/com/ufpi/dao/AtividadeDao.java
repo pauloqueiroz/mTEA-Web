@@ -22,6 +22,7 @@ import org.primefaces.model.SortOrder;
 import br.com.ufpi.enuns.TemplateEnum;
 import br.com.ufpi.model.Atividade;
 import br.com.ufpi.model.Estudante;
+import br.com.ufpi.model.Usuario;
 /**
  * 
  * @author Paulo Sergio
@@ -95,7 +96,7 @@ public class AtividadeDao implements Serializable{
 		return listaAtividade.get(0);
 	}
 	
-	public List<Atividade> listarAtividades(String nomeAtividade, TemplateEnum templateSelecionado, String palavra, Set<Long> idsAtividadesExcluidas, int first, int pageSize,
+	public List<Atividade> listarAtividades(String nomeAtividade, TemplateEnum templateSelecionado, String palavra, Usuario usuario, Set<Long> idsAtividadesExcluidas, int first, int pageSize,
 			List<SortMeta> multiSortMeta) {
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
 
@@ -142,6 +143,12 @@ public class AtividadeDao implements Serializable{
 			predicates.add(palavraPredicate);
 		}
 		
+		if(usuario != null) {
+			Predicate usuarioPredicate = criteriaBuilder.equal(atividadeRoot.<Usuario> get("usuarioCriador"),
+					usuario);
+			predicates.add(usuarioPredicate);
+		}
+		
 		if(!CollectionUtils.isEmpty(idsAtividadesExcluidas)){
 			Predicate idsPredicate = criteriaBuilder.not(atividadeRoot.<String> get("id").in(idsAtividadesExcluidas));
 			predicates.add(idsPredicate);
@@ -163,7 +170,7 @@ public class AtividadeDao implements Serializable{
 		em.remove(atividadeSelecionada);
 	}
 
-	public int contarAtividades(String nomeAtividade, TemplateEnum templateSelecionado, String palavra, Set<Long> idsAtividadesExcluidas) {
+	public int contarAtividades(String nomeAtividade, TemplateEnum templateSelecionado, String palavra, Usuario usuario, Set<Long> idsAtividadesExcluidas) {
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
 		CriteriaQuery<Long> atividadeQuery = criteriaBuilder.createQuery(Long.class);
 		Root<Atividade> atividadeRoot = atividadeQuery.from(Atividade.class);
@@ -186,6 +193,12 @@ public class AtividadeDao implements Serializable{
 			Predicate palavraPredicate = criteriaBuilder.like(
 					criteriaBuilder.lower(atividadeRoot.<String> get("palavra")), "%" + palavra.toLowerCase() + "%");
 			predicates.add(palavraPredicate);
+		}
+		
+		if(usuario != null) {
+			Predicate usuarioPredicate = criteriaBuilder.equal(atividadeRoot.<Usuario> get("usuarioCriador"),
+					usuario);
+			predicates.add(usuarioPredicate);
 		}
 		
 		if(!CollectionUtils.isEmpty(idsAtividadesExcluidas)){

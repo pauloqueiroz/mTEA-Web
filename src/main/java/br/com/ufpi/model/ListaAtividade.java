@@ -11,7 +11,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -43,6 +45,10 @@ public class ListaAtividade implements Serializable{
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
 	private Set<ItemAtividade> atividades = new HashSet<>();
+	
+	@OneToOne
+	@JoinColumn(name="idUsuario")
+	private Usuario usuarioCriador;
 
 	public ListaAtividade() {
 		super();
@@ -87,6 +93,14 @@ public class ListaAtividade implements Serializable{
 
 	public void setAtividades(Set<ItemAtividade> atividades) {
 		this.atividades = atividades;
+	}
+
+	public Usuario getUsuarioCriador() {
+		return usuarioCriador;
+	}
+
+	public void setUsuarioCriador(Usuario usuarioCriador) {
+		this.usuarioCriador = usuarioCriador;
 	}
 	
 }

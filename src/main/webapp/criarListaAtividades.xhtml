@@ -46,6 +46,7 @@
 				</p:tab>
 				<p:tab id="tabSelecionarAtividades" title="Selecionar Atividades">
 					<br />
+					<p:messages id="mensagem2" showDetail="false" closable="true" />
 					<p:panel columns="2" id="panelAtividadesSelecionadas"
 						style="margin-bottom:20px" header="Selecionar Atividades">
 						<p:panel header="Filtrar atividades" toggleable="true" closable="true"
@@ -151,9 +152,9 @@
 						<br />
 						<center>
 							<p:outputPanel>
-								<p:commandButton value="Criar lista" id="ajax3"
+								<p:commandButton value="Criar lista" id="criarLista" ajax="true" update=":listaAtividadeForm:mensagem2" 
 									action="#{cadastroListaAtividadeBean.cadastrar}"
-									styleClass="ui-priority-primary" />
+									styleClass="ui-priority-primary"/>
 							</p:outputPanel>
 						</center>
 					</p:panel>

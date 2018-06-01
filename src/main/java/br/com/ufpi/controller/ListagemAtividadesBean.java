@@ -29,7 +29,9 @@ import br.com.ufpi.enuns.TemplateEnum;
 import br.com.ufpi.model.Arquivo;
 import br.com.ufpi.model.Atividade;
 import br.com.ufpi.model.ItemAtividade;
+import br.com.ufpi.model.Usuario;
 import br.com.ufpi.util.ArquivoUtil;
+import br.com.ufpi.util.UsuarioUtils;
 
 @Named
 @ViewScoped
@@ -77,12 +79,12 @@ public class ListagemAtividadesBean implements Serializable{
 			public List<Atividade> load(int first, int pageSize,
 					List<SortMeta> multiSortMeta, Map<String, Object> filters) {
 				List<Atividade> listaAtividades = new ArrayList<>();
-
+				Usuario usuario = UsuarioUtils.getUsuarioLogado();
 				listaAtividades = atividadeDao
-						.listarAtividades(nomeAtividade, templateSelecionado, palavra, null, first, pageSize, multiSortMeta);
+						.listarAtividades(nomeAtividade, templateSelecionado, palavra, usuario, null, first, pageSize, multiSortMeta);
 				
 				this.setRowCount(atividadeDao
-						.contarAtividades(nomeAtividade, templateSelecionado, palavra, null));
+						.contarAtividades(nomeAtividade, templateSelecionado, palavra, usuario, null));
 				
 				return listaAtividades;
 			}

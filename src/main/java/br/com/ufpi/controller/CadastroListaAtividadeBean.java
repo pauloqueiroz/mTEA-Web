@@ -40,7 +40,9 @@ import br.com.ufpi.model.Arquivo;
 import br.com.ufpi.model.Atividade;
 import br.com.ufpi.model.ItemAtividade;
 import br.com.ufpi.model.ListaAtividade;
+import br.com.ufpi.model.Usuario;
 import br.com.ufpi.util.ArquivoUtil;
+import br.com.ufpi.util.UsuarioUtils;
 
 /**
  * 
@@ -120,14 +122,12 @@ public class CadastroListaAtividadeBean implements Serializable {
 				if(inputPalavra != null && inputPalavra.getValue() != null){
 					palavra = (String) inputPalavra.getValue();
 				}
-				
-				System.out.println(nomeAtividade +"---"+templateSelecionado+"---"+palavra);
-
+				Usuario usuario = UsuarioUtils.getUsuarioLogado();
 				listaAtividades = atividadeDao.listarAtividades(nomeAtividade, templateSelecionado,
-						palavra, idsAtividadesSelecionadas, first, pageSize, multiSortMeta);
+						palavra, usuario, idsAtividadesSelecionadas, first, pageSize, multiSortMeta);
 				listaAtividades.removeAll(atividadesSelecionadas);
 
-				int count = atividadeDao.contarAtividades(nomeAtividade, templateSelecionado, palavra,
+				int count = atividadeDao.contarAtividades(nomeAtividade, templateSelecionado, palavra, usuario,
 						idsAtividadesSelecionadas);
 				this.setRowCount(count);
 
@@ -178,6 +178,8 @@ public class CadastroListaAtividadeBean implements Serializable {
 			return;
 		}
 		criarItensAtividade(lista, atividadesSelecionadas);
+		Usuario usuario = UsuarioUtils.getUsuarioLogado();
+		lista.setUsuarioCriador(usuario);
 		lista.setDataCriacao(new Date());
 		listaAtividadeDao.adicionar(lista);
 		ExternalContext ec = facesContext.getExternalContext();
@@ -203,9 +205,10 @@ public class CadastroListaAtividadeBean implements Serializable {
 			return "É necessário informar o nome da lista.";
 		if (CollectionUtils.isEmpty(atividadesSelecionadas))
 			return "É necessário adicionar atividades para a lista.";
-		int count = listaAtividadeDao.buscarListaPorNome(lista.getNome());
+		Usuario usuario = UsuarioUtils.getUsuarioLogado();
+		int count = listaAtividadeDao.buscarListaPorNome(lista.getNome(), usuario);
 		if(count > 0)	
-			return "Já existe uma atividade cadastrada com o nome "+lista.getNome()+".";
+			return "Já existe uma atividade cadastrada com o nome "+lista.getNome()+". Volte ao passo 1 e informe outro nome.";
 		
 		return null;
 	}
