@@ -22,6 +22,7 @@ import br.com.ufpi.enuns.SituacaoEnum;
  *
  */
 @Entity
+@Deprecated
 public class ItemListaAtividade implements Serializable{
 
 	/**
