@@ -229,15 +229,17 @@ public class Services {
 				Tarefa tarefa = new Tarefa(task.getInicio(), task.getFim(), task.getTouches(), task.getHits(),
 						task.getFaults(), task.getFinished(), task.getRating(), atividade, estudante);
 				ItemListaEstudante listaAtual = buscarListaAtual(estudante);
-				tarefa.setLista(listaAtual);
 				tarefaDao.adicionar(tarefa);
 				String result = "Task saved : " + tarefa.getId();
-				boolean isListaEncerrada = verificarListaEncerrada(listaAtual);
-				if(isListaEncerrada){
-					listaAtual.setDataExecucao(new Date());
-					listaAtual.setSituacao(SituacaoEnum.CONCLUIDO);
-					itemDao.atualizar(listaAtual);
-				}	
+				if(listaAtual != null) {
+					tarefa.setLista(listaAtual);
+					boolean isListaEncerrada = verificarListaEncerrada(listaAtual);
+					if(isListaEncerrada){
+						listaAtual.setDataExecucao(new Date());
+						listaAtual.setSituacao(SituacaoEnum.CONCLUIDO);
+						itemDao.atualizar(listaAtual);
+					}
+				}
 				return Response.status(201).entity(result).build();
 			}
 		}
