@@ -123,7 +123,7 @@ public class RelatorioTarefasAluno implements Serializable {
         Axis yAxis = graficoAcertosBar.getAxis(AxisType.Y);
         yAxis.setLabel("Acertos");
         
-        graficoErrosBar.addSeries(acertos);
+        graficoErrosBar.addSeries(erros);
         graficoErrosBar.setTitle("Gráfico de Erros");
         Axis xAxisErros = graficoErrosBar.getAxis(AxisType.X);
         xAxisErros.setLabel("Data");
