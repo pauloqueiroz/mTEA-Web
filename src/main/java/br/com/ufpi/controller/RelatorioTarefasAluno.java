@@ -18,8 +18,8 @@ import org.primefaces.model.SortOrder;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
+import org.primefaces.model.chart.CategoryAxis;
 import org.primefaces.model.chart.ChartSeries;
-import org.primefaces.model.chart.DateAxis;
 import org.primefaces.model.chart.LineChartModel;
 import org.primefaces.model.chart.LineChartSeries;
 
@@ -52,13 +52,9 @@ public class RelatorioTarefasAluno implements Serializable {
 
 	private LazyDataModel<Tarefa> tarefasDoEstudante;
 
-	private LineChartModel graficoAcertos;
-
-	private LineChartModel graficoErros;
+	private LineChartModel graficoLinha;
 	
-	private BarChartModel graficoAcertosBar;
-	
-	private BarChartModel graficoErrosBar;
+	private BarChartModel graficoBar;
 
 	private List<TarefaGrafico> tarefaGraficos;
 	
@@ -74,7 +70,6 @@ public class RelatorioTarefasAluno implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		System.out.println("init");
 		tarefaGraficos = new ArrayList<>();
 		if(estudanteSelecionado == null) {
 			exibirFiltroAluno = true;
@@ -90,17 +85,16 @@ public class RelatorioTarefasAluno implements Serializable {
 	private void createDateModel() {
 		if (estudanteSelecionado != null) {
 			tarefaGraficos = tarefaDao.buscarTarefasPorEstudante(estudanteSelecionado, templateSelecionado);
-			if(exibirGraficoBarra)
+			if(exibirGraficoBarra) {
 				montarGraficoBarra();
-			else
+			}else {
 				montarGraficoLinha();
+			}
 		}
 	}
 
 	private void montarGraficoBarra() {
-		graficoAcertosBar = new BarChartModel();
-		
-		graficoErrosBar = new BarChartModel();
+		setGraficoBar(new BarChartModel());
 		
 		ChartSeries acertos = new ChartSeries();
 		acertos.setLabel("Acertos");
@@ -108,33 +102,27 @@ public class RelatorioTarefasAluno implements Serializable {
 		ChartSeries erros = new ChartSeries();
 		erros.setLabel("Erros");
 		for (TarefaGrafico tarefaGrafico : tarefaGraficos) {
-			acertos.set(EstudanteUtils.getDataPadraoInternacional(tarefaGrafico.getInicio()),
+			String dataGrafico = EstudanteUtils.getDataPadraoInternacional(tarefaGrafico.getInicio());
+			acertos.set(dataGrafico,
 					tarefaGrafico.getAcertos());
-			erros.set(EstudanteUtils.getDataPadraoInternacional(tarefaGrafico.getInicio()),
+			erros.set(dataGrafico,
 					tarefaGrafico.getErros());
 		}
-//		System.out.println("Acertos: ");
 		
-		graficoAcertosBar.addSeries(acertos);
-		graficoAcertosBar.setTitle("Gráfico de Acertos");
-        Axis xAxis = graficoAcertosBar.getAxis(AxisType.X);
-        xAxis.setLabel("Data");
-         
-        Axis yAxis = graficoAcertosBar.getAxis(AxisType.Y);
-        yAxis.setLabel("Acertos");
-        
-        graficoErrosBar.addSeries(erros);
-        graficoErrosBar.setTitle("Gráfico de Erros");
-        Axis xAxisErros = graficoErrosBar.getAxis(AxisType.X);
-        xAxisErros.setLabel("Data");
-         
-        Axis yAxisErros = graficoErrosBar.getAxis(AxisType.Y);
-        yAxisErros.setLabel("Erros");
+		getGraficoBar().addSeries(acertos);
+		getGraficoBar().addSeries(erros);
+		getGraficoBar().setTitle("Gráfico de Desempenho");
+		getGraficoBar().setLegendPosition("ne");
+ 
+        Axis xAxis = getGraficoBar().getAxis(AxisType.X);
+        xAxis.setLabel("Data de Execução");
+ 
+        Axis yAxis = getGraficoBar().getAxis(AxisType.Y);
+        yAxis.setLabel("Quantidade");
 	}
 
 	private void montarGraficoLinha() {
-		graficoAcertos = new LineChartModel();
-		graficoErros = new LineChartModel();
+		setGraficoLinha(new LineChartModel());
 		LineChartSeries serieAcertos = new LineChartSeries();
 		serieAcertos.setLabel("Acertos");
 		LineChartSeries serieErros = new LineChartSeries();
@@ -152,28 +140,14 @@ public class RelatorioTarefasAluno implements Serializable {
 		ultimaData = ultimaData != null ? ultimaData : new Date();
 		ultimaData = EstudanteUtils.getDiaPosterior(ultimaData);
 
-		povoarGrafico(graficoAcertos, serieAcertos, ultimaData);
-		graficoAcertos.setTitle("Relatório de acertos");
-		graficoAcertos.getAxis(AxisType.Y).setLabel("Acertos");
-		Date dataFinal = EstudanteUtils.processarDataFinalGrafico(tarefaGraficos); 
-		graficoAcertos.getAxis(AxisType.X).setMax(EstudanteUtils.getDataPadraoInternacional(dataFinal));
-
-		povoarGrafico(graficoErros, serieErros, ultimaData);
-		graficoErros.setTitle("Relatório de erros");
-		graficoErros.getAxis(AxisType.Y).setLabel("Erros");
-		graficoErros.getAxis(AxisType.X).setMax(EstudanteUtils.getDataPadraoInternacional(dataFinal));
+		getGraficoLinha().addSeries(serieAcertos);
+		getGraficoLinha().addSeries(serieErros);
+		getGraficoLinha().setTitle("Relatório de desempenho");
+		getGraficoLinha().getAxis(AxisType.Y).setLabel("Quantidade");
+		getGraficoLinha().setLegendPosition("c");
+		getGraficoLinha().setShowPointLabels(true);
+		getGraficoLinha().getAxes().put(AxisType.X, new CategoryAxis("Data de Execução"));
 		
-	}
-
-	private void povoarGrafico(LineChartModel graficoAcertos, LineChartSeries dadosGrafico, Date ultimaDataGrafico) {
-
-		graficoAcertos.addSeries(dadosGrafico);
-		graficoAcertos.setZoom(true);
-		DateAxis axis = new DateAxis("Data de inicio");
-		axis.setTickAngle(-50);
-		axis.setTickFormat("%d/%m/%y %H:%M:%S");
-
-		graficoAcertos.getAxes().put(AxisType.X, axis);
 	}
 
 	public void pesquisar() {
@@ -261,22 +235,6 @@ public class RelatorioTarefasAluno implements Serializable {
 		this.tarefaGraficos = tarefaGraficos;
 	}
 
-	public LineChartModel getGraficoAcertos() {
-		return graficoAcertos;
-	}
-
-	public void setGraficoAcertos(LineChartModel graficoAcertos) {
-		this.graficoAcertos = graficoAcertos;
-	}
-
-	public LineChartModel getGraficoErros() {
-		return graficoErros;
-	}
-
-	public void setGraficoErros(LineChartModel graficoErros) {
-		this.graficoErros = graficoErros;
-	}
-
 	public String getIdEstudante() {
 		return idEstudante;
 	}
@@ -305,22 +263,6 @@ public class RelatorioTarefasAluno implements Serializable {
 		this.templateSelecionado = templateSelecionado;
 	}
 
-	public BarChartModel getGraficoAcertosBar() {
-		return graficoAcertosBar;
-	}
-
-	public void setGraficoAcertosBar(BarChartModel graficoAcertosBar) {
-		this.graficoAcertosBar = graficoAcertosBar;
-	}
-
-	public BarChartModel getGraficoErrosBar() {
-		return graficoErrosBar;
-	}
-
-	public void setGraficoErrosBar(BarChartModel graficoErrosBar) {
-		this.graficoErrosBar = graficoErrosBar;
-	}
-
 	public boolean isExibirGraficoBarra() {
 		return exibirGraficoBarra;
 	}
@@ -335,6 +277,22 @@ public class RelatorioTarefasAluno implements Serializable {
 
 	public void setExibirFiltroAluno(boolean exibirFiltroAluno) {
 		this.exibirFiltroAluno = exibirFiltroAluno;
+	}
+
+	public BarChartModel getGraficoBar() {
+		return graficoBar;
+	}
+
+	public void setGraficoBar(BarChartModel graficoBar) {
+		this.graficoBar = graficoBar;
+	}
+
+	public LineChartModel getGraficoLinha() {
+		return graficoLinha;
+	}
+
+	public void setGraficoLinha(LineChartModel graficoLinha) {
+		this.graficoLinha = graficoLinha;
 	}
 
 }
