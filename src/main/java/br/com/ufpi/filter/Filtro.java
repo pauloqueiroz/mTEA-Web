@@ -40,14 +40,14 @@ public class Filtro implements Filter {
 		Usuario usuarioDaSessao = (Usuario) httpRequest.getSession().getAttribute("usuarioDaSessao");
 
 		String paginaAcessada = httpRequest.getRequestURI();
-		System.out.println("URL acessada: " +paginaAcessada);
+//		System.out.println("URL acessada: " +paginaAcessada);
 		boolean requestDoLogin = paginaAcessada.contains("login.xhtml");
 		if (isUrlWebService(paginaAcessada))
 			chain.doFilter(request, response);
 		else {
 			if (usuarioDaSessao != null) {
 				if (requestDoLogin || (!paginaAcessada.contains(".xhtml"))) {
-					System.out.println("requestDoLogin");
+//					System.out.println("requestDoLogin");
 					HttpServletResponse httpResponse = (HttpServletResponse) response;
 					httpResponse.sendRedirect("index.xhtml");
 				} else {
