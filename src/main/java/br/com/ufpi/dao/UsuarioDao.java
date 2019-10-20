@@ -29,7 +29,6 @@ public class UsuarioDao implements Serializable{
 	
 	public Usuario buscarUsuario(String email, String senha) {
 		String senhaHash = Md5Utils.convertStringToMd5(senha);
-		System.out.println("SENHA: "+senhaHash);
 		TypedQuery<Usuario> query = em
 				.createQuery(
 						"SELECT u FROM Usuario u WHERE u.login = :login AND u.senha = :senha",
