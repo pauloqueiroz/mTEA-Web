@@ -75,7 +75,6 @@
 					</p:selectOneMenu>
 					<p:outputLabel value="Exibir gráfico de barras"/>
 					<p:selectBooleanCheckbox value="#{relatorioTarefasAluno.exibirGraficoBarra}">
-            				<p:ajax update="barAcertos barErros" listener="#{relatorioTarefasAluno.doNothing()}" />
        	 			</p:selectBooleanCheckbox>
 				</p:panelGrid>
 				<p:panelGrid columns="3" cellpadding="10">
@@ -135,31 +134,18 @@
 			</p:fieldset>
 			<br />
 			<br />
-			<p:fieldset legend="Gráfico de acertos" toggleable="true"
+			<p:fieldset legend="Gráfico de Desempenho" toggleable="true"
 				rendered="#{relatorioTarefasAluno.exibeGraficoLinha}">
-				<p:chart type="line" model="#{relatorioTarefasAluno.graficoAcertos}"
+				<p:chart type="line" model="#{relatorioTarefasAluno.graficoLinha}"
 					responsive="true" widgetVar="chart" />
 			</p:fieldset>
 
 			<br />
 			<br />
-			<p:fieldset legend="Gráfico de erros" toggleable="true"
-				rendered="#{relatorioTarefasAluno.exibeGraficoLinha}">
-				<p:chart type="line" model="#{relatorioTarefasAluno.graficoErros}"
-					responsive="true" />
-			</p:fieldset>
-			<br />
-			<br />
-			<p:fieldset id="barAcertos" legend="Gráfico de acertos" toggleable="true"
+			<p:fieldset id="barAcertos" legend="Gráfico de Desempenho" toggleable="true"
 				rendered="#{relatorioTarefasAluno.exibeGraficoBarra}">
-				<p:chart type="bar" model="#{relatorioTarefasAluno.graficoAcertosBar}" style="height:300px"/>
+				<p:chart type="bar" model="#{relatorioTarefasAluno.graficoBar}" style="height:80%"/>
 			</p:fieldset>
-			<p:fieldset id="barErros" legend="Gráfico de erros" toggleable="true"
-				rendered="#{relatorioTarefasAluno.exibeGraficoBarra}">
-				<p:chart type="bar" model="#{relatorioTarefasAluno.graficoErrosBar}" style="height:300px"/>
-			</p:fieldset>
-			
-			
 
 		</h:form>
 	</ui:define>
