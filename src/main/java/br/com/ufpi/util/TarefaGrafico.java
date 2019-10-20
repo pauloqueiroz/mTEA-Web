@@ -55,5 +55,9 @@ public class TarefaGrafico implements Serializable{
 		this.inicio = inicio;
 	}
 	
+	@Override
+	public String toString() {
+		return inicio+" - acertos: "+acertos+" - erros: "+erros;
+	}
 	
 }
