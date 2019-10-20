@@ -12,7 +12,7 @@ import javax.faces.view.facelets.ResourceResolver;
  */
 public class FileSystemResolver extends ResourceResolver{
 	
-	private static final String PATH_TO_FACELETS_FILES_GOES_HERE = "/home/paulo/eclipse-workspace/ProjetoAutista/src/main/webapp";
+	private static final String PATH_TO_FACELETS_FILES_GOES_HERE = "/home/paulo/eclipse-workspace/mtea-web/src/main/webapp";
 
 	@Override
 	public URL resolveUrl(String path) {
