@@ -81,7 +81,7 @@ public class LoginBean implements Serializable{
 	public boolean isPaginaInicial(){
 		ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
 		String uri = ((HttpServletRequest) externalContext.getRequest()).getRequestURI();
-		System.out.println("URI: " +uri);
+//		System.out.println("URI: " +uri);
 		if(uri.contains("index.xhtml"))
 			return true;
 		return false;
