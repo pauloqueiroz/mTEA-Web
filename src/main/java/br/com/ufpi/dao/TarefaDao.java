@@ -50,6 +50,7 @@ public class TarefaDao implements Serializable{
 			hql += "t.estudante = :estudante ";
 		if(template != null)
 			hql += "and t.atividade.template = :template ";
+		hql += " ORDER by t.inicio desc";
 		TypedQuery<Tarefa> query = em.createQuery(hql,
 				Tarefa.class);
 		if(estudante != null)
